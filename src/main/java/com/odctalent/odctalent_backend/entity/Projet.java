@@ -30,6 +30,8 @@ public class Projet {
 
     private LocalDate dateCreation;
 
+    private String statut; 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
