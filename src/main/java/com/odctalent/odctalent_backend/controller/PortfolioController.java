@@ -36,4 +36,11 @@ public class PortfolioController {
             @RequestBody PortfolioUpdateRequest request) {
         return ResponseEntity.ok(portfolioService.updateMyPortfolio(userDetails.getUsername(), request));
     }
+
+    // DELETE /api/v1/portfolios/{id} -> Suppression d'un portfolio par son ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePortfolio(@PathVariable Long id) {
+        portfolioService.deletePortfolio(id);
+        return ResponseEntity.noContent().build();
+    }
 }

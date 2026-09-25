@@ -59,6 +59,37 @@ public class MissionService {
         return mapToResponse(saved);
     }
 
+    @Transactional
+    public MissionResponse updateMission(Long missionId, String email, MissionRequest request) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission introuvable avec l'ID : " + missionId));
+
+        if (!mission.getRecruteur().getEmail().equals(email)) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à modifier cette mission.");
+        }
+
+        if (request.getTitre() != null) mission.setTitre(request.getTitre());
+        if (request.getDescription() != null) mission.setDescription(request.getDescription());
+        if (request.getBudget() != null) mission.setBudget(request.getBudget());
+        if (request.getCompetencesRequises() != null) mission.setCompetencesRequises(request.getCompetencesRequises());
+        if (request.getStatut() != null) mission.setStatut(request.getStatut());
+
+        Mission updated = missionRepository.save(mission);
+        return mapToResponse(updated);
+    }
+
+    @Transactional
+    public void deleteMission(Long missionId, String email) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission introuvable avec l'ID : " + missionId));
+
+        if (!mission.getRecruteur().getEmail().equals(email)) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à supprimer cette mission.");
+        }
+
+        missionRepository.delete(mission);
+    }
+
     private MissionResponse mapToResponse(Mission mission) {
         Recruteur r = mission.getRecruteur();
         return MissionResponse.builder()

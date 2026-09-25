@@ -38,4 +38,12 @@ public class CandidatureController {
     public ResponseEntity<List<CandidatureResponse>> getCandidaturesByMission(@PathVariable Long missionId) {
         return ResponseEntity.ok(candidatureService.getCandidaturesByMission(missionId));
     }
+
+    @PatchMapping("/{id}/statut")
+    public ResponseEntity<CandidatureResponse> updateStatutCandidature(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam String statut) {
+        return ResponseEntity.ok(candidatureService.updateStatutCandidature(id, userDetails.getUsername(), statut));
+    }
 }

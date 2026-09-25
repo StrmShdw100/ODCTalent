@@ -11,4 +11,5 @@ public class MissionRequest {
     private String description;
     private Double budget;
     private String competencesRequises;
+    private String statut;
 }

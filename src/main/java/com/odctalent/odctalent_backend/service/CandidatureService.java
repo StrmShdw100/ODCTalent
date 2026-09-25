@@ -25,6 +25,7 @@ public class CandidatureService {
     private final MissionRepository missionRepository;
     private final ApprenantRepository apprenantRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final EmailService emailService;
 
     @Transactional
     public CandidatureResponse postuler(String emailApprenant, CandidatureRequest request) {
@@ -69,6 +70,32 @@ public class CandidatureService {
         return candidatureRepository.findByApprenantId(user.getId()).stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Transactional
+    public CandidatureResponse updateStatutCandidature(Long candidatureId, String recruteurEmail, String nouveauStatut) {
+        Candidature candidature = candidatureRepository.findById(candidatureId)
+                .orElseThrow(() -> new RuntimeException("Candidature introuvable avec l'ID : " + candidatureId));
+
+        // Vérifier que le recruteur connecté est bien celui qui a publié la mission associée
+        if (!candidature.getMission().getRecruteur().getEmail().equals(recruteurEmail)) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à modifier le statut de cette candidature.");
+        }
+
+        candidature.setStatut(nouveauStatut);
+        Candidature updated = candidatureRepository.save(candidature);
+
+        // Envoi automatique de l'e-mail à l'apprenant
+        if (updated.getApprenant() != null && updated.getMission() != null) {
+            emailService.sendCandidatureStatusEmail(
+                    updated.getApprenant().getEmail(),
+                    updated.getMission().getTitre(),
+                    nouveauStatut,
+                    updated.getApprenant().getPrenom()
+            );
+        }
+
+        return mapToResponse(updated);
     }
 
     private CandidatureResponse mapToResponse(Candidature c) {

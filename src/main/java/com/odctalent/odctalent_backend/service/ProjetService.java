@@ -65,6 +65,34 @@ public class ProjetService {
         projetRepository.delete(projet);
     }
 
+
+    @Transactional(readOnly = true)
+    public ProjetResponse getProjetById(Long id) {
+        Projet projet = projetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Projet introuvable avec l'ID : " + id));
+        return mapToResponse(projet);
+    }
+
+    @Transactional
+    public ProjetResponse updateProjet(Long projetId, String email, ProjetRequest request) {
+        Projet projet = projetRepository.findById(projetId)
+                .orElseThrow(() -> new RuntimeException("Projet introuvable avec l'ID : " + projetId));
+
+        if (!projet.getPortfolio().getApprenant().getEmail().equals(email)) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à modifier ce projet.");
+        }
+
+        if (request.getTitre() != null) projet.setTitre(request.getTitre());
+        if (request.getDescription() != null) projet.setDescription(request.getDescription());
+        if (request.getImageUrl() != null) projet.setImageUrl(request.getImageUrl());
+        if (request.getGithubUrl() != null) projet.setGithubUrl(request.getGithubUrl());
+        if (request.getDemoUrl() != null) projet.setDemoUrl(request.getDemoUrl());
+        if (request.getTechnologies() != null) projet.setTechnologies(request.getTechnologies());
+
+        Projet updated = projetRepository.save(projet);
+        return mapToResponse(updated);
+    }
+
     private ProjetResponse mapToResponse(Projet projet) {
         return ProjetResponse.builder()
                 .id(projet.getId())

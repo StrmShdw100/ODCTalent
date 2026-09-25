@@ -37,4 +37,22 @@ public class MissionController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(missionService.createMission(userDetails.getUsername(), request));
     }
+
+    // PUT /api/v1/missions/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<MissionResponse> updateMission(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody MissionRequest request) {
+        return ResponseEntity.ok(missionService.updateMission(id, userDetails.getUsername(), request));
+    }
+
+    // DELETE /api/v1/missions/{id}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMission(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        missionService.deleteMission(id, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
+    }
 }

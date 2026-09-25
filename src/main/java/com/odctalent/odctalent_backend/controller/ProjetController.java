@@ -43,4 +43,19 @@ public class ProjetController {
         projetService.deleteProjet(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
+
+    // GET /api/v1/projets/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjetResponse> getProjetById(@PathVariable Long id) {
+        return ResponseEntity.ok(projetService.getProjetById(id));
+    }
+
+    // PUT /api/v1/projets/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjetResponse> updateProjet(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ProjetRequest request) {
+        return ResponseEntity.ok(projetService.updateProjet(id, userDetails.getUsername(), request));
+    }
 }

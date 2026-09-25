@@ -62,6 +62,14 @@ public class PortfolioService {
         return mapToResponse(updated);
     }
 
+    @Transactional
+    public void deletePortfolio(Long id) {
+        if (!portfolioRepository.existsById(id)) {
+            throw new RuntimeException("Portfolio introuvable avec l'ID : " + id);
+        }
+        portfolioRepository.deleteById(id);
+    }
+
     private PortfolioResponse mapToResponse(Portfolio portfolio) {
         Apprenant apprenant = portfolio.getApprenant();
         return PortfolioResponse.builder()

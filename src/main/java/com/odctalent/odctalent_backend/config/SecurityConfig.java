@@ -37,10 +37,11 @@ public class SecurityConfig {
                         // 2. Téléchargement et consultation de fichiers (CV, images)
                         .requestMatchers(HttpMethod.GET, "/api/v1/files/download/**").permitAll()
 
-                        // 3. Consultation publique (Missions, Projets, Portfolios)
+                        // 3. Consultation publique (Missions, Projets, Portfolios, Avis)
                         .requestMatchers(HttpMethod.GET, "/api/v1/missions/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/projets/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/portfolios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/avis/**").permitAll()
 
                         // 4. Suivi post-ODC
                         .requestMatchers("/api/v1/suivi/me/**").hasAnyAuthority("APPRENANT", "ROLE_APPRENANT")
@@ -54,6 +55,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/missions/**").hasAnyAuthority("RECRUTEUR", "ROLE_RECRUTEUR")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/missions/**").hasAnyAuthority("RECRUTEUR", "ROLE_RECRUTEUR")
                         .requestMatchers("/api/v1/candidatures/mission/**").hasAnyAuthority("RECRUTEUR", "ROLE_RECRUTEUR")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/candidatures/*/statut").hasAnyAuthority("RECRUTEUR", "ROLE_RECRUTEUR")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/avis").hasAnyAuthority("RECRUTEUR", "ROLE_RECRUTEUR")
 
                         // 7. Actions réservées aux APPRENANTS
                         .requestMatchers(HttpMethod.POST, "/api/v1/candidatures/**").hasAnyAuthority("APPRENANT", "ROLE_APPRENANT")
@@ -62,8 +65,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/projets/**").hasAnyAuthority("APPRENANT", "ROLE_APPRENANT")
                         .requestMatchers("/api/v1/portfolios/me/**").hasAnyAuthority("APPRENANT", "ROLE_APPRENANT")
 
-                        // 8. Upload de fichiers (nécessite d'être authentifié)
+                        // 8. Upload de fichiers & Messagerie (nécessite d'être authentifié)
                         .requestMatchers(HttpMethod.POST, "/api/v1/files/upload").authenticated()
+                        .requestMatchers("/api/v1/messages/**").authenticated()
 
                         // Tout le reste requiert une authentification
                         .anyRequest().authenticated()
