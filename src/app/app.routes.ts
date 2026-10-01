@@ -1,13 +1,19 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout';
+import { DashboardComponent } from './features/dashboard/dashboard';
 
 export const routes: Routes = [
-  // Route vers ta page de login basée sur ta maquette Figma
   { path: 'login', component: LoginComponent },
-  
-  // Redirection par défaut de la racine vers /login
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+  },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  
-  // Route joker (si l'URL n'existe pas, renvoie vers le login)
+  { path: 'actualites', component: ActualitesComponent },
   { path: '**', redirectTo: 'login' }
 ];

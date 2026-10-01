@@ -1,0 +1,197 @@
+.actualites-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header-row h2 {
+  font-size: 1.8rem;
+  color: #111;
+  margin-bottom: 5px;
+}
+
+.page-header-row p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: #FF7900;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #e06c00;
+}
+
+/* Filtres */
+.filters-bar {
+  display: flex;
+  gap: 15px;
+}
+
+.search-input-wrapper input, .filter-select {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.search-input-wrapper input {
+  width: 280px;
+}
+
+/* Tableau */
+.table-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #eaeaea;
+  overflow: visible; /* Important pour laisser dépasser le menu contextuel */
+}
+
+.table-card-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.table-card-header h3 {
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.total-count {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.custom-table th {
+  padding: 15px 20px;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #eaeaea;
+  background-color: #fbfbfb;
+}
+
+.custom-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.9rem;
+  color: #333;
+  vertical-align: middle;
+}
+
+.news-title-cell {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.badge-tag {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  background-color: #FFF3EB;
+  color: #FF7900;
+}
+
+.news-title-cell strong {
+  display: block;
+  color: #111;
+}
+
+.news-title-cell small {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+/* Statuts */
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.published {
+  background-color: #E8F8F0;
+  color: #27ae60;
+}
+
+.status-badge.draft {
+  background-color: #FEF6EC;
+  color: #f39c12;
+}
+
+/* Actions & Menu Popup */
+.actions-cell {
+  position: relative;
+}
+
+.menu-dots-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #666;
+  padding: 5px 10px;
+}
+
+.context-menu {
+  position: absolute;
+  right: 40px;
+  top: 10px;
+  background: white;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.context-menu button {
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.1s;
+}
+
+.context-menu button:hover {
+  background-color: #f5f5f5;
+}
+
+.context-menu button.delete-option {
+  color: #e74c3c;
+}

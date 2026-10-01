@@ -1,0 +1,82 @@
+<div class="actualites-container">
+  <!-- En-tête de la page -->
+  <div class="page-header-row">
+    <div>
+      <h2>Actualités</h2>
+      <p>Gérez les actualités et annonces publiées sur ODCTalent.</p>
+    </div>
+    <button class="btn-primary">+ Ajouter une actualité</button>
+  </div>
+
+  <!-- Barre de filtres et recherche -->
+  <div class="filters-bar">
+    <div class="search-input-wrapper">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une actualité" />
+    </div>
+    <select [(ngModel)]="selectedCategory" class="filter-select">
+      <option>Toutes les catégories</option>
+      <option>Événement</option>
+      <option>Recrutement</option>
+      <option>Formation</option>
+      <option>Annonce</option>
+      <option>Freelance</option>
+    </select>
+    <select [(ngModel)]="selectedStatus" class="filter-select">
+      <option>Tous les statuts</option>
+      <option>Publié</option>
+      <option>Brouillon</option>
+    </select>
+  </div>
+
+  <!-- Tableau des actualités -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>Liste des actualités</h3>
+      <span class="total-count">{{ actualites.length }} actualités</span>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ACTUALITÉ</th>
+          <th>CATÉGORIE</th>
+          <th>DATE</th>
+          <th>STATUT</th>
+          <th>AUTEUR</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of actualites">
+          <td>
+            <div class="news-title-cell">
+              <span class="badge-tag" [ngClass]="item.badge.toLowerCase()">{{ item.badge }}</span>
+              <div>
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.description }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.date }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="item.status === 'Publié' ? 'published' : 'draft'">
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.author }}</td>
+          <td class="actions-cell">
+            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
+            
+            <!-- Menu contextuel popup -->
+            <div class="context-menu" *ngIf="item.showMenu">
+              <button (click)="onAction('Modifier', item)">✏️ Modifier</button>
+              <button (click)="onAction('Masquer', item)">👁️ Masque</button>
+              <button class="delete-option" (click)="onAction('Supprimer', item)">🗑️ Supprimer</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="admin-dashboard-container">
+  <!-- SIDEBAR (Menu latéral) -->
+  <aside class="sidebar">
+    <div class="brand-logo">
+      <img src="assets/images/odc-logo.png" alt="ODC Logo" />
+      <span>ODCTalent</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+        <i class="icon-dashboard">📊</i> Tableau de bord
+      </a>
+      <a routerLink="/admin/actualites" routerLinkActive="active" class="nav-item">
+        <i class="icon-news">📰</i> Actualités
+      </a>
+      <a routerLink="/admin/moderation" routerLinkActive="active" class="nav-item">
+        <i class="icon-moderation">🛡️</i> Modération des projets
+      </a>
+      <a routerLink="/admin/opportunites" routerLinkActive="active" class="nav-item">
+        <i class="icon-opportunities">💼</i> Opportunités
+      </a>
+      <a routerLink="/admin/apprenants" routerLinkActive="active" class="nav-item">
+        <i class="icon-users">👥</i> Apprenants
+      </a>
+      <a routerLink="/admin/recruteurs" routerLinkActive="active" class="nav-item">
+        <i class="icon-recruiters">🏢</i> Recruteurs
+      </a>
+      <a routerLink="/admin/administrateurs" routerLinkActive="active" class="nav-item">
+        <i class="icon-admins">⚙️</i> Administrateurs
+      </a>
+      <a routerLink="/admin/parametres" routerLinkActive="active" class="nav-item">
+        <i class="icon-settings">🔧</i> Paramètres
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button (click)="onLogout()" class="btn-logout">
+        <i class="icon-logout">🚪</i> Deconnexion
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <div class="main-content-wrapper">
+    <!-- TOPBAR (En-tête) -->
+    <header class="topbar">
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher..." />
+      </div>
+      <div class="admin-profile-info">
+        <button class="notification-btn">🔔</button>
+        <div class="avatar-badge">FK</div>
+        <div class="admin-details">
+          <span class="admin-name">{{ adminName }}</span>
+          <span class="admin-role">{{ adminRole }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ZONE D'AFFICHAGE DES PAGES INTERNES -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

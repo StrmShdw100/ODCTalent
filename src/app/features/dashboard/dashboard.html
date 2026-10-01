@@ -1,0 +1,89 @@
+<div class="dashboard-view">
+  <div class="dashboard-header">
+    <h2>Tableau de bord</h2>
+    <p>Vue d'ensemble de l'activité de la plateforme ODCTalent.</p>
+  </div>
+
+  <!-- Cartes Statistiques (KPIs) -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Apprenants</span>
+        <h3 class="stat-value">{{ stats.apprenants | number }}</h3>
+        <span class="stat-period">ce mois</span>
+      </div>
+      <div class="stat-icon users-icon">👥</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Recruteurs</span>
+        <h3 class="stat-value">{{ stats.recruteurs }}</h3>
+        <span class="stat-period">ce mois</span>
+      </div>
+      <div class="stat-icon recruiters-icon">🏢</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Projets à modérer</span>
+        <h3 class="stat-value">{{ stats.projetsAModerer }}</h3>
+        <span class="badge-pending">À traiter</span>
+      </div>
+      <div class="stat-icon projects-icon">📋</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Opportunités actives</span>
+        <h3 class="stat-value">{{ stats.opportunitesActives }}</h3>
+        <span class="badge-new">{{ stats.nouvellesOpportunites }} nouvelles</span>
+      </div>
+      <div class="stat-icon opportunities-icon">💼</div>
+    </div>
+  </div>
+
+  <!-- Section Centrale : Activité récente & Actions rapides -->
+  <div class="dashboard-grid-middle">
+    <!-- Activité récente -->
+    <div class="card activity-card">
+      <div class="card-header">
+        <h3>Activité récente</h3>
+        <a href="#" class="see-all">Voir tout</a>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivities">
+          <span class="dot-indicator"></span>
+          <div class="activity-details">
+            <strong>{{ activity.title }}</strong>
+            <small>{{ activity.time }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="card actions-card">
+      <h3>Actions rapides</h3>
+      <div class="actions-list">
+        <button class="btn-action primary">+ Ajouter une actualité</button>
+        <button class="btn-action outline">✓ Modérer les projets</button>
+        <button class="btn-action outline">+ Ajouter une opportunité</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aperçu des inscriptions (Graphique / Section Basse) -->
+  <div class="card chart-card">
+    <div class="card-header">
+      <h3>Aperçu des inscriptions</h3>
+    </div>
+    <p class="chart-subtitle">Évolution des inscriptions au cours des 6 derniers mois</p>
+    <div class="chart-placeholder">
+      <!-- Zone graphique (courbe simulant Avril à Octobre) -->
+      <div class="fake-curve-container">
+        <span>Avril</span><span>Mai</span><span>Juin</span><span>Juillet</span><span>Août</span><span>Sept.</span><span>Oct.</span>
+      </div>
+    </div>
+  </div>
+</div>
