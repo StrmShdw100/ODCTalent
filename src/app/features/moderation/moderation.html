@@ -1,0 +1,119 @@
+<div class="moderation-container">
+  <!-- En-tête -->
+  <div class="page-header-row">
+    <div>
+      <h2>Modération des projets</h2>
+      <p>Vérifiez, validez ou refusez les projets soumis par les apprenants.</p>
+    </div>
+  </div>
+
+  <!-- Cartes Statistiques (KPIs) -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">À examiner</span>
+        <h3 class="stat-value">{{ stats.aExaminer }}</h3>
+        <span class="badge-urgent">Urgent</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Validés ce mois</span>
+        <h3 class="stat-value">{{ stats.validesMois }}</h3>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Refusés</span>
+        <h3 class="stat-value">{{ stats.refusesMois }}</h3>
+        <span class="stat-period">ce mois</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-info">
+        <span class="stat-label">Temps moyen de traitement</span>
+        <h3 class="stat-value-time">{{ stats.tempsTraitement }} <small>min</small></h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de filtres -->
+  <div class="filters-bar">
+    <div class="search-input-wrapper">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher par projet ou apprenant" />
+    </div>
+    <select [(ngModel)]="selectedStatus" class="filter-select">
+      <option>Tous les statuts</option>
+      <option>En attente</option>
+      <option>Validé</option>
+      <option>À corriger</option>
+    </select>
+    <select [(ngModel)]="selectedCategory" class="filter-select">
+      <option>Toutes catégories</option>
+      <option>Web</option>
+      <option>Mobile</option>
+      <option>Data</option>
+    </select>
+    <select [(ngModel)]="selectedSort" class="filter-select">
+      <option>Trier : plus récent</option>
+      <option>Trier : plus ancien</option>
+    </select>
+  </div>
+
+  <!-- Tableau des projets à modérer -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>Projets à modérer</h3>
+      <span class="total-count">{{ projets.length }} projets</span>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>PROJET</th>
+          <th>APPRENANT</th>
+          <th>DATE</th>
+          <th>STATUT</th>
+          <th>TYPE</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of projets">
+          <td>
+            <div class="project-title-cell">
+              <span class="badge-tag" [ngClass]="item.badge.toLowerCase()">{{ item.badge }}</span>
+              <div>
+                <strong>{{ item.title }}</strong>
+                <small>{{ item.description }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.apprenant }}</td>
+          <td>{{ item.date }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="{
+              'pending': item.status === 'En attente',
+              'validated': item.status === 'Validé',
+              'correction': item.status === 'À corriger'
+            }">
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.type }}</td>
+          <td class="actions-cell">
+            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
+            <div class="context-menu" *ngIf="item.showMenu">
+              <button>👁️ Examiner</button>
+              <button>✓ Valider</button>
+              <button class="delete-option">✕ Refuser</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

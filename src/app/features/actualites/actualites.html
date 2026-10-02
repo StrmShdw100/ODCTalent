@@ -1,11 +1,23 @@
 <div class="actualites-container">
+  <!-- Notification de succès -->
+  <div class="success-banner" *ngIf="successMessage">
+    <div class="success-content">
+      <span class="success-icon">✓</span>
+      <div>
+        <strong>Actualité publiée avec succès</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+    </div>
+    <button class="close-banner" (click)="successMessage = null">✕</button>
+  </div>
+
   <!-- En-tête de la page -->
   <div class="page-header-row">
     <div>
       <h2>Actualités</h2>
       <p>Gérez les actualités et annonces publiées sur ODCTalent.</p>
     </div>
-    <button class="btn-primary">+ Ajouter une actualité</button>
+    <button class="btn-primary" (click)="openAddModal()">+ Ajouter une actualité</button>
   </div>
 
   <!-- Barre de filtres et recherche -->
@@ -68,15 +80,83 @@
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             
-            <!-- Menu contextuel popup -->
             <div class="context-menu" *ngIf="item.showMenu">
-              <button (click)="onAction('Modifier', item)">✏️ Modifier</button>
-              <button (click)="onAction('Masquer', item)">👁️ Masque</button>
-              <button class="delete-option" (click)="onAction('Supprimer', item)">🗑️ Supprimer</button>
+              <button>✏️ Modifier</button>
+              <button>👁️ Masque</button>
+              <button class="delete-option">🗑️ Supprimer</button>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- MODALE D'AJOUT D'ACTUALITÉ -->
+<div class="modal-backdrop" *ngIf="isModalOpen">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3>Ajouter une nouvelle actualité</h3>
+        <p>Créez une actualité qui sera publiée sur la plateforme ODCTalent.</p>
+      </div>
+      <button class="modal-close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Titre de l'actualité *</label>
+        <input type="text" [(ngModel)]="formModel.title" placeholder="Ex. Cérémonie de graduation 2026" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Catégorie *</label>
+          <select [(ngModel)]="formModel.category">
+            <option value="" disabled selected>Sélectionner une catégorie</option>
+            <option>Événement</option>
+            <option>Recrutement</option>
+            <option>Formation</option>
+            <option>Annonce</option>
+            <option>Freelance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date de publication *</label>
+          <input type="text" [(ngModel)]="formModel.publicationDate" placeholder="JJ/MM/AAAA" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Image de couverture</label>
+        <div class="upload-box">
+          <div class="upload-icon-placeholder">📁</div>
+          <div class="upload-text">
+            <strong>Ajouter une image</strong>
+            <span>PNG, JPG ou WEBP — 5 Mo maximum</span>
+          </div>
+          <button class="btn-browse">Parcourir</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea [(ngModel)]="formModel.description" rows="4" placeholder="Écrivez le contenu de votre actualité..."></textarea>
+        <span class="char-counter">{{ formModel.description.length }} / 500</span>
+      </div>
+
+      <div class="form-group">
+        <label>Statut</label>
+        <select [(ngModel)]="formModel.status">
+          <option value="Brouillon">Brouillon</option>
+          <option value="Publié">Publié</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Annuler</button>
+      <button class="btn-primary" (click)="submitActualite()">Publier l'actualité</button>
+    </div>
   </div>
 </div>

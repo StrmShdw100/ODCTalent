@@ -1,0 +1,100 @@
+<div class="recruteurs-container">
+  <!-- En-tête -->
+  <div class="page-header-row">
+    <div>
+      <h2>Recruteurs</h2>
+      <p>Gérez les entreprises partenaires et leurs comptes recruteurs sur ODCTalent.</p>
+    </div>
+  </div>
+
+  <!-- Cartes Statistiques (KPIs) -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Recruteurs actifs</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.recruteursActifs }}</h3>
+        <span class="badge-green-text">{{ stats.recruteursActifsSub }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Entreprises partenaires</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.entreprisesPartenaires }}</h3>
+        <span class="badge-green-text">{{ stats.entreprisesSub }}</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Comptes à vérifier</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.comptesAVerifier }}</h3>
+        <span class="badge-orange-text">en attente</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Opportunités publiées</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.opportunitesPubliees }}</h3>
+        <span class="badge-green-text">{{ stats.opportunitesSub }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de recherche -->
+  <div class="filters-bar">
+    <div class="search-input-wrapper">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une entreprise ou un recruteur..." />
+    </div>
+  </div>
+
+  <!-- Tableau des recruteurs -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>Liste des recruteurs</h3>
+      <span class="total-count">{{ recruteurs.length }} recruteurs affichés</span>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ENTREPRISE</th>
+          <th>RECRUTEUR</th>
+          <th>EMAIL</th>
+          <th>SECTEUR</th>
+          <th>STATUT</th>
+          <th>OFFRES</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of recruteurs">
+          <td>
+            <div class="company-profile-cell">
+              <div class="company-avatar" [style.background-color]="item.badgeBg">{{ item.initials }}</div>
+              <div>
+                <strong>{{ item.companyName }}</strong>
+                <small>{{ item.location }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.recruiterName }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.sector }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="item.status === 'Actif' ? 'active' : 'inactive'">
+              {{ item.status }}
+            </span>
+          </td>
+          <td><strong>{{ item.offresCount }}</strong></td>
+          <td class="actions-cell">
+            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
+            <div class="context-menu" *ngIf="item.showMenu">
+              <button>👁️ Voir profil</button>
+              <button>✏️ Modifier</button>
+              <button class="delete-option">🚫 Suspendre</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
