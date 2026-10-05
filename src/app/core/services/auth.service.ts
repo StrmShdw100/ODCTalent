@@ -13,7 +13,7 @@ export interface AuthResponse {
 })
 export class AuthService {
   // Remplace par l'URL de ton API Spring Boot
-  private apiUrl = 'http://localhost:8080/api/auth/login';
+  private apiUrl = 'http://localhost:8080/api/v1/auth/login';
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,6 @@ export class AuthService {
     return this.http.post<AuthResponse>(this.apiUrl, credentials).pipe(
       tap(response => {
         if (response && response.token) {
-          // Stockage du token et du rôle dans le localStorage
           localStorage.setItem('auth_token', response.token);
           localStorage.setItem('user_role', response.role);
         }
