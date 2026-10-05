@@ -1,47 +1,62 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/odc-talent-auth';
+import { AuthService } from '../../services/auth.service'; // Adapte le chemin selon ton arborescence
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  credentials = {
+    email: '',
+    password: ''
+  };
+  
   errorMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  onLogin(): void {
+    this.errorMessage = '';
+    this.isLoading = true;
+
+    this.authService.login(this.credentials).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        // Aiguillage basé sur le rôle renvoyé par Spring Boot
+        this.redirectUserBasedOnRole(response.role);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.err('Erreur de connexion :', err);
+        this.errorMessage = "Email ou mot de passe incorrect, ou serveur inaccessible.";
+      }
     });
   }
 
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      
-      this.authService.login({ email, password }).subscribe({
-        next: (response) => {
-          console.log('Connexion réussie, Token enregistré !', response);
-          // Redirection vers le tableau de bord administrateur
-          this.router.navigate(['/dashboard']);
-        },
-        error: (err) => {
-          console.error('Erreur de connexion', err);
-          this.errorMessage = 'Identifiants invalides ou erreur serveur.';
-        }
-      });
+  private redirectUserBasedOnRole(role: string): void {
+    switch (role) {
+      case 'ROLE_ADMIN':
+        this.router.navigate(['/admin/dashboard']);
+        break;
+      case 'ROLE_RECRUTEUR':
+        this.router.navigate(['/recruteur/espace']);
+        break;
+      case 'ROLE_APPRENANT':
+        this.router.navigate(['/apprenant/espace']);
+        break;
+      default:
+        this.router.navigate(['/admin/dashboard']); // Fallback par défaut
+        break;
     }
   }
 }

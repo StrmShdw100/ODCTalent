@@ -10,12 +10,12 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   styleUrls: ['./admin-layout.css']
 })
 export class AdminLayoutComponent {
-  // Informations de l'admin connecté basées sur ta maquette
   adminName = 'Fatoumata Kaloga';
   adminRole = 'Super Administrateur';
 
   onLogout(): void {
     localStorage.removeItem('auth_token');
-    window.location.href = '/login';
+    // Si tu gères l'état global dans AppComponent, tu peux émettre un événement ou rediriger
+    window.location.reload(); 
   }
 }
