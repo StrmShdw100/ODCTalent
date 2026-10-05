@@ -1,0 +1,186 @@
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Effets de lueur en arrière-plan */
+.background-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255, 121, 0, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  z-index: 1;
+  animation: floatGlow 6s infinite ease-in-out;
+}
+
+.glow-1 {
+  top: -10%;
+  left: -10%;
+}
+
+.glow-2 {
+  bottom: -10%;
+  right: -10%;
+  animation-delay: 3s;
+}
+
+/* Contenu central */
+.splash-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Logo & Anneau lumineux */
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-ring {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border: 2px dashed rgba(255, 121, 0, 0.4);
+  border-radius: 28px;
+  animation: spinRing 12s linear infinite;
+}
+
+.logo-box {
+  width: 86px;
+  height: 86px;
+  /* background: linear-gradient(135deg, #FF7900 0%, #E06500 100%); */
+  background: white;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 15px 35px rgba(255, 121, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  animation: pulseLogo 2s infinite ease-in-out;
+}
+
+.logo-text {
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Textes */
+.splash-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.splash-texts h1 {
+  color: #ffffff;
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.splash-texts h1 strong {
+  color: #FF7900;
+  font-weight: 800;
+}
+
+.splash-texts p {
+  color: #888888;
+  font-size: 0.9rem;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+/* Barre de chargement stylisée */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.loader-track {
+  width: 200px;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.loader-glow-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #FF7900, #ffb366, #FF7900, transparent);
+  border-radius: 10px;
+  animation: shimmerLoader 1.8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loader-status {
+  color: #555555;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseLogo {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 15px 35px rgba(255, 121, 0, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 20px 45px rgba(255, 121, 0, 0.6);
+  }
+}
+
+@keyframes shimmerLoader {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, 20px) scale(1.1); }
+}
+
+@keyframes scaleIn {
+  0% { opacity: 0; transform: translateY(15px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}

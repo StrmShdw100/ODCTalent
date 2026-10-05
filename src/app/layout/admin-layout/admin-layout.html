@@ -1,0 +1,65 @@
+<div class="admin-dashboard-container">
+  <!-- SIDEBAR (Menu latéral) -->
+  <aside class="sidebar">
+    <div class="brand-logo">
+      <div class="logo-box">ODC</div>
+      <span>ODC<strong>Talent</strong></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <i class="icon-dashboard">📊</i> Tableau de bord
+      </a>
+      <a routerLink="/actualites" routerLinkActive="active" class="nav-item">
+        <i class="icon-news">📰</i> Actualités
+      </a>
+      <a routerLink="/projets" routerLinkActive="active" class="nav-item">
+        <i class="icon-moderation">🛡️</i> Modération des projets
+      </a>
+      <a routerLink="/opportunites" routerLinkActive="active" class="nav-item">
+        <i class="icon-opportunities">💼</i> Opportunités
+      </a>
+      <a routerLink="/apprenants" routerLinkActive="active" class="nav-item">
+        <i class="icon-users">👥</i> Apprenants
+      </a>
+      <a routerLink="/recruteurs" routerLinkActive="active" class="nav-item">
+        <i class="icon-recruiters">🏢</i> Recruteurs
+      </a>
+      <a routerLink="/administrateurs" routerLinkActive="active" class="nav-item">
+        <i class="icon-admins">⚙️</i> Administrateurs
+      </a>
+      <a routerLink="/parametres" routerLinkActive="active" class="nav-item">
+        <i class="icon-settings">🔧</i> Paramètres
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button (click)="onLogout()" class="btn-logout">
+        <span class="icon-logout">🚪</span> Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
+  <div class="main-content-wrapper">
+    <!-- TOPBAR (En-tête) -->
+    <header class="topbar">
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher dans la plateforme..." />
+      </div>
+      <div class="admin-profile-info">
+        <button class="notification-btn" title="Notifications">🔔</button>
+        <div class="avatar-badge">FK</div>
+        <div class="admin-details">
+          <span class="admin-name">{{ adminName }}</span>
+          <span class="admin-role">{{ adminRole }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ZONE D'AFFICHAGE DES PAGES INTERNES -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

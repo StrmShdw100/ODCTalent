@@ -1,0 +1,28 @@
+<div class="splash-screen" [ngClass]="{'fade-out': isFadingOut}">
+  <!-- Cercles lumineux d'arrière-plan pour l'effet "glow" -->
+  <div class="background-glow glow-1"></div>
+  <div class="background-glow glow-2"></div>
+
+  <div class="splash-content">
+    <div class="logo-wrapper">
+      <div class="logo-ring"></div>
+      <div class="logo-box">
+        <!-- <span class="logo-text">ODC</span> -->
+         <img src="logoODC.png" width="80%">
+      </div>
+    </div>
+
+    <!-- Titre et sous-titre stylisés -->
+    <div class="splash-texts">
+      <h1>ODC<strong>Talent</strong></h1>
+      <p>L'excellence numérique en mouvement</p>
+    </div>
+
+    <div class="loader-container">
+      <div class="loader-track">
+        <div class="loader-glow-bar"></div>
+      </div>
+      <span class="loader-status">Chargement de la plateforme...</span>
+    </div>
+  </div>
+</div>

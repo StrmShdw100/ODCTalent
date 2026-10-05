@@ -1,0 +1,191 @@
+<div class="admins-container">
+  <!-- Notification de succès (Toast) -->
+  <div class="success-banner" *ngIf="successMessage">
+    <div class="success-content">
+      <span class="success-icon">✓</span>
+      <div>
+        <strong>Administrateur ajouté</strong>
+        <p>{{ successMessage }}</p>
+      </div>
+    </div>
+    <button class="close-banner" (click)="successMessage = null">✕</button>
+  </div>
+
+  <!-- En-tête -->
+  <div class="page-header-row">
+    <div>
+      <h2>Administrateurs</h2>
+      <p>Gérez les comptes administrateurs, leurs rôles et leurs accès à la plateforme.</p>
+    </div>
+    <button class="btn-primary" (click)="openAddModal()">+ Ajouter un administrateur</button>
+  </div>
+
+  <!-- Cartes Statistiques (KPIs) -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Administrateurs actifs</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.actifs }}</h3>
+        <span class="stat-icon-placeholder">👥</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Super administrateurs</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.superAdmins }}</h3>
+        <span class="stat-icon-placeholder">👤</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Rôles personnalisés</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.rolesPersonnalises }}</h3>
+        <span class="stat-icon-placeholder">🛡️</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Comptes à vérifier</span>
+      <div class="stat-main">
+        <h3 class="stat-value">{{ stats.enAttente }}</h3>
+        <span class="badge-orange-text">en attente</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de recherche et filtres -->
+  <div class="filters-bar">
+    <div class="search-input-wrapper">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher par nom ou email..." />
+    </div>
+    <select [(ngModel)]="selectedRole" class="filter-select">
+      <option>Rôle</option>
+      <option>Super Administrateur</option>
+      <option>Administrateur</option>
+      <option>Modérateur projets</option>
+    </select>
+  </div>
+
+  <!-- Tableau des administrateurs -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>Liste des administrateurs</h3>
+      <span class="total-count">{{ administrateurs.length }} administrateurs</span>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ADMINISTRATEUR</th>
+          <th>EMAIL</th>
+          <th>RÔLE</th>
+          <th>DERNIER ACCÈS</th>
+          <th>STATUT</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of administrateurs">
+          <td>
+            <div class="admin-profile-cell">
+              <div class="admin-avatar">{{ item.initials }}</div>
+              <div>
+                <strong>{{ item.name }}</strong>
+                <small>{{ item.roleDescription }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.email }}</td>
+          <td>
+            <span class="role-pill">{{ item.role }}</span>
+          </td>
+          <td>{{ item.lastAccess }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="item.status === 'Actif' ? 'active' : 'inactive'">
+              {{ item.status }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
+            <div class="context-menu" *ngIf="item.showMenu">
+              <button>✏️ Modifier</button>
+              <button>🔑 Réinitialiser MDP</button>
+              <button class="delete-option">🚫 Désactiver</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MODALE D'AJOUT D'UN ADMINISTRATEUR -->
+<div class="modal-backdrop" *ngIf="isModalOpen">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3>Ajouter un administrateur</h3>
+        <p>Créez un compte administrateur et définissez ses accès.</p>
+      </div>
+      <button class="modal-close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <p class="section-subtitle">Informations du compte</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" [(ngModel)]="formModel.prenom" placeholder="Prénom" />
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" [(ngModel)]="formModel.nom" placeholder="Nom" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="text" [(ngModel)]="formModel.telephone" placeholder="+223 XX XX XX XX" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email professionnel</label>
+          <input type="email" [(ngModel)]="formModel.email" placeholder="adresse@odctalent.com" />
+        </div>
+        <div class="form-group">
+          <label>Rôle</label>
+          <select [(ngModel)]="formModel.role">
+            <option value="" disabled selected>Sélectionner un rôle</option>
+            <option>Super Administrateur</option>
+            <option>Administrateur</option>
+            <option>Gestionnaire des recruteurs</option>
+            <option>Modérateur projets</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe temporaire</label>
+        <input type="password" [(ngModel)]="formModel.tempPassword" placeholder="Mot de passe temporaire" />
+      </div>
+
+      <div class="permissions-section">
+        <label class="section-label">Accès aux sections</label>
+        <div class="permissions-grid">
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.dashboard" /> Tableau de bord</label>
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.actualites" /> Actualités</label>
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.projets" /> Projets</label>
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.opportunites" /> Opportunités</label>
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.apprenants" /> Apprenants</label>
+          <label><input type="checkbox" [(ngModel)]="formModel.permissions.recruteurs" /> Recruteurs</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Annuler</button>
+      <button class="btn-primary" (click)="submitAdministrateur()">Ajouter</button>
+    </div>
+  </div>
+</div>

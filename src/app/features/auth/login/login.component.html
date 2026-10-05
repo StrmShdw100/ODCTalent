@@ -1,0 +1,90 @@
+<div class="login-container">
+  <div class="panneaugauche">
+    <div class="entetegauche">
+      <img src="logoODC.png" alt="ODC Logo" class="logo" id="logogauche" />
+    </div>
+    
+    <div class="hero-content">
+      <h1>Développez les talents.<br><span>Construisez l'avenir.</span></h1>
+      
+      <div class="columns2">
+        <p>
+          ODCTalent est la plateforme qui vous permet <br>
+          de gérer, former et accompagner les talents <br>
+          de votre organisation.
+        </p>
+      
+        <div class="floating1">
+          
+            <img src="/icones/test.png" alt="" class="iconetest">
+          
+            <strong >Gestion des talents</strong> <br>
+          
+         
+            <small >Recruter • Former • Èvoluer</small>
+        </div>
+      </div>
+    </div>
+    <div class="floating2">
+      <img src="/icones/statistiques.png" alt="" class="iconestatistiques">
+          
+            <strong >Suivi des performances</strong> <br>
+          
+         
+            <small>Mesurer • Analyser • Progresser</small>
+    </div>
+
+  </div>
+
+  <div class="panneaudroit">
+    <div class="formulaireconteneur">
+      <div class="formulaireentete">
+        <h2>O<span class="slogannoir">DC</span>Talent</h2>
+        <h3>Bienvenue sur ODCTalent</h3>
+        <p>Connectez-vous à votre espace administrateur</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label for="email">Adresse e-mail</label>
+          <div class="input-field">
+            <img src="/icones/enveloppe.png">
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              placeholder="orangekalanso@odctalent.com" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Mot de passe</label>
+          <div class="input-field">
+            <img src="/icones/ouvrir.png">
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="password" 
+              placeholder="Entrez votre mot de passe" />
+            <img src="/icones/oeil.png">
+          </div>
+        </div>
+
+        <div class="form-actions-row">
+          <label class="remember-me">
+            <input type="checkbox" formControlName="rememberMe" /> Se souvenir de moi
+          </label>
+          <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
+          Se connecter
+        </button>
+
+        <div class="form-footer-note">
+          <p><img src="/icones/cadenas.png"> Accès réservé aux administrateurs autorisés.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="apprenants-container">
+  <!-- En-tête -->
+  <div class="page-header-row">
+    <div>
+      <h2>Apprenants</h2>
+      <p>Gérez les comptes, profils et parcours des apprenants inscrits sur ODCTalent.</p>
+    </div>
+  </div>
+
+  <!-- Cartes Statistiques (KPIs) -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Apprenants inscrits</span>
+      <h3 class="stat-value">{{ stats.inscrits }}</h3>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Apprenants suivis</span>
+      <h3 class="stat-value">{{ stats.suivis }}</h3>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En emploi</span>
+      <div class="stat-sub-value">
+        <h3 class="stat-value">{{ stats.enEmploi }}</h3>
+        <span class="stat-subtitle">après formation</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">En recherche</span>
+      <div class="stat-sub-value">
+        <h3 class="stat-value">{{ stats.enRecherche }}</h3>
+        <span class="stat-subtitle">actuellement</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de filtres et recherche -->
+  <div class="filters-bar">
+    <div class="search-input-wrapper">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher par nom ou email..." />
+    </div>
+
+    <!-- Dropdown Promotion -->
+    <div class="custom-dropdown-container">
+      <button class="dropdown-trigger" (click)="togglePromotionDropdown()">
+        {{ selectedPromotion }} <span class="arrow">▼</span>
+      </button>
+      <div class="dropdown-menu" *ngIf="isPromotionOpen">
+        <div class="dropdown-item" *ngFor="let p of promotions" (click)="selectPromotion(p)">{{ p }}</div>
+      </div>
+    </div>
+
+    <!-- Dropdown Formation -->
+    <div class="custom-dropdown-container">
+      <button class="dropdown-trigger" (click)="toggleFormationDropdown()">
+        {{ selectedFormation }} <span class="arrow">▼</span>
+      </button>
+      <div class="dropdown-menu" *ngIf="isFormationOpen">
+        <div class="dropdown-item" *ngFor="let f of formations" (click)="selectFormation(f)">{{ f }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau des apprenants -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>Liste des apprenants</h3>
+      <span class="total-count">{{ apprenants.length }} apprenants affichés</span>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>APPRENANT</th>
+          <th>EMAIL</th>
+          <th>FORMATION</th>
+          <th>PROJETS</th>
+          <th>STATUT</th>
+          <th>INSCRIPTION</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of apprenants">
+          <td>
+            <div class="learner-profile-cell">
+              <div class="avatar-circle">{{ item.initials }}</div>
+              <div>
+                <strong>{{ item.name }}</strong>
+                <small>{{ item.location }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.formation }}</td>
+          <td><strong>{{ item.projectsCount }}</strong></td>
+          <td>
+            <span class="status-badge" [ngClass]="item.status === 'Actif' ? 'active' : 'inactive'">
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.inscriptionDate }}</td>
+          <td class="actions-cell">
+            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
+            <div class="context-menu" *ngIf="item.showMenu">
+              <button>👁️ Voir profil</button>
+              <button>✏️ Modifier</button>
+              <button class="delete-option">🚫 Suspendre</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

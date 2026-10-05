@@ -1,0 +1,72 @@
+<div class="evolution-container">
+  <!-- En-tête & Fil d'ariane -->
+  <div class="breadcrumb-header">
+    <a routerLink="/admin/apprenants" class="back-link">
+      ‹ Évolution professionnelle
+    </a>
+    <span class="breadcrumb-trail">Apprenants / {{ apprenant.name }}</span>
+  </div>
+
+  <!-- Carte Profil Apprenant -->
+  <div class="profile-summary-card">
+    <div class="profile-info-left">
+      <div class="avatar-circle-large">{{ apprenant.initials }}</div>
+      <div class="profile-details">
+        <h2>{{ apprenant.name }}</h2>
+        <p>{{ apprenant.specialty }} • {{ apprenant.promotion }}</p>
+        <small>{{ apprenant.email }} • {{ apprenant.location }}</small>
+      </div>
+    </div>
+    <span class="status-pill-green">{{ apprenant.status }}</span>
+  </div>
+
+  <!-- Onglet actif -->
+  <div class="tabs-nav">
+    <button class="tab-btn active">Évolution professionnelle</button>
+  </div>
+
+  <!-- Situation professionnelle actuelle -->
+  <div class="content-card">
+    <h3>Situation professionnelle actuelle</h3>
+    
+    <div class="situation-grid">
+      <div class="info-group">
+        <label>Poste</label>
+        <strong>{{ currentSituation.poste }}</strong>
+      </div>
+      <div class="info-group">
+        <label>Entreprise</label>
+        <strong>{{ currentSituation.entreprise }}</strong>
+      </div>
+      <div class="info-group">
+        <label>Localisation</label>
+        <strong>{{ currentSituation.localisation }}</strong>
+      </div>
+      <div class="info-group">
+        <label>Date d'obtention</label>
+        <strong>{{ currentSituation.dateObtention }}</strong>
+      </div>
+    </div>
+
+    <div class="info-group-single">
+      <label>Type de travail</label>
+      <span>{{ currentSituation.typeTravail }}</span>
+    </div>
+  </div>
+
+  <!-- Historique de l'évolution -->
+  <div class="content-card">
+    <h3>Historique de l'évolution</h3>
+    <p class="subtitle-card">Les changements de situation sont conservés dans le temps.</p>
+
+    <div class="timeline-container">
+      <div class="timeline-item" *ngFor="let item of timeline; let last = last">
+        <div class="timeline-marker" [ngClass]="{'active': item.isCurrent, 'muted': last}"></div>
+        <div class="timeline-content">
+          <strong>{{ item.date }}</strong>
+          <p>{{ item.title }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
