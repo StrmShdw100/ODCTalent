@@ -13,6 +13,8 @@ import { AdminParametresComponent } from './features/admin-parametres/admin-para
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  
+  // 1. Espace Administrateur (avec ta sidebar fixe)
   {
     path: 'admin',
     component: AdminLayoutComponent,
@@ -29,6 +31,13 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
+
+  // 2. Espace Recruteur (futur layout ou composant recruteur)
+  // { path: 'recruteur/espace', component: RecruteurLayoutComponent },
+
+  // 3. Espace Apprenant (futur layout ou composant apprenant)
+  // { path: 'apprenant/espace', component: ApprenantDashboardComponent },
+
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];
