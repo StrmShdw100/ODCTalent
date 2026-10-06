@@ -36,6 +36,6 @@ export const routes: Routes = [
   // 3. Espace Apprenant (futur layout ou composant apprenant)
   // { path: 'apprenant/espace', component: ApprenantDashboardComponent },
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // { path: '**', redirectTo: 'login' }
 ];

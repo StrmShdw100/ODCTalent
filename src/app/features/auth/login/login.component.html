@@ -77,9 +77,11 @@
           <a href="#" class="forgot-password">Mot de passe oublié ?</a>
         </div>
 
-        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
-          Se connecter
-        </button>
+        <!-- Avant : <button type="submit" class="btn-submit" [disabled]="loginForm.invalid"> -->
+<!-- Après : -->
+<button type="submit" class="btn-submit">
+  Se connecter
+</button>
 
         <div class="form-footer-note">
           <p><img src="/icones/cadenas.png"> Accès réservé aux administrateurs autorisés.</p>
