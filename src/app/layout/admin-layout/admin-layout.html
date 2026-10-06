@@ -1,38 +1,38 @@
 <div class="admin-dashboard-container">
   <!-- SIDEBAR (Menu latéral) -->
   <aside class="sidebar">
-    <img [src] [alt]>
+    <img [src]="src" [alt] id="logo">
 
     <nav class="sidebar-nav">
   <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
     <img src="icones/dashboard.png"> Tableau de bord
   </a>
   <a routerLink="/admin/actualites" routerLinkActive="active" class="nav-item">
-    <img src="icones"> Actualités
+    <img src="icones/newspaper.png"> Actualités
   </a>
   <a routerLink="/admin/moderation" routerLinkActive="active" class="nav-item">
-    <i class="icon-moderation">🛡️</i> Modération des projets
+    <img src="icones/self.png"> Modération des projets
   </a>
   <a routerLink="/admin/opportunites" routerLinkActive="active" class="nav-item">
-    <i class="icon-opportunities">💼</i> Opportunités
+    <img src="icones/briefcase.png"> Opportunités
   </a>
   <a routerLink="/admin/apprenants" routerLinkActive="active" class="nav-item">
-    <i class="icon-users">👥</i> Apprenants
+    <img src="icones/group.png"> Apprenants
   </a>
   <a routerLink="/admin/recruteurs" routerLinkActive="active" class="nav-item">
-    <i class="icon-recruiters">🏢</i> Recruteurs
+    <img src="icones/group.png"> Recruteurs
   </a>
   <a routerLink="/admin/administrateurs" routerLinkActive="active" class="nav-item">
-    <i class="icon-admins">⚙️</i> Administrateurs
+    <img src="icones/admin_settings.png">Administrateurs
   </a>
   <a routerLink="/admin/parametres" routerLinkActive="active" class="nav-item">
-    <i class="icon-settings">🔧</i> Paramètres
+    <img src="icones/setting.png"> Paramètres
   </a>
 </nav>
 
     <div class="sidebar-footer">
       <button (click)="onLogout()" class="btn-logout">
-        <span class="icon-logout">🚪</span> Déconnexion
+            <img src="icones/deconnexion.png" id="logodeconnexion"> Déconnexion
       </button>
     </div>
   </aside>

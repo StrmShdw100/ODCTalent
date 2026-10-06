@@ -6,8 +6,10 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
 }
-
-/* Sidebar */
+#logo{
+width: 30%;
+margin: auto;
+}
 .sidebar {
   width: 260px;
   background-color: #ffffff;
@@ -197,4 +199,7 @@
   overflow-y: auto;
   padding: 30px;
   background-color: #f7f9fb;
+}
+.logodeconnexion{
+  width: 12px;
 }

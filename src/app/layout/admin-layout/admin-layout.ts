@@ -11,7 +11,7 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./admin-layout.css']
 })
 export class AdminLayoutComponent implements OnInit {
-  src:string="/logoODC.png"
+  src="/logoODC.png";
   adminName = 'Chargement...';
   adminRole = 'Administrateur';
   constructor(private authService: AuthService, private router: Router) {}
