@@ -76,8 +76,8 @@ margin: auto;
 }
 
 .nav-item:hover, .nav-item.active {
-  background-color: #FFF3EB;
-  color: #FF7900;
+  background-color: #FF7900;
+  color: #fff;
 }
 
 .sidebar-footer {
@@ -198,7 +198,7 @@ margin: auto;
   flex-grow: 1;
   overflow-y: auto;
   padding: 30px;
-  background-color: #f7f9fb;
+  background-color: #fafafa;
 }
 .logodeconnexion{
   width: 12px;
