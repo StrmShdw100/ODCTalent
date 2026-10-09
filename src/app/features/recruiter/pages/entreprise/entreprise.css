@@ -1,0 +1,200 @@
+.conteneur-entreprise {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 2rem 4rem;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.en-tete-entreprise .texte-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.mise-en-evidence {
+  color: #ff7900;
+}
+
+.en-tete-titre {
+  text-align: center;
+  margin: 1.5rem 0 2.5rem 0;
+}
+
+.titre-principal {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.sous-titre-principal {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.carte-formulaire-entreprise {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 3rem;
+  max-width: 56rem;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+.formulaire-entreprise {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ligne-formulaire {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.colonne-droite-champs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.groupe-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.libelle-champ {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.etoile {
+  color: #ff7900;
+}
+
+.facultatif {
+  color: #9ca3af;
+  font-weight: normal;
+}
+
+.champ-saisie {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #ffffff;
+}
+
+.champ-saisie:focus {
+  border-color: #ff7900;
+}
+
+.zone-upload {
+  border: 2px dashed #d1d5db;
+  border-radius: 0.75rem;
+  height: 100%;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.cercle-plus {
+  width: 2rem;
+  height: 2rem;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.texte-upload {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.zone-texte {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.zone-texte:focus {
+  border-color: #ff7900;
+}
+
+.compteur-caracteres {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: right;
+}
+
+.actions-formulaire {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 1.5rem;
+}
+
+.bouton-annuler {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.bouton-enregistrer {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #ff7900;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bouton-enregistrer:hover {
+  background-color: #e06800;
+}
+
+@media (max-width: 768px) {
+  .ligne-formulaire {
+    grid-template-columns: 1fr;
+  }
+  .conteneur-entreprise {
+    padding: 1.5rem;
+  }
+  .carte-formulaire-entreprise {
+    padding: 1.5rem;
+  }
+}

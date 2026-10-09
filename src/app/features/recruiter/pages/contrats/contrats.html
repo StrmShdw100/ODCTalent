@@ -1,0 +1,195 @@
+<div class="conteneur-contrats">
+  <!-- En-tête -->
+  <div class="en-tete-page">
+    <div>
+      <h1 class="titre-principal">Contrats[cite: 15]</h1>
+      <p class="sous-titre-principal">Gérez vos contrats selon la catégorie de l'offre.[cite: 15]</p>
+    </div>
+    <button class="bouton-creer" (click)="ouvrirCreation()">+ Nouveau contrat[cite: 15]</button>
+  </div>
+
+  <!-- SECTION RECRUTEMENT -->
+  <div class="section-groupe">
+    <div class="en-tete-groupe">
+      <h2 class="titre-section">Recrutement[cite: 15]</h2>
+      <p class="desc-section">Contrats liés aux offres de recrutement[cite: 15]</p>
+    </div>
+
+    <div class="grille-cartes-contrats">
+      <!-- Carte 1 -->
+      <div class="carte-contrat">
+        <div class="ligne-carte-haut">
+          <span class="ref-contrat">Contrat #CTR-2026-001[cite: 15]</span>
+          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
+        </div>
+        <div class="corps-carte-contrat">
+          <h3 class="nom-salarie">Aminata Diallo[cite: 15]</h3>
+          <span class="poste-salarie">Développeuse Front-end[cite: 15]</span>
+          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
+        </div>
+        <div class="pied-carte-contrat">
+          <span class="statut-badge en-attente">En attente[cite: 15]</span>
+          <span class="points-actions">•••</span>
+        </div>
+      </div>
+
+      <!-- Carte 2 -->
+      <div class="carte-contrat">
+        <div class="ligne-carte-haut">
+          <span class="ref-contrat">Contrat #CTR-2026-002[cite: 15]</span>
+          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
+        </div>
+        <div class="corps-carte-contrat">
+          <h3 class="nom-salarie">Ibrahim Traoré[cite: 15]</h3>
+          <span class="poste-salarie">Product Designer[cite: 15]</span>
+          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
+        </div>
+        <div class="pied-carte-contrat">
+          <span class="statut-badge actif">Actif[cite: 15]</span>
+          <span class="points-actions">•••</span>
+        </div>
+      </div>
+
+      <!-- Carte 3 -->
+      <div class="carte-contrat">
+        <div class="ligne-carte-haut">
+          <span class="ref-contrat">Contrat #CTR-2026-003[cite: 15]</span>
+          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
+        </div>
+        <div class="corps-carte-contrat">
+          <h3 class="nom-salarie">Fatoumata Coulibaly[cite: 15]</h3>
+          <span class="poste-salarie">Développeuse Full-stack[cite: 15]</span>
+          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
+        </div>
+        <div class="pied-carte-contrat">
+          <span class="statut-badge termine">Terminé[cite: 15]</span>
+          <span class="points-actions">•••</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION FREELANCE -->
+  <div class="section-groupe">
+    <div class="en-tete-groupe">
+      <h2 class="titre-section">Freelance[cite: 15]</h2>
+      <p class="desc-section">Contrats liés aux missions freelance[cite: 15]</p>
+    </div>
+
+    <div class="grille-cartes-contrats">
+      <!-- Carte 4 -->
+      <div class="carte-contrat">
+        <div class="ligne-carte-haut">
+          <span class="ref-contrat">Contrat #FRL-2026-002[cite: 15]</span>
+          <span class="badge-type freelance">Freelance[cite: 15]</span>
+        </div>
+        <div class="corps-carte-contrat">
+          <h3 class="nom-salarie">Mamadou Keita[cite: 15]</h3>
+          <span class="poste-salarie">Développeur Mobile[cite: 15]</span>
+          <span class="date-creation">Créé le 10 sept. 2026[cite: 15]</span>
+        </div>
+        <div class="pied-carte-contrat">
+          <span class="statut-badge actif">Actif[cite: 15]</span>
+          <span class="points-actions">•••</span>
+        </div>
+      </div>
+
+      <!-- Carte 5 -->
+      <div class="carte-contrat">
+        <div class="ligne-carte-haut">
+          <span class="ref-contrat">Contrat #FRL-2026-006[cite: 15]</span>
+          <span class="badge-type freelance">Freelance[cite: 15]</span>
+        </div>
+        <div class="corps-carte-contrat">
+          <h3 class="nom-salarie">Sira Camara[cite: 15]</h3>
+          <span class="poste-salarie">UI/UX Designer[cite: 15]</span>
+          <span class="date-creation">Créé le 02 sept. 2026[cite: 15]</span>
+        </div>
+        <div class="pied-carte-contrat">
+          <span class="statut-badge en-attente">En attente[cite: 15]</span>
+          <span class="points-actions">•••</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE NOUVEAU CONTRAT -->
+  <div class="fond-modal" *ngIf="modalCreationOuverte">
+    <div class="boite-modal-large">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">Créer un nouveau contrat[cite: 14]</h2>
+          <p class="modal-sous-titre">Choisissez la catégorie de l'offre puis complétez les informations.[cite: 14]</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerCreation()">✕</button>
+      </div>
+
+      <div class="modal-corps">
+        <div class="groupe-f">
+          <label class="lab">Catégorie de l'offre[cite: 14]</label>
+          <div class="grille-options-selection">
+            <div class="option-carte selectionnee">
+              <span class="titre-option">Recrutement[cite: 14]</span>
+              <span class="desc-option">Contrat d'embauche pour un poste.[cite: 14]</span>
+            </div>
+            <div class="option-carte">
+              <span class="titre-option">Freelance[cite: 14]</span>
+              <span class="desc-option">Contrat pour une mission freelance.[cite: 14]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Candidat / Freelance[cite: 14]</label>
+            <input type="text" class="inp" placeholder="Sélectionner un candidat[cite: 14]" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Offre / Mission[cite: 14]</label>
+            <input type="text" class="inp" placeholder="Sélectionner une offre[cite: 14]" />
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Date de début[cite: 14]</label>
+            <input type="text" class="inp" placeholder="JJ/MM/AAAA[cite: 14]" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Date de fin[cite: 14]</label>
+            <input type="text" class="inp" placeholder="JJ/MM/AAAA[cite: 14]" />
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Rémunération / Salaire[cite: 14]</label>
+            <input type="text" class="inp" placeholder="Montant en FCFA[cite: 14]" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Statut[cite: 14]</label>
+            <input type="text" class="inp" placeholder="Brouillon[cite: 14]" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerCreation()">Annuler[cite: 14]</button>
+        <button class="btn-publier" (click)="creerContrat()">Créer[cite: 14]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE SUCCÈS -->
+  <div class="fond-modal" *ngIf="modalSuccesOuverte">
+    <div class="boite-modal-succes">
+      <button class="bouton-fermer-absolu" (click)="fermerSucces()">✕</button>
+      <div class="cercle-succes-fond">
+        <div class="cercle-succes-vert">
+          <span class="coche-verte">✓</span>
+        </div>
+      </div>
+      <h2 class="titre-succes">Contrat créer avec succès[cite: 13]</h2>
+    </div>
+  </div>
+</div>

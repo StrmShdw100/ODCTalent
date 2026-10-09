@@ -1,0 +1,62 @@
+<div class="conteneur-auth-web">
+  <div class="carte-auth-large">
+    <!-- En-tête avec Logo -->
+    <div class="entete-auth">
+      <div class="logo-cercle">
+        <span class="texte-logo"><span class="mise-en-evidence">ODC</span>Talent</span>
+      </div>
+      <h1 class="titre-auth">Complétez votre profil professionnel</h1>
+      <p class="sous-titre-auth">Renseignez vos expériences et compétences afin de construire automatiquement votre portfolio professionnel.[cite: 15, 16]</p>
+    </div>
+
+    <!-- Formulaire en grille web -->
+    <div class="grille-formulaire-auth">
+      
+      <!-- Bloc A propos de moi -->
+      <div class="bloc-saisie">
+        <div class="bloc-titre-ligne">
+          <span class="icone-bloc">👤</span>
+          <label class="lab">À propos de moi</label>
+        </div>
+        <span class="sous-lab">Décrivez en bref[cite: 16]</span>
+        <textarea class="zone-txt" rows="3" placeholder="Ex: Passionné par le développement web, je crée des sites et applications...............[cite: 16]"></textarea>
+      </div>
+
+      <!-- Bloc Expériences -->
+      <div class="bloc-saisie">
+        <div class="bloc-titre-ligne">
+          <span class="icone-bloc">💼</span>
+          <label class="lab">Expériences</label>
+        </div>
+        <span class="sous-lab">Ajoutez vos expériences professionnelles (emplois, stages, etc.).[cite: 16]</span>
+        <textarea class="zone-txt" rows="3" placeholder="Ex: Développeur web pendant 2 ans, spécialisé dans la création de sites et d'applications web[cite: 16]"></textarea>
+      </div>
+
+      <!-- Bloc Compétences -->
+      <div class="bloc-saisie">
+        <div class="bloc-titre-ligne">
+          <span class="icone-bloc">⚡</span>
+          <label class="lab">Compétences</label>
+        </div>
+        <span class="sous-lab">Ajoutez vos compétences techniques[cite: 15, 16].</span>
+        <input type="text" class="inp" placeholder="Ex: Spring boot, python, Html, Css.......[cite: 15, 16]" />
+      </div>
+
+      <!-- Bloc Disponibilité -->
+      <div class="bloc-saisie">
+        <div class="bloc-titre-ligne">
+          <span class="icone-bloc">⭐</span>
+          <label class="lab">Disponibilité</label>
+        </div>
+        <span class="sous-lab">Précisez votre statut actuel</span>
+        <input type="text" class="inp" placeholder="Ex: Disponible ou non disponible.......[cite: 15]" />
+      </div>
+
+    </div>
+
+    <!-- Bouton d'action final -->
+    <div class="pied-auth">
+      <button class="btn-principal-orange" (click)="finaliserInscription()">S'inscrire</button>
+    </div>
+  </div>
+</div>

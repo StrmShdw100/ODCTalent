@@ -1,0 +1,146 @@
+.conteneur-accueil {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 4rem;
+  box-sizing: border-box;
+}
+
+.en-tete-accueil .texte-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.mise-en-evidence {
+  color: #ff7900;
+}
+
+.contenu-principal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin: auto 0;
+  padding: 3rem 0;
+}
+
+.bloc-texte {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.titre-accueil {
+  font-size: 3.25rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.description-accueil {
+  color: #4b5563;
+  font-size: 1.125rem;
+  max-width: 32rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.actions-accueil {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.bouton {
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.bouton-principal {
+  background-color: #ff7900;
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(255, 121, 0, 0.2);
+  border: none;
+}
+
+.bouton-principal:hover {
+  background-color: #e06800;
+}
+
+.bouton-contour {
+  border: 2px solid #ff7900;
+  color: #ff7900;
+  background-color: transparent;
+}
+
+.bouton-contour:hover {
+  background-color: #fff7ed;
+}
+
+.liste-avantages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.element-avantage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.element-avantage .coche {
+  color: #ff7900;
+  font-weight: bold;
+}
+
+.bloc-illustration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.svg-odc {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+.pied-de-page {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: left;
+  padding-top: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .contenu-principal {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .bloc-texte {
+    align-items: center;
+  }
+  .actions-accueil {
+    justify-content: center;
+  }
+  .conteneur-accueil {
+    padding: 1.5rem;
+  }
+}

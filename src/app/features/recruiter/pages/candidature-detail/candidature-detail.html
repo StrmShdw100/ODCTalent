@@ -1,0 +1,153 @@
+<div class="conteneur-detail">
+  <!-- En-tête de retour -->
+  <div class="entete-retour">
+    <a routerLink="/recruiter/candidatures" class="lien-retour">←</a>
+    <div>
+      <h1 class="titre-principal">Détail de la candidature[cite: 9]</h1>
+      <p class="sous-titre-principal">Consultez le profil et avancez le candidat dans le processus de recrutement.[cite: 9]</p>
+    </div>
+  </div>
+
+  <!-- Carte Profil Supérieure -->
+  <div class="carte-profil-entete">
+    <div class="profil-info-gauche">
+      <div class="avatar-grand">NS</div>
+      <div>
+        <h2 class="nom-candidat-grand">Alou Barry[cite: 9]</h2>
+        <span class="metier-candidat">Développeur React confirmé[cite: 9]</span>
+        <span class="meta-candidat">Candidature reçue le 18 sept. 2026 &bull; 2 ans d'expérience[cite: 9]</span>
+      </div>
+    </div>
+    <div class="actions-entete">
+      <span class="badge-entretien">En entretien[cite: 9]</span>
+      <button class="btn-message">💬 Envoie de message[cite: 9]</button>
+      <button class="btn-valider-haut" (click)="ouvrirValidation()">Valider</button>
+    </div>
+  </div>
+
+  <!-- Grille Contenu Bas -->
+  <div class="grille-contenu-detail">
+    <!-- Colonne Gauche : Profil du candidat -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">Profil du candidat[cite: 9]</h3>
+      
+      <div class="bloc-info-groupe">
+        <span class="libelle-groupe">COMPÉTENCES[cite: 9]</span>
+        <div class="tags-liste">
+          <span class="tag-item orange">React[cite: 9]</span>
+          <span class="tag-item bleu">JavaScript[cite: 9]</span>
+          <span class="tag-item vert">TypeScript[cite: 9]</span>
+        </div>
+      </div>
+
+      <div class="bloc-info-groupe">
+        <span class="libelle-groupe">EXPÉRIENCE[cite: 9]</span>
+        <p class="texte-valeur">2 ans en développement web[cite: 9]</p>
+      </div>
+
+      <div class="bloc-info-groupe">
+        <span class="libelle-groupe">FORMATION[cite: 9]</span>
+        <p class="texte-valeur gras">Licence Informatique[cite: 9]</p>
+        <p class="texte-sous-valeur">Orange Digital Center[cite: 9]</p>
+      </div>
+
+      <div class="bloc-portfolio">
+        <div class="boite-icone-dossier">📁</div>
+        <a href="#" class="bouton-portfolio">Voir le portfolio[cite: 9]</a>
+      </div>
+    </div>
+
+    <!-- Colonne Droite : Étapes du recrutement -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">Étapes du recrutement[cite: 9]</h3>
+
+      <div class="timeline">
+        <div class="timeline-etape valide">
+          <div class="cercle-point">✓</div>
+          <span class="texte-etape">Candidature reçue[cite: 9]</span>
+        </div>
+        <div class="timeline-etape valide">
+          <div class="cercle-point">✓</div>
+          <span class="texte-etape">Présélection[cite: 9]</span>
+        </div>
+        <div class="timeline-etape en-cours">
+          <div class="cercle-point actif"></div>
+          <span class="texte-etape gras">Entretien[cite: 9]</span>
+        </div>
+        <div class="timeline-etape attente">
+          <div class="cercle-point"></div>
+          <span class="texte-etape gris">Décision[cite: 9]</span>
+        </div>
+      </div>
+
+      <div class="actions-recrutement-bas">
+        <button class="btn-noir" (click)="ouvrirValidation()">Valider la candidature[cite: 9]</button>
+        <button class="btn-rouge" (click)="ouvrirRefus()">Rejete[cite: 9]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE VALIDATION DE LA CANDIDATURE -->
+  <div class="fond-modal" *ngIf="modalValidationOuverte">
+    <div class="boite-modal">
+      <button class="bouton-fermer" (click)="fermerValidation()">✕</button>
+      <div class="cercle-succes-fond center">
+        <div class="cercle-succes-vert">✓</div>
+      </div>
+      <h2 class="modal-titre center">Valider la candidature ?[cite: 12]</h2>
+      <p class="modal-sous-titre center">Vous êtes sur le point de confirmer la candidature de ce profil.[cite: 12]</p>
+
+      <div class="carte-resume-candidat">
+        <div class="profil-cellule">
+          <div class="avatar-initiales">NS</div>
+          <div>
+            <span class="nom-personne">Ndeye Sarr[cite: 12]</span>
+            <span class="statut-personne">Développeur React confirmé &bull; Candidature reçue le 18 sept. 2026[cite: 12]</span>
+          </div>
+        </div>
+        <span class="badge-vert-clair">Entretien terminé[cite: 12]</span>
+      </div>
+
+      <div class="groupe-champ-modal">
+        <label class="libelle-champ">Commentaire interne[cite: 12]</label>
+        <textarea class="zone-txt" rows="3">Profil validé après entretien. Compétences adaptées au poste. Ce commentaire reste visible uniquement par l'équipe de recrutement.[cite: 12]</textarea>
+      </div>
+
+      <div class="modal-pied-centre">
+        <button class="btn-annul" (click)="fermerValidation()">Annuler[cite: 12]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE REFUSER LA CANDIDATURE -->
+  <div class="fond-modal" *ngIf="modalRefusOuverte">
+    <div class="boite-modal">
+      <button class="bouton-fermer" (click)="fermerRefus()">✕</button>
+      <div class="cercle-refus-fond center">
+        <span class="croix-refus">✕</span>
+      </div>
+      <h2 class="modal-titre center">Refuser la candidature ?[cite: 10]</h2>
+      <p class="modal-sous-titre center">Cette action modifiera le statut du candidat.[cite: 10]</p>
+
+      <div class="carte-resume-candidat">
+        <div class="profil-cellule">
+          <div class="avatar-initiales">NS</div>
+          <div>
+            <span class="nom-personne">Ndeye Sarr[cite: 10]</span>
+            <span class="statut-personne">Développeur React confirmé &bull; Mission : Développeur React confirmé[cite: 10]</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="groupe-champ-modal">
+        <label class="libelle-champ">Motif du refus[cite: 10]</label>
+        <input type="text" class="inp" placeholder="Sélection d'un autre profil à ce stade.[cite: 10]" />
+      </div>
+
+      <div class="modal-pied-refus">
+        <button class="btn-annul" (click)="fermerRefus()">Annuler[cite: 10]</button>
+        <button class="btn-refuser-action" (click)="fermerRefus()">Refuser[cite: 10]</button>
+      </div>
+    </div>
+  </div>
+</div>

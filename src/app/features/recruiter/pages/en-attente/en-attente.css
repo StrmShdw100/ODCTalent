@@ -1,0 +1,168 @@
+.conteneur-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.en-tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.texte-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.mise-en-evidence {
+  color: #ff7900;
+}
+
+.etape-titre {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.libelle-etape {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sous-titre-etape {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.carte-conteneur {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.carte-blanche {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 48rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.cercle-icone {
+  width: 5rem;
+  height: 5rem;
+  background-color: #fff7ed;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.icone-alerte {
+  color: #ff7900;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.titre-carte {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+}
+
+.texte-description {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 2rem 0;
+  max-width: 32rem;
+}
+
+.boite-statut {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  width: 100%;
+  max-width: 32rem;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.ligne-statut {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.pastille-orange {
+  width: 0.65rem;
+  height: 0.65rem;
+  background-color: #ff7900;
+  border-radius: 50%;
+  margin-top: 0.35rem;
+}
+
+.texte-statut-bloc {
+  display: flex;
+  flex-direction: column;
+}
+
+.titre-statut {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.valeur-statut {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.texte-notification {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.bouton-orange {
+  background-color: #ff7900;
+  color: #ffffff;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  display: inline-block;
+}
+
+.bouton-orange:hover {
+  background-color: #e06800;
+}
+
+.pied-page {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+  padding-top: 1rem;
+}

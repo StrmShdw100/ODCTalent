@@ -1,0 +1,154 @@
+<div class="conteneur-candidatures">
+  <!-- En-tête -->
+  <div class="en-tete-page">
+    <h1 class="titre-principal">Candidatures</h1>
+    <p class="sous-titre-principal">Suivez et gérez les candidats de vos missions.</p>
+  </div>
+
+  <!-- Statistiques (4 blocs) -->
+  <div class="grille-statistiques">
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Total</span>
+        <span class="valeur-stat">84</span>
+        <span class="tendance-stat">Candidatures reçues</span>
+      </div>
+      <div class="icone-stat orange">➕</div>
+    </div>
+
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">En cours</span>
+        <span class="valeur-stat">27</span>
+        <span class="tendance-stat">À traiter</span>
+      </div>
+      <div class="icone-stat bleu">✓</div>
+    </div>
+
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Entretiens</span>
+        <span class="valeur-stat">12</span>
+        <span class="tendance-stat">Planifiés</span>
+      </div>
+      <div class="icone-stat vert">✓</div>
+    </div>
+
+    <div class="carte-stat sombre">
+      <div class="stat-info">
+        <span class="libelle-stat blanc">Acceptées</span>
+        <span class="valeur-stat blanc">9</span>
+        <span class="tendance-stat gris">Candidats retenus</span>
+      </div>
+      <div class="icone-stat-coche">✓</div>
+    </div>
+  </div>
+
+  <!-- Filtres et recherche -->
+  <div class="barre-filtres">
+    <div class="recherche-groupe">
+      <span class="icone-rech">🔍</span>
+      <input type="text" class="champ-rech" placeholder="Rechercher un candidat..." />
+    </div>
+    <div class="filtres-droite">
+      <div class="select-filtre">Toutes les missions ▾</div>
+      <div class="select-filtre">Tous les statuts ▾</div>
+      <div class="select-filtre">Plus récent ▾</div>
+    </div>
+  </div>
+
+  <!-- Tableau -->
+  <div class="tableau-conteneur">
+    <div class="tableau-en-tete-titre">
+      <h2 class="titre-tableau">Liste des candidatures</h2>
+      <span class="total-candidatures">84 candidatures</span>
+    </div>
+
+    <table class="table-donnees">
+      <thead>
+        <tr>
+          <th>CANDIDAT</th>
+          <th>MISSION</th>
+          <th>DATE</th>
+          <th class="colonne-action">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="profil-cellule">
+              <div class="avatar-initiales">NS</div>
+              <div>
+                <span class="nom-personne">Alou Barry</span>
+                <span class="statut-personne">Profil candidat</span>
+              </div>
+            </div>
+          </td>
+          <td class="mission-cellule">Développeur React confirmé</td>
+          <td>18 sept. 2026</td>
+          <td class="colonne-action">
+            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="profil-cellule">
+              <div class="avatar-initiales">MK</div>
+              <div>
+                <span class="nom-personne">Modou Kane</span>
+                <span class="statut-personne">Profil candidat</span>
+              </div>
+            </div>
+          </td>
+          <td class="mission-cellule">Data Analyst</td>
+          <td>17 sept. 2026</td>
+          <td class="colonne-action">
+            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="profil-cellule">
+              <div class="avatar-initiales">AB</div>
+              <div>
+                <span class="nom-personne">Aïssatou Barry</span>
+                <span class="statut-personne">Profil candidat</span>
+              </div>
+            </div>
+          </td>
+          <td class="mission-cellule">UX/UI Designer</td>
+          <td>15 sept. 2026</td>
+          <td class="colonne-action">
+            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="profil-cellule">
+              <div class="avatar-initiales">IF</div>
+              <div>
+                <span class="nom-personne">Ibrahima Fall</span>
+                <span class="statut-personne">Profil candidat</span>
+              </div>
+            </div>
+          </td>
+          <td class="mission-cellule">Développeur mobile Flutter</td>
+          <td>14 sept. 2026</td>
+          <td class="colonne-action">
+            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tableau-pied">
+      <span class="info-pagination">Affichage 1–4 sur 84 candidatures</span>
+      <div class="pagination-boutons">
+        <button class="page-btn actif">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">Suiv.</button>
+      </div>
+    </div>
+  </div>
+</div>

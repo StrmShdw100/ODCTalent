@@ -1,0 +1,75 @@
+<div class="conteneur-portfolio">
+  <!-- En-tête sombre du profil -->
+  <div class="banniere-profil-sombre">
+    <div class="selecteur-langues">
+      <button class="btn-langue" [class.actif]="langueActive === 'Français'" (click)="changerLangue('Français')">Français</button>
+      <button class="btn-langue" [class.actif]="langueActive === 'Anglais'" (click)="changerLangue('Anglais')">Anglais</button>
+    </div>
+
+    <div class="profil-infos-principal">
+      <div class="avatar-photo">MC</div>
+      <div class="profil-textes">
+        <h1 class="nom-apprenant">Mohamed Coulibaly</h1>
+        <span class="metier-apprenant">Développeur Web</span>
+        <p class="citation-apprenant">Je crée des solutions digitales modernes et performantes.</p>
+      </div>
+    </div>
+
+    <div class="meta-informations">
+      <span class="meta-item">✉️ alex.martin&#64;gmail.com</span>
+      <span class="meta-item">📍 Mali_Bamako</span>
+      <span class="meta-item vert">🟢 Disponible</span>
+    </div>
+  </div>
+
+  <!-- Sections détaillées -->
+  <div class="grille-sections-portfolio">
+    <!-- À propos -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">À propos</h3>
+      <p class="texte-corps">Passionné par le développement web, je conçois et développe des applications et sites web pour répondre aux besoins des utilisateurs.</p>
+    </div>
+
+    <!-- Expériences -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">Expériences</h3>
+      <div class="experience-item">
+        <div class="exp-ligne-titre">
+          <span class="exp-poste">Développeur Web</span>
+          <span class="exp-periode">2023 - 2025</span>
+        </div>
+        <p class="exp-desc">Création et maintenance de sites web et d'applications.</p>
+      </div>
+    </div>
+
+    <!-- Compétences -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">Compétences</h3>
+      <div class="tags-competences">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">React</span>
+        <span class="tag">PHP</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Git</span>
+        <span class="tag">Node.js</span>
+      </div>
+    </div>
+
+    <!-- Projets -->
+    <div class="carte-blanche">
+      <h3 class="titre-section">Projets</h3>
+      <div class="grille-mini-projets">
+        <div class="mini-projet-carte">
+          <div class="mini-apercu">📊</div>
+          <span class="mini-titre">Dashboard Analytics</span>
+        </div>
+        <div class="mini-projet-carte">
+          <div class="mini-apercu">💻</div>
+          <span class="mini-titre">Plateforme E-commerce</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

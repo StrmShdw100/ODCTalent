@@ -1,0 +1,65 @@
+<div class="conteneur-layout">
+  <!-- Barre latérale (Aside) -->
+  <aside class="barre-laterale">
+    <div class="logo-conteneur">
+      <div class="logo-cercle">
+        <img src="/logoODC.png" alt="logo">
+      </div>
+    </div>
+
+    <nav class="navigation-menu">
+      <a routerLink="/apprenant/tableau-de-bord" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/dashboard.png" alt="icone-tableau-de-bord"></span> Tableau de bord
+      </a>
+      <a routerLink="/apprenant/projets" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/briefcase.png" alt="icone-projets"></span> Mes Projets
+      </a>
+      <a routerLink="/apprenant/opportunites" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/opportinuty.png" alt=""></span> Opportunités
+      </a>
+      <a routerLink="/apprenant/notifications" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/love-bell.png" alt="icone-alert"></span> Notifications
+      </a>
+      <a routerLink="/apprenant/portfolio" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/portfolio.png" alt="icone-portfolio"></span> Mon Portfolio
+      </a>
+    </nav>
+
+    <div class="pied-menu">
+      <a routerLink="/login" (click)="deconnecter()" class="lien-deconnexion">
+        <span class="icone-menu"><img src="/icones/power-off.png" alt="icone-deconnexion"></span> Déconnexion
+      </a>
+    </div>
+  </aside>
+
+  <!-- Zone Principale -->
+  <div class="zone-principale">
+    <header class="en-tete">
+      <span class="titre-espace">Espace Apprenant / Talents</span>
+
+      <div class="elements-droite-header">
+        <div class="boite-recherche">
+          <span class="icone-recherche">🔍</span>
+          <input type="text" class="champ-recherche" placeholder="Rechercher..." />
+        </div>
+
+        <a routerLink="/apprenant/notifications" class="notification-badge">
+          <span class="point-notif"></span>
+          <img src="/icones/love-bell.png" alt="icone-notification">
+        </a>
+
+        <div class="profil-utilisateur">
+          <div class="avatar-cercle">MC</div>
+          <div class="infos-utilisateur">
+            <span class="nom-utilisateur">Mohamed Coulibaly</span>
+            <span class="role-utilisateur">Apprenant Dev</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="contenu-dynamique">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
