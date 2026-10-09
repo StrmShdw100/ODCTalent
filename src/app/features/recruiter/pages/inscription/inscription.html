@@ -1,0 +1,93 @@
+<div class="conteneur-inscription">
+  <!-- Colonne de gauche : Illustration et slogan -->
+  <div class="colonne-gauche">
+    <div class="entete-logo">
+      <span class="texte-logo"><span class="mise-en-evidence">ODC</span>Talent</span>
+    </div>
+
+    <div class="illustration-centre">
+      <svg viewBox="0 0 400 220" class="svg-odc" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="200,10 290,45 200,80 110,45" fill="#1a1a1a" />
+        <path d="M248,58 L248,90 C248,102 265,102 265,90 L265,58" fill="none" stroke="#1a1a1a" stroke-width="3" />
+        <line x1="250" y1="60" x2="272" y2="82" stroke="#ff7900" stroke-width="3.5" />
+        <circle cx="274" cy="84" r="3.5" fill="#ff7900" />
+        <path d="M70,120 C35,120 15,142 15,170 C15,198 35,220 70,220 C105,220 125,198 125,170 C125,142 105,120 70,120 Z" fill="none" stroke="url(#grad)" stroke-width="32" />
+        <circle cx="162" cy="118" r="16" fill="url(#grad)" />
+        <path d="M112,185 Q162,118 212,185" fill="none" stroke="url(#grad)" stroke-width="30" stroke-linecap="round" />
+        <path d="M230,120 L275,120 C305,120 325,138 325,170 C325,202 305,220 275,220 L230,220 Z" fill="#1a1a1a" />
+        <path d="M255,142 L255,198 L275,198 C290,198 300,186 300,170 C300,154 290,142 275,142 Z" fill="#ffffff" />
+        <path d="M345,120 C372,120 388,132 395,148 L372,160 C368,152 360,144 345,144 C330,144 322,152 322,170 C322,188 330,196 345,196 C360,196 368,188 372,180 L395,192 C388,208 372,220 345,220 C310,220 295,192 295,170 C295,148 310,120 345,120 Z" fill="#1a1a1a" />
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff8800" />
+            <stop offset="100%" stop-color="#ff4400" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <h2 class="titre-gauche">Recrutez les bons talents pour votre entreprise.</h2>
+
+    <div class="carte-info-bas">
+      <div class="cercle-icone-orange">✓</div>
+      <div class="texte-info-bloc">
+        <span class="titre-bloc-info">Un espace pour recruter</span>
+        <span class="desc-bloc-info">Publiez vos missions et gérez vos candidatures simplement.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colonne de droite : Formulaire d'inscription -->
+  <div class="colonne-droite">
+    <div class="bloc-formulaire">
+      <h1 class="titre-formulaire">Créer votre compte recruteur</h1>
+      <p class="sous-titre-formulaire">Renseignez vos informations pour créer votre espace.</p>
+
+      <form class="formulaire">
+        <div class="ligne-champs">
+          <div class="groupe-champ">
+            <label class="libelle-champ">Prénom</label>
+            <input type="text" class="champ-saisie" placeholder="Votre prénom" />
+          </div>
+          <div class="groupe-champ">
+            <label class="libelle-champ">Nom</label>
+            <input type="text" class="champ-saisie" placeholder="Votre nom" />
+          </div>
+        </div>
+
+        <div class="groupe-champ">
+          <label class="libelle-champ">Adresse e-mail</label>
+          <input type="email" class="champ-saisie" placeholder="ex. nom&#64;entreprise.com" />
+        </div>
+
+        <div class="groupe-champ">
+          <label class="libelle-champ">Numéro de téléphone</label>
+          <input type="text" class="champ-saisie" placeholder="Ex. +223 70 00 00 00" />
+        </div>
+
+        <div class="ligne-champs">
+          <div class="groupe-champ">
+            <label class="libelle-champ">Mot de passe</label>
+            <input type="password" class="champ-saisie" placeholder="••••••••••••" />
+          </div>
+          <div class="groupe-champ">
+            <label class="libelle-champ">Confirmer le mot de passe</label>
+            <input type="password" class="champ-saisie" placeholder="••••••••••••" />
+          </div>
+        </div>
+
+        <div class="groupe-checkbox">
+          <input type="checkbox" id="conditions" />
+          <label for="conditions" class="texte-checkbox">J'accepte les conditions d'utilisation et la politique de confidentialité.</label>
+        </div>
+
+        <button type="submit" class="bouton-soumettre">Créer mon compte</button>
+
+        <div class="pied-formulaire">
+          <span>Vous avez déjà un compte ?</span>
+          <a routerLink="/auth/connexion" class="lien-connexion">Se connecter</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

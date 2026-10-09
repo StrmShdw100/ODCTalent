@@ -1,0 +1,288 @@
+.conteneur-candidatures {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.en-tete-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titre-principal {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.sous-titre-principal {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Statistiques */
+.grille-statistiques {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.carte-stat {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.carte-stat.sombre {
+  background-color: #111827;
+  border-color: #111827;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.libelle-stat {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.libelle-stat.blanc {
+  color: #9ca3af;
+}
+
+.valeur-stat {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.valeur-stat.blanc {
+  color: #ffffff;
+}
+
+.tendance-stat {
+  font-size: 0.75rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.tendance-stat.gris {
+  color: #9ca3af;
+}
+
+.icone-stat {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.icone-stat.orange { background-color: #fff7ed; color: #ff7900; }
+.icone-stat.bleu { background-color: #eff6ff; color: #3b82f6; }
+.icone-stat.vert { background-color: #ecfdf5; color: #10b981; }
+
+.icone-stat-coche {
+  background-color: #ff7900;
+  color: #ffffff;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+/* Filtres */
+.barre-filtres {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+.recherche-groupe {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icone-rech {
+  position: absolute;
+  left: 0.875rem;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.champ-rech {
+  padding: 0.6rem 1rem 0.6rem 2.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: #f9fafb;
+  width: 260px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.filtres-droite {
+  display: flex;
+  gap: 1rem;
+}
+
+.select-filtre {
+  border: 1px solid #e5e7eb;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  color: #374151;
+  background-color: #ffffff;
+}
+
+/* Tableau */
+.tableau-conteneur {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.tableau-en-tete-titre {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.titre-tableau {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.total-candidatures {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.table-donnees {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table-donnees th {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-donnees td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.profil-cellule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar-initiales {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #fff7ed;
+  color: #ff7900;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.nom-personne {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.statut-personne {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.mission-cellule {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.colonne-action {
+  text-align: right;
+}
+
+.bouton-voir-profil {
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  text-decoration: none;
+}
+
+.bouton-voir-profil:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.tableau-pied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.info-pagination {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.pagination-boutons {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.page-btn {
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.page-btn.actif {
+  background-color: #ff7900;
+  color: #ffffff;
+  border-color: #ff7900;
+}

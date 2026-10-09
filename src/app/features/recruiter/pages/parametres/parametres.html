@@ -1,0 +1,199 @@
+<div class="conteneur-parametres">
+  <!-- En-tête -->
+  <div class="en-tete-page">
+    <h1 class="titre-principal">Paramètres</h1>
+    <p class="sous-titre-principal">Gérez votre profil, vos notifications et vos préférences.</p>
+  </div>
+
+  <!-- Bloc Profil Utilisateur -->
+  <div class="carte-blanche-profil">
+    <div class="profil-info-gauche">
+      <div class="avatar-grand">FM</div>
+      <div>
+        <h2 class="nom-utilisateur">Alou Koné</h2>
+        <span class="role-entreprise-texte">Recruteur &bull; Orange Digital Center</span>
+        <span class="email-texte">alouk23&#64;gamil.com</span>
+        <span class="ville-texte">Bamako, Mali</span>
+      </div>
+    </div>
+    <div class="actions-profil-droite">
+      <button class="bouton-modifier-profil" (click)="ouvrirProfil()">Modifier le profil</button>
+      <span class="date-modif">Dernière modification : aujourd'hui</span>
+    </div>
+  </div>
+
+  <!-- Bloc Préférences -->
+  <div class="carte-blanche-section">
+    <h3 class="titre-section">Préférences</h3>
+    <p class="desc-section">Personnalisez votre expérience de recrutement.</p>
+
+    <div class="liste-preferences">
+      <div class="ligne-preference">
+        <div class="preference-gauche">
+          <div class="icone-preference">🔔</div>
+          <div>
+            <span class="titre-pref">Notifications des candidatures</span>
+            <span class="desc-pref">Recevoir une notification lorsqu'un candidat postule.</span>
+          </div>
+        </div>
+        <label class="interrupteur">
+          <input type="checkbox" checked />
+          <span class="curseur"></span>
+        </label>
+      </div>
+
+      <div class="ligne-preference">
+        <div class="preference-gauche">
+          <div class="icone-preference">✉️</div>
+          <div>
+            <span class="titre-pref">Notifications par e-mail</span>
+            <span class="desc-pref">Recevoir les alertes importantes par e-mail.</span>
+          </div>
+        </div>
+        <label class="interrupteur">
+          <input type="checkbox" checked />
+          <span class="curseur"></span>
+        </label>
+      </div>
+
+      <div class="ligne-selects-bas">
+        <div class="groupe-f">
+          <label class="lab">Langue</label>
+          <span class="sous-lab">Langue de l'interface</span>
+          <select class="inp">
+            <option>Français ▾</option>
+          </select>
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Fuseau horaire</label>
+          <span class="sous-lab">Heure utilisée dans l'application</span>
+          <select class="inp">
+            <option>GMT+0 ▾</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bloc Sécurité -->
+  <div class="carte-blanche-section">
+    <h3 class="titre-section">Sécurité</h3>
+    <p class="desc-section">Protégez l'accès à votre espace recruteur.</p>
+
+    <div class="ligne-securite">
+      <div class="groupe-f flex-grow">
+        <label class="lab">Mot de passe</label>
+        <input type="password" class="inp" value="............" readonly />
+      </div>
+      <button class="lien-modifier-mdp" (click)="ouvrirMotDePasse()">Modifier le mot de passe</button>
+    </div>
+
+    <div class="pied-enregistrement">
+      <button class="btn-enregistrer-noir">Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- MODALE MODIFIER LE PROFIL -->
+  <div class="fond-modal" *ngIf="modalProfilOuverte">
+    <div class="boite-modal-large">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">Modifier le profil</h2>
+          <p class="modal-sous-titre">Mettez à jour les informations visibles par les candidats.</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerProfil()">✕</button>
+      </div>
+
+      <div class="modal-corps">
+        <div class="ligne-avatar-modif">
+          <div class="avatar-grand-orange">FM</div>
+          <button class="btn-changer-photo">Changer la photo<span class="sous-texte-photo">JPG ou PNG • 2 Mo max.</span></button>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Nom complet *</label>
+            <input type="text" class="inp" value="Alou Koné" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Fonction *</label>
+            <input type="text" class="inp" value="Responsable recrutement" />
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Adresse e-mail *</label>
+            <input type="email" class="inp" value="fatoumata&#64;odctalent.com" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Téléphone</label>
+            <input type="text" class="inp" value="+223 70 00 00 00" />
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Nom de l'Entreprise</label>
+            <input type="text" class="inp" value="Orange Digital Center" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Ville</label>
+            <input type="text" class="inp" value="Bamako, Mali" />
+          </div>
+        </div>
+
+        <div class="groupe-f">
+          <label class="lab">Lien du site web</label>
+          <input type="text" class="inp" value="http/:orangedigitalcenter.mali" />
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerProfil()">Annuler</button>
+        <button class="btn-publier" (click)="fermerProfil()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE MODIFIER LE MOT DE PASSE -->
+  <div class="fond-modal" *ngIf="modalMotDePasseOuverte">
+    <div class="boite-modal">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">Modifier le mot de passe</h2>
+          <p class="modal-sous-titre">Choisissez un nouveau mot de passe sécurisé pour votre compte.</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerMotDePasse()">✕</button>
+      </div>
+
+      <div class="modal-corps">
+        <div class="groupe-f">
+          <label class="lab">Mot de passe actuel *</label>
+          <input type="password" class="inp" value="............" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Nouveau mot de passe *</label>
+          <input type="password" class="inp" value="............" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Confirmer le nouveau mot de passe *</label>
+          <input type="password" class="inp" value="............" />
+        </div>
+
+        <div class="alerte-securite">
+          <span class="icone-alerte-orange">!</span>
+          <div>
+            <span class="titre-alerte">Conseil de sécurité</span>
+            <span class="desc-alerte">Utilisez au moins 8 caractères, avec des lettres et des chiffres.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerMotDePasse()">Annuler</button>
+        <button class="btn-publier" (click)="fermerMotDePasse()">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>

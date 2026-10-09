@@ -1,0 +1,167 @@
+<div class="conteneur-tableau-bord">
+  <!-- Titre et description de la page -->
+  <div class="en-tete-tableau">
+    <h1 class="titre-principal">Tableau de bord[cite: 6]</h1>
+    <p class="sous-titre-principal">Pilotez vos missions, candidatures et contrats depuis un seul espace.[cite: 6]</p>
+  </div>
+
+  <!-- Cartes de statistiques (4 blocs) -->
+  <div class="grille-statistiques">
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Missions publiées[cite: 6]</span>
+        <span class="valeur-stat">12[cite: 6]</span>
+        <span class="tendance-stat">+2 ce mois[cite: 6]</span>
+      </div>
+      <div class="icone-stat">📁</div>
+    </div>
+
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Candidatures reçues[cite: 6]</span>
+        <span class="valeur-stat">84[cite: 6]</span>
+        <span class="tendance-stat">18 nouvelles[cite: 6]</span>
+      </div>
+      <div class="icone-stat">👥</div>
+    </div>
+
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Candidatures en cours[cite: 6]</span>
+        <span class="valeur-stat">27[cite: 6]</span>
+        <span class="tendance-stat">À traiter cette semaine[cite: 6]</span>
+      </div>
+      <div class="icone-stat">⏳</div>
+    </div>
+
+    <div class="carte-stat">
+      <div class="stat-info">
+        <span class="libelle-stat">Contrats actifs[cite: 6]</span>
+        <span class="valeur-stat">9[cite: 6]</span>
+        <span class="tendance-stat">2 signatures attendues[cite: 6]</span>
+      </div>
+      <div class="icone-stat">📄</div>
+    </div>
+  </div>
+
+  <!-- Grille principale de contenu divisée en 2 colonnes -->
+  <div class="grille-contenu-principal">
+    
+    <!-- Colonne de gauche : Candidatures récentes -->
+    <div class="bloc-section candidature-section">
+      <div class="en-tete-section">
+        <h2 class="titre-section">Candidatures récentes[cite: 6]</h2>
+        <a routerLink="/recruiter/candidatures" class="lien-voir-tout">Voir tout →[cite: 6]</a>
+      </div>
+
+      <div class="liste-elements">
+        <!-- Ligne 1 -->
+        <div class="element-ligne">
+          <div class="profil-info-ligne">
+            <div class="avatar-initiales orange-clair">NS</div>
+            <div>
+              <span class="nom-personne">Ndeye Sarr[cite: 6]</span>
+              <span class="details-personne">Développeuse React • Il y a 35 min[cite: 6]</span>
+            </div>
+          </div>
+          <span class="badge statut-cours">En cours[cite: 6]</span>
+        </div>
+
+        <!-- Ligne 2 -->
+        <div class="element-ligne">
+          <div class="profil-info-ligne">
+            <div class="avatar-initiales orange-clair">MK</div>
+            <div>
+              <span class="nom-personne">Modou Kane[cite: 6]</span>
+              <span class="details-personne">Data Analyst • Il y a 1 h[cite: 6]</span>
+            </div>
+          </div>
+          <span class="badge statut-nouvelle">Nouvelle[cite: 6]</span>
+        </div>
+
+        <!-- Ligne 3 -->
+        <div class="element-ligne">
+          <div class="profil-info-ligne">
+            <div class="avatar-initiales orange-clair">AB</div>
+            <div>
+              <span class="nom-personne">Aïssatou Barry[cite: 6]</span>
+              <span class="details-personne">UX/UI Designer • Hier[cite: 6]</span>
+            </div>
+          </div>
+          <span class="badge statut-entretien">Entretien[cite: 6]</span>
+        </div>
+
+        <!-- Ligne 4 -->
+        <div class="element-ligne">
+          <div class="profil-info-ligne">
+            <div class="avatar-initiales orange-clair">IF</div>
+            <div>
+              <span class="nom-personne">Ibrahima Fall[cite: 6]</span>
+              <span class="details-personne">Développeur Flutter • Hier[cite: 6]</span>
+            </div>
+          </div>
+          <span class="badge statut-nouvelle">Nouvelle[cite: 6]</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne de droite : Actions rapides et Mes missions -->
+    <div class="colonne-droite-blocs">
+      
+      <!-- Actions rapides -->
+      <div class="bloc-section">
+        <h2 class="titre-section">Actions rapides[cite: 6]</h2>
+        <div class="liste-actions">
+          <a routerLink="/recruiter/missions/create" class="action-item">
+            <span class="action-titre">+ Créer une mission[cite: 6]</span>
+            <span class="action-desc">Publier un nouveau besoin[cite: 6]</span>
+          </a>
+          <a routerLink="/recruiter/candidatures" class="action-item">
+            <span class="action-titre">Voir les candidatures[cite: 6]</span>
+            <span class="action-desc">Examiner les profils reçus[cite: 6]</span>
+          </a>
+          <a routerLink="/recruiter/contrats" class="action-item">
+            <span class="action-titre">Gérer les contrats[cite: 6]</span>
+            <span class="action-desc">Suivre les signatures[cite: 6]</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mes missions -->
+      <div class="bloc-section">
+        <div class="en-tete-section">
+          <h2 class="titre-section">Mes missions[cite: 6]</h2>
+          <a routerLink="/recruiter/missions" class="lien-voir-tout">Voir tout →[cite: 6]</a>
+        </div>
+
+        <div class="liste-missions-rapide">
+          <div class="mission-mini-item">
+            <div>
+              <span class="mission-nom">Développeur React[cite: 6]</span>
+              <span class="mission-candidats">12 candidatures[cite: 6]</span>
+            </div>
+            <span class="badge-mission publiee">Publiée[cite: 6]</span>
+          </div>
+
+          <div class="mission-mini-item">
+            <div>
+              <span class="mission-nom">Data Analyst[cite: 6]</span>
+              <span class="mission-candidats">8 candidatures[cite: 6]</span>
+            </div>
+            <span class="badge-mission publiee">Publiée[cite: 6]</span>
+          </div>
+
+          <div class="mission-mini-item">
+            <div>
+              <span class="mission-nom">UX/UI Designer[cite: 6]</span>
+              <span class="mission-candidats">15 candidatures[cite: 6]</span>
+            </div>
+            <span class="badge-mission pause">En pause[cite: 6]</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

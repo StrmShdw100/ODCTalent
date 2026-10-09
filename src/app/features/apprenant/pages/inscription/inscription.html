@@ -1,0 +1,62 @@
+<div class="conteneur-auth-web">
+  <div class="carte-auth">
+    <!-- En-tête / Logo -->
+    <div class="entete-auth">
+      <div class="logo-cercle">
+        <span class="texte-logo"><span class="mise-en-evidence">ODC</span>Talent</span>
+      </div>
+      <h1 class="titre-auth">Créer votre compte</h1>
+      <p class="sous-titre-auth">Remplissez les informations ci-dessous pour rejoindre la plateforme ODC.</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="formulaire-auth">
+      <div class="groupe-f">
+        <label class="lab"></label>
+        <input type="text" class="inp" placeholder="Entrez votre prénom" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Nom </label>
+        <input type="text" class="inp" placeholder="Entrez votre nom" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Email</label>
+        <input type="email" class="inp" placeholder="exemple&#64;odc.com" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Téléphone *</label>
+        <input type="text" class="inp" placeholder="+223 70 00 00 00" />
+      </div>
+
+      <!-- Sélecteur de profil interactif -->
+      <div class="groupe-f position-relative">
+        <label class="lab">Choisissez votre profil</label>
+        <div class="selecteur-custom" (click)="basculerMenuProfil()">
+          <span>{{ profilSelectionne }}</span>
+          <span class="fleche">▾</span>
+        </div>
+
+        <div class="menu-deroulant" *ngIf="menuProfilOuvert">
+          <div class="option-profil" (click)="choisirProfil('Apprenant ODC')">
+            <span class="icone-profil">🎓</span> Apprenant ODC[cite: 18]
+          </div>
+          <div class="option-profil" (click)="choisirProfil('Recruteur')">
+            <span class="icone-profil">💼</span> Recruteur[cite: 18]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton Soumettre -->
+    <div class="pied-auth">
+      <button class="btn-principal-orange" (click)="soumettreInscription()">Continuer</button>
+    </div>
+
+    <div class="lien-connexion-bas">
+      Déjà un compte ? <a routerLink="/login" class="lien-orange">Se connecter</a>
+    </div>
+  </div>
+</div>

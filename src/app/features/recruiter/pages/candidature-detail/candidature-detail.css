@@ -1,0 +1,377 @@
+.conteneur-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.entete-retour {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lien-retour {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #111827;
+  text-decoration: none;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.titre-principal {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.sous-titre-principal {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Carte profil entête */
+.carte-profil-entete {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profil-info-gauche {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.avatar-grand {
+  width: 4rem;
+  height: 4rem;
+  background-color: #fff7ed;
+  color: #ff7900;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.nom-candidat-grand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.15rem 0;
+}
+
+.metier-candidat {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.2rem;
+}
+
+.meta-candidat {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.actions-entete {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.badge-entretien {
+  background-color: #eff6ff;
+  color: #3b82f6;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 2rem;
+}
+
+.btn-message {
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-valider-haut {
+  background-color: #ff7900;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Grille 2 colonnes */
+.grille-contenu-detail {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+}
+
+.carte-blanche {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.titre-section {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.bloc-info-groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.libelle-groupe {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tags-liste {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag-item {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-weight: 600;
+}
+
+.tag-item.orange { background-color: #fff7ed; color: #ff7900; }
+.tag-item.bleu { background-color: #eff6ff; color: #3b82f6; }
+.tag-item.vert { background-color: #ecfdf5; color: #10b981; }
+
+.texte-valeur {
+  font-size: 0.9rem;
+  color: #374151;
+  margin: 0;
+}
+
+.texte-valeur.gras {
+  font-weight: 600;
+  color: #111827;
+}
+
+.texte-sous-valeur {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.bloc-portfolio {
+  border: 1px dashed #d1d5db;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: #fafafa;
+}
+
+.boite-icone-dossier {
+  font-size: 2rem;
+  background-color: #e5e7eb;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #4b5563;
+}
+
+.bouton-portfolio {
+  background-color: #ff7900;
+  color: #ffffff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Timeline */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.timeline-etape {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.cercle-point {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.timeline-etape.valide .cercle-point {
+  background-color: #10b981;
+}
+
+.cercle-point.actif {
+  background-color: #ff7900;
+  box-shadow: 0 0 0 4px #fff7ed;
+}
+
+.texte-etape {
+  color: #374151;
+}
+
+.texte-etape.gras {
+  font-weight: 700;
+  color: #111827;
+}
+
+.texte-etape.gris {
+  color: #9ca3af;
+}
+
+.actions-recrutement-bas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn-noir {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-rouge {
+  background-color: #ff7900;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Modales styles communs */
+.fond-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 100;
+}
+
+.boite-modal {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  width: 100%; max-width: 38rem;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+.center { text-align: center; align-items: center; }
+
+.cercle-succes-fond {
+  width: 5rem; height: 5rem;
+  background-color: #ecfdf5; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  margin: 0 auto;
+}
+
+.cercle-succes-vert {
+  width: 3.5rem; height: 3.5rem;
+  background-color: #10b981; color: #ffffff;
+  border-radius: 50%; display: flex; justify-content: center; align-items: center;
+  font-size: 1.5rem; font-weight: bold;
+}
+
+.cercle-refus-fond {
+  width: 5rem; height: 5rem;
+  background-color: #fef2f2; border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  margin: 0 auto;
+  color: #ef4444; font-size: 1.5rem; font-weight: bold;
+}
+
+.carte-resume-candidat {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background-color: #f9fafb;
+}
+
+.badge-vert-clair {
+  background-color: #ecfdf5;
+  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 2rem;
+}
+
+.groupe-champ-modal {
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+
+.zone-txt {
+  border: 1px solid #d1d5db; border-radius: 0.5rem;
+  padding: 0.75rem; font-size: 0.85rem; outline: none; font-family: inherit;
+}
+
+.modal-pied-centre { display: flex; justify-content: center; margin-top: 1rem; }
+.modal-pied-refus { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; }
+
+.btn-refuser-action {
+  background-color: #ef4444; color: #ffffff; border: none;
+  padding: 0.6rem 1.5rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;
+}

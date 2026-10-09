@@ -1,0 +1,70 @@
+<div class="conteneur-layout">
+  <!-- Barre latérale (Aside) -->
+  <aside class="barre-laterale">
+    <!-- Logo -->
+    <div class="logo-conteneur">
+      <div class="logo-cercle">
+        <span class="texte-logo"><span class="mise-en-evidence">ODC</span></span>
+      </div>
+    </div>
+
+    <!-- Navigation du menu -->
+    <nav class="navigation-menu">
+      <a routerLink="/recruiter/tableau-de-bord" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu">📊</span> Tableau de bord[cite: 6]
+      </a>
+      <a routerLink="/recruiter/missions" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu">📁</span> Missions[cite: 6]
+      </a>
+      <a routerLink="/recruiter/candidatures" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu">👥</span> Candidatures[cite: 6]
+      </a>
+      <a routerLink="/recruiter/contrats" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu">📄</span> Contrats[cite: 6]
+      </a>
+      <a routerLink="/recruiter/parametres" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu">⚙️</span> Paramètres[cite: 6]
+      </a>
+    </nav>
+
+    <!-- Bouton Déconnexion -->
+    <div class="pied-menu">
+      <a routerLink="/auth/connexion" class="lien-deconnexion">
+        <span class="icone-menu">🚪</span> Déconnexion[cite: 6]
+      </a>
+    </div>
+  </aside>
+
+  <!-- Zone Principale (Header + Contenu dynamique) -->
+  <div class="zone-principale">
+    <!-- En-tête (Header) -->
+    <header class="en-tete">
+      <span class="titre-espace">Espace Recruteur[cite: 6]</span>
+
+      <div class="elements-droite-header">
+        <div class="boite-recherche">
+          <span class="icone-recherche">🔍</span>
+          <input type="text" class="champ-recherche" placeholder="Rechercher...[cite: 6]" />
+        </div>
+
+        <div class="notification-badge">
+          <span class="point-notif"></span>
+          🔔
+        </div>
+
+        <div class="profil-utilisateur">
+          <div class="avatar-cercle">AK</div>
+          <div class="infos-utilisateur">
+            <span class="nom-utilisateur">A. Koné[cite: 6]</span>
+            <span class="role-utilisateur">Recruteur[cite: 6]</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenu dynamique des écrans recruteur -->
+    <main class="contenu-dynamique">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

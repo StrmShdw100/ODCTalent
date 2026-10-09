@@ -1,0 +1,207 @@
+.conteneur-inscription {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  background-color: #ffffff;
+  font-family: sans-serif;
+}
+
+.colonne-gauche {
+  border-right: 1px solid #e5e7eb;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.entete-logo .texte-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.mise-en-evidence {
+  color: #ff7900;
+}
+
+.illustration-centre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.svg-odc {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+
+.titre-gauche {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.3;
+  margin-bottom: 2rem;
+}
+
+.carte-info-bas {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cercle-icone-orange {
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: #ff7900;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.texte-info-bloc {
+  display: flex;
+  flex-direction: column;
+}
+
+.titre-bloc-info {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.desc-bloc-info {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.colonne-droite {
+  padding: 3rem 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.bloc-formulaire {
+  width: 100%;
+  max-width: 36rem;
+}
+
+.titre-formulaire {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.sous-titre-formulaire {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 2rem 0;
+}
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ligne-champs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.groupe-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.libelle-champ {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.champ-saisie {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.champ-saisie:focus {
+  border-color: #ff7900;
+}
+
+.groupe-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.texte-checkbox {
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.bouton-soumettre {
+  background-color: #ff7900;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.875rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.bouton-soumettre:hover {
+  background-color: #e06800;
+}
+
+.pied-formulaire {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+.lien-connexion {
+  color: #ff7900;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lien-connexion:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .conteneur-inscription {
+    grid-template-columns: 1fr;
+  }
+  .colonne-gauche {
+    display: none;
+  }
+  .colonne-droite {
+    padding: 2rem;
+  }
+}
