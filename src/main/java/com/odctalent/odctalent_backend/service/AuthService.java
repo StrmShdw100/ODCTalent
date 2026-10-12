@@ -34,7 +34,7 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final EmailService emailService;
 
-  public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         if (utilisateurRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Un utilisateur avec cet email existe déjà.");
         }
@@ -79,8 +79,11 @@ public class AuthService {
                 .token(jwtToken)
                 .email(user.getEmail())
                 .role(user.getRole().name())
+                .nom(user.getNom())
+                .prenom(user.getPrenom())
                 .build();
     }
+
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -99,6 +102,8 @@ public class AuthService {
                 .token(jwtToken)
                 .email(user.getEmail())
                 .role(user.getRole().name())
+                .nom(user.getNom())       // 👈 Ajouté ici
+                .prenom(user.getPrenom()) // 👈 Ajouté ici
                 .build();
     }
 }
