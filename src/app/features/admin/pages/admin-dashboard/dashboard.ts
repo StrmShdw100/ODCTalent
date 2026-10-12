@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   naviguerVersProjets(): void {
-    this.router.navigate(['/admin/projets']);
+    this.router.navigate(['/admin/moderation']);
   }
 
   naviguerVersOpportunites(): void {

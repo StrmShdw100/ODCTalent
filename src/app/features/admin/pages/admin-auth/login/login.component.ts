@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   isLoading: boolean = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,9 +51,10 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
+    // Remplace 'motDePasse' par 'password' ici :
     const payload = {
       email: this.loginForm.value.email,
-      motDePasse: this.loginForm.value.password // Assure-toi que c'est bien 'motDePasse' ou 'password' selon ton LoginRequest Java
+      password: this.loginForm.value.password 
     };
 
     this.authService.login(payload).subscribe({
@@ -76,15 +78,24 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         console.error("Erreur HTTP capturée :", err);
 
-        if (err.error && typeof err.error === 'string') {
+        if (typeof err.error === 'string') {
           this.errorMessage = err.error;
         } else if (err.error && err.error.message) {
           this.errorMessage = err.error.message;
+        } else if (err.error && err.error.error) {
+          this.errorMessage = err.error.error;
+        } else if (err.message) {
+          this.errorMessage = err.message;
         } else {
           this.errorMessage = "Email ou mot de passe incorrect, ou compte en attente de validation.";
         }
       }
     });
+  }
+
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   redirectUserBasedOnRole(role: string): void {

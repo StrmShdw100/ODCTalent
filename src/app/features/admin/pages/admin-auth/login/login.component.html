@@ -30,12 +30,12 @@
           <label for="password">Mot de passe</label>
           <div class="input-field">
             <img src="/icones/ouvrir.png">
-            <input 
-              type="password" 
+           <input 
+              [type]="showPassword ? 'text' : 'password'"
               id="password" 
               formControlName="password" 
               placeholder="Entrez votre mot de passe" />
-            <img src="/icones/oeil.png">
+            <img src="/icones/oeil.png" alt="Afficher/Cacher" (click)="togglePasswordVisibility()" style="cursor: pointer;" />
           </div>
         </div>
 
@@ -46,6 +46,10 @@
           <a href="#" class="forgot-password">Mot de passe oublié ?</a>
         </div>
 
+        <div *ngIf="errorMessage" class="error-alert" style="color: #ff3333; background-color: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 13px; text-align: center; border: 1px solid #ff9999;">
+          ⚠️ {{ errorMessage }}
+        </div>
+
 <button type="submit" class="btn-submit">
   Se connecter
 </button>
@@ -54,10 +58,6 @@
           <p><img src="/icones/cadenas.png"> Accès réservé aux administrateurs autorisés.</p>
         </div>
       </form>
-      <!-- Bloc d'affichage de l'erreur -->
-      <div *ngIf="errorMessage" class="error-alert" style="color: red; margin-bottom: 15px; font-size: 14px; text-align: center;">
-        {{ errorMessage }}
-      </div>
     </div>
   </div>
 </div>
