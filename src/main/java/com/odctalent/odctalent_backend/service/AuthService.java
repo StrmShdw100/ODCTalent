@@ -68,7 +68,7 @@ public class AuthService {
             admin.setTelephone(request.getTelephone());
             admin.setRole(Role.ADMIN);
             admin.setActif(true);
-            user = utilisateurRepository.save(admin); // <--- On utilise utilisateurRepository ici directement
+            user = utilisateurRepository.save(admin);
         } else {
             Apprenant apprenant = new Apprenant();
             apprenant.setNom(request.getNom());

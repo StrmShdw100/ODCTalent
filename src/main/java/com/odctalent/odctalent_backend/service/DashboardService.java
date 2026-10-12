@@ -1,8 +1,8 @@
 package com.odctalent.odctalent_backend.service;
 
 import com.odctalent.odctalent_backend.dto.DashboardStatsDTO;
+import com.odctalent.odctalent_backend.entity.enums.Role;
 import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
-// Importe tes autres repositories selon ton projet (ex: ProjetRepository, OpportuniteRepository)
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +14,15 @@ import java.util.List;
 public class DashboardService {
 
     private final UtilisateurRepository utilisateurRepository;
-    // private final ProjetRepository projetRepository;
-    // private final OpportuniteRepository opportuniteRepository;
 
     public DashboardStatsDTO getDashboardStats() {
-        long nbApprenants = utilisateurRepository.countByRole("APPRENANT");
-        long nbRecruteurs = utilisateurRepository.countByRole("RECRUTEUR");
+        long nbApprenants = utilisateurRepository.countByRole(Role.APPRENANT);
+        long nbRecruteurs = utilisateurRepository.countByRole(Role.RECRUTEUR);
 
-        long nbProjetsAModerer = 5; // ex: projetRepository.countByStatut("EN_ATTENTE");
-        long nbOpportunitesActives = 12; 
+        long nbProjetsAModerer = 5;
+        long nbOpportunitesActives = 12;
         long nbNouvellesOpportunites = 3;
 
-        // Construire la liste des activités récentes
         List<DashboardStatsDTO.ActivityDTO> activities = new ArrayList<>();
         activities.add(new DashboardStatsDTO.ActivityDTO("Yaya Diarra a soumis un nouveau projet", "Il y a 12 minutes", "project"));
         activities.add(new DashboardStatsDTO.ActivityDTO("Orange Sénégal a publié une opportunité", "Il y a 1 heure", "opportunity"));
