@@ -1,12 +1,8 @@
 package com.odctalent.odctalent_backend.service;
-
 import com.odctalent.odctalent_backend.dto.AuthResponse;
 import com.odctalent.odctalent_backend.dto.LoginRequest;
 import com.odctalent.odctalent_backend.dto.RegisterRequest;
-import com.odctalent.odctalent_backend.entity.Apprenant;
-import com.odctalent.odctalent_backend.entity.Portfolio;
-import com.odctalent.odctalent_backend.entity.Recruteur;
-import com.odctalent.odctalent_backend.entity.Utilisateur;
+import com.odctalent.odctalent_backend.entity.*;
 import com.odctalent.odctalent_backend.entity.enums.Role;
 import com.odctalent.odctalent_backend.repository.ApprenantRepository;
 import com.odctalent.odctalent_backend.repository.PortfolioRepository;
@@ -35,11 +31,20 @@ public class AuthService {
     private final EmailService emailService;
 
     public AuthResponse register(RegisterRequest request) {
+        System.out.println("=== VALEUR BRUTE DU RÔLE REÇU : " + request.getRole() + " ===");
+
         if (utilisateurRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Un utilisateur avec cet email existe déjà.");
         }
 
-        Role userRole = request.getRole() != null ? request.getRole() : Role.APPRENANT;
+        Role userRole = Role.APPRENANT;
+        if (request.getRole() != null && !request.getRole().trim().isEmpty()) {
+            try {
+                userRole = Role.valueOf(request.getRole().trim().toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Rôle inconnu reçu, bascule sur APPRENANT par défaut.");
+            }
+        }
 
         Utilisateur user;
 
@@ -51,13 +56,20 @@ public class AuthService {
             recruteur.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             recruteur.setTelephone(request.getTelephone());
             recruteur.setRole(Role.RECRUTEUR);
-            // actif = false et statut = "EN_ATTENTE" par défaut
+            recruteur.setActif(false);
             user = recruteurRepository.save(recruteur);
+
+        } else if (userRole == Role.ADMIN) {
+            Administrateur admin = new Administrateur();
+            admin.setNom(request.getNom());
+            admin.setPrenom(request.getPrenom());
+            admin.setEmail(request.getEmail());
+            admin.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
+            admin.setTelephone(request.getTelephone());
+            admin.setRole(Role.ADMIN);
+            admin.setActif(true);
+            user = utilisateurRepository.save(admin); // <--- On utilise utilisateurRepository ici directement
         } else {
-
-            
-
-
             Apprenant apprenant = new Apprenant();
             apprenant.setNom(request.getNom());
             apprenant.setPrenom(request.getPrenom());
@@ -65,21 +77,19 @@ public class AuthService {
             apprenant.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             apprenant.setTelephone(request.getTelephone());
             apprenant.setRole(Role.APPRENANT);
-            // actif = false et statut = "EN_ATTENTE" par défaut
+            apprenant.setActif(false);
             user = apprenantRepository.save(apprenant);
 
-            // Créer automatiquement un portfolio vide pour le nouvel apprenant
             Portfolio portfolio = Portfolio.builder()
                     .apprenant((Apprenant) user)
                     .build();
             portfolioRepository.save(portfolio);
         }
 
-        // Envoi de l'e-mail de bienvenue
         emailService.sendWelcomeEmail(user.getEmail(), user.getPrenom());
 
         return AuthResponse.builder()
-                .token(null) 
+                .token(null)
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .nom(user.getNom())

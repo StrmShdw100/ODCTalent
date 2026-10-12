@@ -16,6 +16,6 @@ public class RegisterRequest {
     private String email;
     private String telephone;
     private String motDePasse;
-    private Role role;
+    private String role;
     private String photoProfil;
 }
