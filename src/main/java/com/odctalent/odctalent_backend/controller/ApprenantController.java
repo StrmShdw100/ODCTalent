@@ -20,7 +20,6 @@ public class ApprenantController {
             Authentication authentication,
             @RequestBody CompleteProfileRequest request) {
         
-        // L'email est récupéré via le token JWT de l'utilisateur connecté
         String email = authentication.getName();
         apprenantService.completeProfile(email, request);
         
