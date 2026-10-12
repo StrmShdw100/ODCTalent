@@ -18,11 +18,9 @@ public class DashboardService {
     // private final OpportuniteRepository opportuniteRepository;
 
     public DashboardStatsDTO getDashboardStats() {
-        // Compter les apprenants et recruteurs en BDD
         long nbApprenants = utilisateurRepository.countByRole("APPRENANT");
         long nbRecruteurs = utilisateurRepository.countByRole("RECRUTEUR");
 
-        // Exemple de comptages simulés ou basés sur tes repositories :
         long nbProjetsAModerer = 5; // ex: projetRepository.countByStatut("EN_ATTENTE");
         long nbOpportunitesActives = 12; 
         long nbNouvellesOpportunites = 3;

@@ -1,5 +1,6 @@
 package com.odctalent.odctalent_backend.dto;
 
+import com.odctalent.odctalent_backend.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,6 @@ public class RegisterRequest {
     private String email;
     private String telephone;
     private String motDePasse;
-    private String role;
+    private Role role;
     private String photoProfil;
 }
