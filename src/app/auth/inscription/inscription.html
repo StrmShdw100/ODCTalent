@@ -1,0 +1,74 @@
+<div class="conteneur-auth-web">
+  <div class="carte-auth">
+    <!-- En-tête / Logo -->
+    <div class="entete-auth">
+      <div class="logo-cercle">
+        <span class="texte-logo"><span class="mise-en-evidence">ODC</span>Talent</span>
+      </div>
+      <h1 class="titre-auth">Créer votre compte</h1>
+      <p class="sous-titre-auth">Remplissez les informations ci-dessous pour rejoindre la plateforme ODC.</p>
+    </div>
+
+    <!-- Messages d'alerte -->
+    <div *ngIf="errorMessage" class="alerte erreur">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alerte succes">
+      {{ successMessage }}
+    </div>
+
+    <!-- Formulaire -->
+    <div class="formulaire-auth">
+      <div class="groupe-f">
+        <label class="lab">Prénom</label>
+        <input type="text" class="inp" placeholder="Entrez votre prénom" [(ngModel)]="prenom" name="prenom" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Nom</label>
+        <input type="text" class="inp" placeholder="Entrez votre nom" [(ngModel)]="nom" name="nom" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Email</label>
+        <input type="email" class="inp" placeholder="exemple&#64;odc.com" [(ngModel)]="email" name="email" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Téléphone</label>
+        <input type="text" class="inp" placeholder="+223 70 00 00 00" [(ngModel)]="telephone" name="telephone" />
+      </div>
+
+      <!-- Sélecteur de fichier utilisant ton FileController -->
+      <div class="groupe-f">
+        <label class="lab">Photo de profil</label>
+        <input type="file" class="inp" (change)="onFileSelected($event)" accept="image/*" />
+        <span class="sous-lab" style="font-size: 0.75rem; color: #6b7280; font-style: italic;">Choisissez une image. Laissez vide pour afficher vos initiales.</span>
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Mot de passe</label>
+        <input type="password" class="inp" placeholder="Entrez votre mot de passe" [(ngModel)]="motDePasse" name="motDePasse" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Rôle</label>
+        <select class="inp" [(ngModel)]="role" name="role">
+          <option value="APPRENANT">Apprenant ODC</option>
+          <option value="RECRUTEUR">Recruteur</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Bouton Soumettre -->
+    <div class="pied-auth">
+      <button class="btn-principal-orange" (click)="soumettreInscription()" [disabled]="chargement">
+        {{ chargement ? 'Patientez...' : "S'inscrire" }}
+      </button>
+    </div>
+
+    <div class="lien-connexion-bas">
+      Déjà un compte ? <a routerLink="/login" class="lien-orange">Se connecter</a>
+    </div>
+  </div>
+</div>

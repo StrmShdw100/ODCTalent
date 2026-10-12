@@ -1,34 +1,59 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { DashboardService, DashboardStats } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  // Données statistiques initiales (seront remplacées par l'appel API du backend)
-  stats = {
-    apprenants: 1248,
-    recruteurs: 86,
-    projetsAModerer: 24,
-    opportunitesActives: 37,
-    nouvellesOpportunites: 12
+  stats: DashboardStats = {
+    apprenants: 0,
+    recruteurs: 0,
+    projetsAModerer: 0,
+    opportunitesActives: 0,
+    nouvellesOpportunites: 0,
+    recentActivities: []
   };
 
-  recentActivities = [
-    { title: 'Yaya Diarra a soumis un nouveau projet', time: 'Il y a 12 minutes', type: 'project' },
-    { title: 'Orange Sénégal a publié une opportunité', time: 'Il y a 1 heure', type: 'opportunity' },
-    { title: 'Modou Kane a mis à jour son profil', time: 'Il y a 3 heures', type: 'profile' },
-    { title: 'Madou Konte publier un offre de recrutement', time: 'Il y a 3 heures', type: 'job' }
-  ];
+  loading: boolean = true;
 
-  constructor() {}
+  constructor(
+    private dashboardService: DashboardService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Ici, tu pourras injecter ton dashboardService pour appeler ton API Spring Boot :
-    // this.dashboardService.getStats().subscribe(data => this.stats = data);
+    this.chargerStats();
+  }
+
+  chargerStats(): void {
+    this.dashboardService.getStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error("Erreur chargement dashboard :", err);
+        this.loading = false;
+      }
+    });
+  }
+
+  // Navigation des actions rapides
+  naviguerVersActualites(): void {
+    this.router.navigate(['/admin/actualites']);
+  }
+
+  naviguerVersProjets(): void {
+    this.router.navigate(['/admin/projets']);
+  }
+
+  naviguerVersOpportunites(): void {
+    this.router.navigate(['/admin/opportunites']);
   }
 }

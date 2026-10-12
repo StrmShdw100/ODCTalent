@@ -87,11 +87,11 @@
           <td><strong>{{ item.offresCount }}</strong></td>
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
-            <div class="context-menu" *ngIf="item.showMenu">
-              <button>👁️ Voir profil</button>
-              <button>✏️ Modifier</button>
-              <button class="delete-option">🚫 Suspendre</button>
-            </div>
+           <div class="context-menu" *ngIf="item.showMenu">
+            <button *ngIf="item.status === 'En attente'" (click)="autoriserCompte(item.id)" class="approve-option">✅ Autoriser le compte</button>
+            <button>👁️ Voir profil</button>
+            <button class="delete-option">🚫 Suspendre</button>
+          </div>
           </td>
         </tr>
       </tbody>

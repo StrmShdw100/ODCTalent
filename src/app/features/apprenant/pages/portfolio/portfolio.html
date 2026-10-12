@@ -1,74 +1,126 @@
 <div class="conteneur-portfolio">
   <!-- En-tête sombre du profil -->
   <div class="banniere-profil-sombre">
-    <div class="selecteur-langues">
-      <button class="btn-langue" [class.actif]="langueActive === 'Français'" (click)="changerLangue('Français')">Français</button>
-      <button class="btn-langue" [class.actif]="langueActive === 'Anglais'" (click)="changerLangue('Anglais')">Anglais</button>
+    <div class="header-top-row" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="selecteur-langues">
+        <button class="btn-langue" [class.actif]="langueActive === 'Français'" (click)="changerLangue('Français')">Français</button>
+        <button class="btn-langue" [class.actif]="langueActive === 'Anglais'" (click)="changerLangue('Anglais')">Anglais</button>
+      </div>
+      <button class="btn-edition" (click)="toggleEdition()" style="background-color: #ff7900; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
+        {{ modeEdition ? '❌ Annuler' : '✏️ Modifier mon profil' }}
+      </button>
     </div>
 
     <div class="profil-infos-principal">
-      <div class="avatar-photo">MC</div>
+      <!-- Avatar avec gestion Photo / Fallback Initiales -->
+      <div class="avatar-container">
+        <img *ngIf="portfolio.photoProfil && portfolio.photoProfil.trim() !== ''" 
+             [src]="portfolio.photoProfil" 
+             alt="Photo de profil" 
+             class="avatar-image-reel" />
+        <div *ngIf="!portfolio.photoProfil || portfolio.photoProfil.trim() === ''" 
+             class="avatar-photo">
+          {{ initiales }}
+        </div>
+      </div>
+
       <div class="profil-textes">
-        <h1 class="nom-apprenant">Mohamed Coulibaly</h1>
-        <span class="metier-apprenant">Développeur Web</span>
-        <p class="citation-apprenant">Je crée des solutions digitales modernes et performantes.</p>
+        <h1 class="nom-apprenant">{{ (portfolio.prenomApprenant || '') + ' ' + (portfolio.nomApprenant || 'Apprenant ODC') }}</h1>
+        <span class="metier-apprenant">{{ portfolio.titreProfessionnel || 'Développeur Web & Mobile' }}</span>
+        <p class="citation-apprenant">{{ portfolio.bio || 'Aucune biographie pour le moment.' }}</p>
       </div>
     </div>
 
     <div class="meta-informations">
-      <span class="meta-item">✉️ alex.martin&#64;gmail.com</span>
-      <span class="meta-item">📍 Mali_Bamako</span>
+      <span class="meta-item">✉️ {{ portfolio.emailApprenant || 'Non renseigné' }}</span>
+      <span class="meta-item">📍 Mali / Bamako</span>
       <span class="meta-item vert">🟢 Disponible</span>
     </div>
   </div>
 
-  <!-- Sections détaillées -->
+  <!-- FORMULAIRE DE MODIFICATION (S'affiche si modeEdition = true) -->
+  <div class="carte-blanche" *ngIf="modeEdition" style="background-color: #fdf8f6; border: 2px dashed #ff7900;">
+    <h3 class="titre-section" style="color: #ff7900;">Modifier vos informations professionnelles</h3>
+    
+    <form (ngSubmit)="sauvegarderPortfolio()" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+      <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien de la photo de profil (URL)</label>
+        <input type="text" [(ngModel)]="portfolio.photoProfil" name="photoProfil" placeholder="https://exemple.com/ma-photo.jpg" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Titre Professionnel / Métier</label>
+        <input type="text" [(ngModel)]="portfolio.titreProfessionnel" name="titreProfessionnel" placeholder="Ex: Développeur Full-Stack Java/Angular" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Biographie / À propos</label>
+        <textarea [(ngModel)]="portfolio.bio" name="bio" rows="3" placeholder="Parlez un peu de vous..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none; resize: vertical;"></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+        <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien GitHub</label>
+          <input type="text" [(ngModel)]="portfolio.githubUrl" name="githubUrl" placeholder="https://github.com/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien LinkedIn</label>
+          <input type="text" [(ngModel)]="portfolio.linkedinUrl" name="linkedinUrl" placeholder="https://linkedin.com/in/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+          <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Site Web / Portfolio</label>
+          <input type="text" [(ngModel)]="portfolio.websiteUrl" name="websiteUrl" placeholder="https://..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Compétences (séparées par des virgules)</label>
+        <input type="text" [(ngModel)]="portfolio.competences" name="competences" placeholder="Java, Spring Boot, Angular, Flutter, MySQL" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+      </div>
+
+      <button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; margin-top: 0.5rem;">
+        💾 Enregistrer les modifications
+      </button>
+    </form>
+  </div>
+
+  <!-- Sections détaillées (Affichage standard) -->
   <div class="grille-sections-portfolio">
     <!-- À propos -->
     <div class="carte-blanche">
       <h3 class="titre-section">À propos</h3>
-      <p class="texte-corps">Passionné par le développement web, je conçois et développe des applications et sites web pour répondre aux besoins des utilisateurs.</p>
+      <p class="texte-corps">{{ portfolio.bio || 'Aucune description renseignée.' }}</p>
     </div>
 
-    <!-- Expériences -->
+    <!-- Liens Professionnels -->
     <div class="carte-blanche">
-      <h3 class="titre-section">Expériences</h3>
-      <div class="experience-item">
-        <div class="exp-ligne-titre">
-          <span class="exp-poste">Développeur Web</span>
-          <span class="exp-periode">2023 - 2025</span>
-        </div>
-        <p class="exp-desc">Création et maintenance de sites web et d'applications.</p>
+      <h3 class="titre-section">Liens professionnels</h3>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+        <a *ngIf="portfolio.githubUrl" [href]="portfolio.githubUrl" target="_blank" style="color: #ff7900; text-decoration: none;">🐙 GitHub : {{ portfolio.githubUrl }}</a>
+        <a *ngIf="portfolio.linkedinUrl" [href]="portfolio.linkedinUrl" target="_blank" style="color: #0077b5; text-decoration: none;">💼 LinkedIn : {{ portfolio.linkedinUrl }}</a>
+        <a *ngIf="portfolio.websiteUrl" [href]="portfolio.websiteUrl" target="_blank" style="color: #27ae60; text-decoration: none;">🌐 Site Web : {{ portfolio.websiteUrl }}</a>
+        <span *ngIf="!portfolio.githubUrl && !portfolio.linkedinUrl && !portfolio.websiteUrl" style="color: #9ca3af; font-style: italic;">Aucun lien renseigné.</span>
       </div>
     </div>
 
     <!-- Compétences -->
     <div class="carte-blanche">
       <h3 class="titre-section">Compétences</h3>
+      <div *ngIf="!portfolio.competences" class="texte-corps" style="color: #9ca3af; font-style: italic;">
+        Aucune compétence renseignée.
+      </div>
       <div class="tags-competences">
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">React</span>
-        <span class="tag">PHP</span>
-        <span class="tag">MySQL</span>
-        <span class="tag">Git</span>
-        <span class="tag">Node.js</span>
+        <span class="tag" *ngFor="let comp of (portfolio.competences ? portfolio.competences.split(',') : [])">
+          {{ comp.trim() }}
+        </span>
       </div>
     </div>
 
     <!-- Projets -->
     <div class="carte-blanche">
       <h3 class="titre-section">Projets</h3>
-      <div class="grille-mini-projets">
-        <div class="mini-projet-carte">
-          <div class="mini-apercu">📊</div>
-          <span class="mini-titre">Dashboard Analytics</span>
-        </div>
-        <div class="mini-projet-carte">
-          <div class="mini-apercu">💻</div>
-          <span class="mini-titre">Plateforme E-commerce</span>
-        </div>
+      <div class="texte-corps" style="color: #9ca3af; font-style: italic;">
+        Vos projets réalisés apparaîtront ici.
       </div>
     </div>
   </div>

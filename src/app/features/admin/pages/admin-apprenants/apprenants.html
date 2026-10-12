@@ -64,7 +64,7 @@
   <div class="table-card">
     <div class="table-card-header">
       <h3>Liste des apprenants</h3>
-      <span class="total-count">{{ apprenants.length }} apprenants affichés</span>
+      <span class="total-count">{{ filteredApprenants.length }} apprenants affichés</span>
     </div>
 
     <table class="custom-table">
@@ -80,7 +80,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of apprenants">
+        <tr *ngFor="let item of filteredApprenants">
           <td>
             <div class="learner-profile-cell">
               <div class="avatar-circle">{{ item.initials }}</div>
@@ -102,11 +102,15 @@
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             <div class="context-menu" *ngIf="item.showMenu">
+              <button *ngIf="item.status === 'En attente'" (click)="autoriserCompte(item.id)" class="approve-option">✅ Autoriser le compte</button>
               <button>👁️ Voir profil</button>
               <button>✏️ Modifier</button>
               <button class="delete-option">🚫 Suspendre</button>
             </div>
           </td>
+        </tr>
+        <tr *ngIf="filteredApprenants.length === 0">
+          <td colspan="7" style="text-align: center; color: #888; padding: 2rem;">Aucun apprenant ne correspond à votre recherche.</td>
         </tr>
       </tbody>
     </table>
