@@ -27,17 +27,14 @@
       </a>
     </nav>
 
-    <!-- Bouton Déconnexion -->
     <div class="pied-menu">
-      <a routerLink="/auth/connexion" class="lien-deconnexion">
+      <a (click)="deconnecter()" class="lien-deconnexion" style="cursor: pointer;">
         <span class="icone-menu">🚪</span> Déconnexion
       </a>
     </div>
   </aside>
 
-  <!-- Zone Principale (Header + Contenu dynamique) -->
   <div class="zone-principale">
-    <!-- En-tête (Header) -->
     <header class="en-tete">
       <span class="titre-espace">Espace Recruteur</span>
 
@@ -62,7 +59,6 @@
       </div>
     </header>
 
-    <!-- Contenu dynamique des écrans recruteur -->
     <main class="contenu-dynamique">
       <router-outlet></router-outlet>
     </main>

@@ -44,7 +44,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Navigation des actions rapides
+  // Getter pour permettre à dashboard.html d'accéder directement à recentActivities
+  get recentActivities() {
+    return this.stats?.recentActivities || [];
+  }
+
   naviguerVersActualites(): void {
     this.router.navigate(['/admin/actualites']);
   }

@@ -70,7 +70,7 @@
             </div>
           </td>
           <td>{{ item.category }}</td>
-          <td>{{ item.publicationDate || item.date }}</td>
+          <td>{{ item.publicationDate  }}</td>
           <td>
             <span class="status-badge" [ngClass]="item.status === 'Publié' ? 'published' : 'draft'">
               {{ item.status }}
