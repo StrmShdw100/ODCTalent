@@ -28,7 +28,7 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findByApprenantId(user.getId())
                 .orElseThrow(() -> new RuntimeException("Portfolio non trouvé pour cet apprenant."));
 
-        return mapToResponse(portfolio);
+        return mapToResponse(portfolio, user);
     }
 
     @Transactional(readOnly = true)
@@ -36,7 +36,10 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Portfolio introuvable avec l'ID : " + id));
 
-        return mapToResponse(portfolio);
+        Apprenant apprenant = portfolio.getApprenant();
+        Utilisateur user = apprenant != null ? utilisateurRepository.findById(apprenant.getId()).orElse(null) : null;
+
+        return mapToResponse(portfolio, user);
     }
 
     @Transactional
@@ -58,8 +61,14 @@ public class PortfolioService {
         if (request.getWebsiteUrl() != null) portfolio.setWebsiteUrl(request.getWebsiteUrl());
         if (request.getCompetences() != null) portfolio.setCompetences(request.getCompetences());
 
+        // Mise à jour de la photo de profil sur l'utilisateur
+        if (request.getPhotoProfil() != null) {
+            user.setPhotoProfil(request.getPhotoProfil());
+            utilisateurRepository.save(user);
+        }
+
         Portfolio updated = portfolioRepository.save(portfolio);
-        return mapToResponse(updated);
+        return mapToResponse(updated, user);
     }
 
     @Transactional
@@ -70,7 +79,7 @@ public class PortfolioService {
         portfolioRepository.deleteById(id);
     }
 
-    private PortfolioResponse mapToResponse(Portfolio portfolio) {
+    private PortfolioResponse mapToResponse(Portfolio portfolio, Utilisateur user) {
         Apprenant apprenant = portfolio.getApprenant();
         return PortfolioResponse.builder()
                 .id(portfolio.getId())
@@ -80,10 +89,11 @@ public class PortfolioService {
                 .linkedinUrl(portfolio.getLinkedinUrl())
                 .websiteUrl(portfolio.getWebsiteUrl())
                 .competences(portfolio.getCompetences())
-                .apprenantId(apprenant != null ? apprenant.getId() : null)
-                .nomApprenant(apprenant != null ? apprenant.getNom() : null)
-                .prenomApprenant(apprenant != null ? apprenant.getPrenom() : null)
-                .emailApprenant(apprenant != null ? apprenant.getEmail() : null)
+                .apprenantId(apprenant != null ? apprenant.getId() : (user != null ? user.getId() : null))
+                .nomApprenant(apprenant != null ? apprenant.getNom() : (user != null ? user.getNom() : null))
+                .prenomApprenant(apprenant != null ? apprenant.getPrenom() : (user != null ? user.getPrenom() : null))
+                .emailApprenant(apprenant != null ? apprenant.getEmail() : (user != null ? user.getEmail() : null))
+                .photoProfil(user != null ? user.getPhotoProfil() : (apprenant != null ? apprenant.getPhotoProfil() : null))
                 .build();
     }
 }

@@ -16,4 +16,5 @@ public class PortfolioUpdateRequest {
     private String linkedinUrl;
     private String websiteUrl;
     private String competences;
+    private String photoProfil;
 }

@@ -35,21 +35,25 @@ public abstract class Utilisateur {
 
     private String telephone;
 
-    private String photo;
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateInscription;
-    // ACTIF, SUSPENDU, EN_ATTENTE
+
     private String statut; 
+
+    @Column(nullable = false)
+    private boolean actif = false; 
     @Enumerated(EnumType.STRING)
     private Role role;
+    
     private LocalDateTime derniereConnexion;
+    @Column(length = 500)
+    private String photoProfil;
 
     @PrePersist
     protected void onCreate() {
         this.dateInscription = LocalDateTime.now();
         if (this.statut == null) {
-            this.statut = "ACTIF";
+            this.statut = "EN_ATTENTE";
         }
     }
 }

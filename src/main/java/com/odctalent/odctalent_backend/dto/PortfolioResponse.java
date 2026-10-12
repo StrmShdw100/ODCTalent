@@ -17,10 +17,9 @@ public class PortfolioResponse {
     private String linkedinUrl;
     private String websiteUrl;
     private String competences;
-    
-    // Informations de l'apprenant
     private Long apprenantId;
     private String nomApprenant;
     private String prenomApprenant;
     private String emailApprenant;
+    private String photoProfil;
 }

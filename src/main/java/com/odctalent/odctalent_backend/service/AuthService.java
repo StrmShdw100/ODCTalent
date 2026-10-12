@@ -51,8 +51,13 @@ public class AuthService {
             recruteur.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             recruteur.setTelephone(request.getTelephone());
             recruteur.setRole(Role.RECRUTEUR);
+            // actif = false et statut = "EN_ATTENTE" par défaut
             user = recruteurRepository.save(recruteur);
         } else {
+
+            
+
+
             Apprenant apprenant = new Apprenant();
             apprenant.setNom(request.getNom());
             apprenant.setPrenom(request.getPrenom());
@@ -60,6 +65,7 @@ public class AuthService {
             apprenant.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             apprenant.setTelephone(request.getTelephone());
             apprenant.setRole(Role.APPRENANT);
+            // actif = false et statut = "EN_ATTENTE" par défaut
             user = apprenantRepository.save(apprenant);
 
             // Créer automatiquement un portfolio vide pour le nouvel apprenant
@@ -72,11 +78,8 @@ public class AuthService {
         // Envoi de l'e-mail de bienvenue
         emailService.sendWelcomeEmail(user.getEmail(), user.getPrenom());
 
-        var userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        var jwtToken = jwtService.generateToken(userDetails);
-
         return AuthResponse.builder()
-                .token(jwtToken)
+                .token(null) 
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .nom(user.getNom())
@@ -95,6 +98,10 @@ public class AuthService {
         var user = utilisateurRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
 
+        if (!user.isActif()) {
+            throw new RuntimeException("Votre compte est en attente de validation par un administrateur.");
+        }
+
         var userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         var jwtToken = jwtService.generateToken(userDetails);
 
@@ -102,8 +109,8 @@ public class AuthService {
                 .token(jwtToken)
                 .email(user.getEmail())
                 .role(user.getRole().name())
-                .nom(user.getNom())       // 👈 Ajouté ici
-                .prenom(user.getPrenom()) // 👈 Ajouté ici
+                .nom(user.getNom())
+                .prenom(user.getPrenom())
                 .build();
     }
 }
