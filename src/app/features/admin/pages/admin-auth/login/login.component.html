@@ -3,43 +3,12 @@
     <div class="entetegauche">
       <img src="logoODC.png" alt="ODC Logo" class="logo" id="logogauche" />
     </div>
-    
-    <!-- <div class="hero-content">
-      <h1>Développez les talents.<br><span>Construisez l'avenir.</span></h1>
-      
-      <div class="columns2">
-        <p>
-          ODCTalent est la plateforme qui vous permet <br>
-          de gérer, former et accompagner les talents <br>
-          de votre organisation.
-        </p>
-      
-        <div class="floating1">
-          
-            <img src="/icones/test.png" alt="" class="iconetest">
-          
-            <strong >Gestion des talents</strong> <br>
-          
-         
-            <small >Recruter • Former • Èvoluer</small>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="floating2">
-      <img src="/icones/statistiques.png" alt="" class="iconestatistiques">
-          
-            <strong >Suivi des performances</strong> <br>
-          
-         
-            <small>Mesurer • Analyser • Progresser</small>
-    </div> -->
 
   </div>
 
   <div class="panneaudroit">
     <div class="formulaireconteneur">
       <div class="formulaireentete">
-        <!-- <h2>O<span class="slogannoir">DC</span>Talent</h2> -->
         <h3>Bienvenue...</h3>
         <p>Connectez-vous à votre espace administrateur</p>
       </div>
@@ -77,8 +46,6 @@
           <a href="#" class="forgot-password">Mot de passe oublié ?</a>
         </div>
 
-        <!-- Avant : <button type="submit" class="btn-submit" [disabled]="loginForm.invalid"> -->
-<!-- Après : -->
 <button type="submit" class="btn-submit">
   Se connecter
 </button>
@@ -87,6 +54,10 @@
           <p><img src="/icones/cadenas.png"> Accès réservé aux administrateurs autorisés.</p>
         </div>
       </form>
+      <!-- Bloc d'affichage de l'erreur -->
+      <div *ngIf="errorMessage" class="error-alert" style="color: red; margin-bottom: 15px; font-size: 14px; text-align: center;">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </div>

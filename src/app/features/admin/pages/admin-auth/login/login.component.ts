@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // 1. Vérifier si un token existe déjà au chargement de la page de login
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('user_role');
 
@@ -53,7 +52,7 @@ export class LoginComponent implements OnInit {
 
     const payload = {
       email: this.loginForm.value.email,
-      password: this.loginForm.value.password
+      motDePasse: this.loginForm.value.password // Assure-toi que c'est bien 'motDePasse' ou 'password' selon ton LoginRequest Java
     };
 
     this.authService.login(payload).subscribe({
@@ -61,8 +60,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         console.log("Connexion réussie, réponse reçue :", response);
 
-        // 2. Sauvegarder le token et le rôle dans le stockage du navigateur
-        // (Vérifie si la propriété s'appelle 'token', 'accessToken' ou autre dans ton backend)
         const tokenValue = response.token || response.accessToken;
         const roleValue = response.role;
 
@@ -78,7 +75,14 @@ export class LoginComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         console.error("Erreur HTTP capturée :", err);
-        this.errorMessage = "Email ou mot de passe incorrect.";
+
+        if (err.error && typeof err.error === 'string') {
+          this.errorMessage = err.error;
+        } else if (err.error && err.error.message) {
+          this.errorMessage = err.error.message;
+        } else {
+          this.errorMessage = "Email ou mot de passe incorrect, ou compte en attente de validation.";
+        }
       }
     });
   }
