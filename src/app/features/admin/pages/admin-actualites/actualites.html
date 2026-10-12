@@ -44,7 +44,7 @@
   <div class="table-card">
     <div class="table-card-header">
       <h3>Liste des actualités</h3>
-      <span class="total-count">{{ actualites.length }} actualités</span>
+      <span class="total-count">{{ filteredActualites.length }} actualités</span>
     </div>
 
     <table class="custom-table">
@@ -59,10 +59,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of actualites">
+        <tr *ngFor="let item of filteredActualites">
           <td>
             <div class="news-title-cell">
-              <span class="badge-tag" [ngClass]="item.badge.toLowerCase()">{{ item.badge }}</span>
+              <span class="badge-tag" [ngClass]="item.badge ? item.badge.toLowerCase() : 'odc'">{{ item.badge || 'ODC' }}</span>
               <div>
                 <strong>{{ item.title }}</strong>
                 <small>{{ item.description }}</small>
@@ -70,7 +70,7 @@
             </div>
           </td>
           <td>{{ item.category }}</td>
-          <td>{{ item.date }}</td>
+          <td>{{ item.publicationDate || item.date }}</td>
           <td>
             <span class="status-badge" [ngClass]="item.status === 'Publié' ? 'published' : 'draft'">
               {{ item.status }}
@@ -82,10 +82,13 @@
             
             <div class="context-menu" *ngIf="item.showMenu">
               <button>✏️ Modifier</button>
-              <button>👁️ Masque</button>
-              <button class="delete-option">🗑️ Supprimer</button>
+              <button>👁️ Masquer</button>
+              <button class="delete-option" (click)="supprimerActualite(item.id)">🗑️ Supprimer</button>
             </div>
           </td>
+        </tr>
+        <tr *ngIf="filteredActualites.length === 0">
+          <td colspan="6" style="text-align: center; color: #888; padding: 2rem;">Aucune actualité ne correspond à votre recherche.</td>
         </tr>
       </tbody>
     </table>
@@ -129,13 +132,14 @@
 
       <div class="form-group">
         <label>Image de couverture</label>
-        <div class="upload-box">
+        <div class="upload-box" (click)="fileInput.click()" style="cursor: pointer;">
           <div class="upload-icon-placeholder">📁</div>
           <div class="upload-text">
-            <strong>Ajouter une image</strong>
+            <strong>{{ selectedFile ? selectedFile.name : 'Ajouter une image' }}</strong>
             <span>PNG, JPG ou WEBP — 5 Mo maximum</span>
           </div>
-          <button class="btn-browse">Parcourir</button>
+          <button type="button" class="btn-browse">Parcourir</button>
+          <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
         </div>
       </div>
 

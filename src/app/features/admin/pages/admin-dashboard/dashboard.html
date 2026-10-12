@@ -63,12 +63,13 @@
     </div>
 
     <!-- Actions rapides -->
+    <!-- Actions rapides (Lignes 58-66 modifiées) -->
     <div class="card actions-card">
       <h3>Actions rapides</h3>
       <div class="actions-list">
-        <button class="btn-action primary">+ Ajouter une actualité</button>
-        <button class="btn-action outline">✓ Modérer les projets</button>
-        <button class="btn-action outline">+ Ajouter une opportunité</button>
+        <button class="btn-action primary" (click)="naviguerVersActualites()">+ Ajouter une actualité</button>
+        <button class="btn-action outline" (click)="naviguerVersProjets()">✓ Modérer les projets</button>
+        <button class="btn-action outline" (click)="naviguerVersOpportunites()">+ Ajouter une opportunité</button>
       </div>
     </div>
   </div>

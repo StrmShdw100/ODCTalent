@@ -124,7 +124,7 @@
             <div class="context-menu" *ngIf="item.showMenu">
               <button>✏️ Modifier</button>
               <button>👁️ Masquer</button>
-              <button class="delete-option">🗑️ Supprimer</button>
+              <button class="delete-option" (click)="supprimerOpportunite(item.id)">🗑️ Supprimer</button>
             </div>
           </td>
         </tr>

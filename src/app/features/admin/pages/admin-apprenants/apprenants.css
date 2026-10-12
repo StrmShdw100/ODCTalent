@@ -271,3 +271,17 @@
 .context-menu button.delete-option {
   color: #e74c3c;
 }
+/* Badge pour le statut "En attente" */
+.status-badge.pending {
+  background-color: #FFF3EB;
+  color: #FF7900;
+}
+
+.context-menu button.approve-option {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.context-menu button.approve-option:hover {
+  background-color: #E8F8F0;
+}

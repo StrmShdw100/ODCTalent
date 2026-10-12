@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MissionService, MissionResponse, MissionRequest } from './mission.service';
 
 export interface Opportunite {
   id: number;
@@ -27,11 +28,9 @@ export class OpportunitesComponent implements OnInit {
   selectedStatus: string = 'Statut';
   selectedRecruiter: string = 'Recruteur';
 
-  // Gestion de la modale et des notifications
   isModalOpen: boolean = false;
   successMessage: string | null = null;
 
-  // Modèle du formulaire d'ajout (correspondant à la maquette)
   formModel = {
     title: '',
     recruiter: '',
@@ -44,24 +43,45 @@ export class OpportunitesComponent implements OnInit {
     publishImmediately: true
   };
 
-  // Données statistiques (KPIs)
   stats = {
-    actives: 37,
-    nouvelles: 12,
-    enAttente: 8,
+    actives: 0,
+    nouvelles: 0,
+    enAttente: 0,
     recruteursActifs: 86,
     candidatures: 214
   };
 
-  // Liste des opportunités mockées
-  opportunites: Opportunite[] = [
-    { id: 1, badge: 'JOB', title: 'Développeur React confirmé', location: 'Dakar • Hybride', recruiter: 'Sonatel Digital', type: 'Recrutement', date: '17 sept. 2026', status: 'Publié' },
-    { id: 2, badge: 'STG', title: 'Stage analyste de données', location: 'Dakar • Présentiel', recruiter: 'Wave Mobile Money', type: 'Recrutement', date: '12 sept. 2026', status: 'Publié' },
-    { id: 3, badge: 'MIS', title: 'Mission refonte application mobile', location: 'À distance', recruiter: 'Baobab+', type: 'Mission freelance', date: '15 sept. 2026', status: 'Masqué' },
-    { id: 4, badge: 'FOR', title: 'Formation certifiante Cloud', location: 'Dakar • Orange Digital Center', recruiter: 'Sonatel Digital', type: 'Recrutement', date: '08 sept. 2026', status: 'Publié' }
-  ];
+  opportunites: Opportunite[] = [];
 
-  ngOnInit(): void {}
+  constructor(private missionService: MissionService) {}
+
+  ngOnInit(): void {
+    this.chargerMissions();
+  }
+
+  // Charger les missions depuis le backend Spring Boot
+  chargerMissions(): void {
+    this.missionService.getAllMissions().subscribe({
+      next: (data: MissionResponse[]) => {
+        this.opportunites = data.map(m => ({
+          id: m.id,
+          badge: m.titre?.toLowerCase().includes('stage') ? 'STG' : 'JOB',
+          title: m.titre,
+          location: 'Dakar • Hybride',
+          recruiter: m.nomRecruteur && m.prenomRecruteur ? `${m.prenomRecruteur} ${m.nomRecruteur}` : 'Recruteur ODC',
+          type: 'Recrutement',
+          date: m.datePublication ? new Date(m.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Récemment',
+          status: m.statut === 'DISPONIBLE' ? 'Publié' : 'À valider'
+        }));
+
+        this.stats.actives = this.opportunites.length;
+        this.stats.nouvelles = this.opportunites.filter(o => o.status === 'Publié').length;
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des opportunités :", err);
+      }
+    });
+  }
 
   openAddModal(): void {
     this.isModalOpen = true;
@@ -82,26 +102,43 @@ export class OpportunitesComponent implements OnInit {
     this.isModalOpen = false;
   }
 
+  // Soumission d'une nouvelle opportunité via l'API
   submitOpportunite(): void {
-    const newEntry: Opportunite = {
-      id: this.opportunites.length + 1,
-      badge: 'JOB',
-      title: this.formModel.title || 'Nouvelle opportunité',
-      location: this.formModel.location || 'Dakar',
-      recruiter: this.formModel.recruiter || 'Orange Digital Center',
-      type: this.formModel.type,
-      date: '2 oct. 2026',
-      status: this.formModel.publishImmediately ? 'Publié' : 'À valider'
+    const request: MissionRequest = {
+      titre: this.formModel.title,
+      description: this.formModel.description,
+      competencesRequises: this.formModel.skills,
+      statut: this.formModel.publishImmediately ? 'DISPONIBLE' : 'EN_ATTENTE'
     };
 
-    this.opportunites.unshift(newEntry);
-    this.isModalOpen = false;
+    this.missionService.createMission(request).subscribe({
+      next: () => {
+        this.isModalOpen = false;
+        this.successMessage = "L'opportunité est maintenant visible.";
+        this.chargerMissions(); // Recharger la liste depuis le backend
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 4000);
+      },
+      error: (err) => {
+        console.error("Erreur lors de la création :", err);
+        alert("Impossible de publier cette opportunité. Vérifiez que vous êtes connecté en tant que recruteur.");
+      }
+    });
+  }
 
-    // Affichage de l'alerte de succès comme sur la maquette
-    this.successMessage = "L'opportunité est maintenant visible.";
-    setTimeout(() => {
-      this.successMessage = null;
-    }, 4000);
+  // Supprimer une opportunité
+  supprimerOpportunite(id: number): void {
+    if (confirm("Voulez-vous vraiment supprimer cette opportunité ?")) {
+      this.missionService.deleteMission(id).subscribe({
+        next: () => {
+          this.chargerMissions();
+        },
+        error: (err) => {
+          console.error("Erreur lors de la suppression :", err);
+        }
+      });
+    }
   }
 
   toggleMenu(item: Opportunite, event: Event): void {
