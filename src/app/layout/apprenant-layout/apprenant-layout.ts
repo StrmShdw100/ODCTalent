@@ -11,6 +11,8 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class ApprenantLayout {
     constructor(private router: Router) {}
+  nom =localStorage.getItem('user_name') ;
+  role =localStorage.getItem('user_role') ;
 
   deconnecter(): void {
     // Nettoyage du stockage local

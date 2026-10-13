@@ -7,35 +7,34 @@
     </div>
   </div>
 
-  <!-- Cartes Statistiques (KPIs) -->
+  <!-- Cartes Statistiques (KPIs dynamiques) -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">À examiner</span>
         <h3 class="stat-value">{{ stats.aExaminer }}</h3>
-        <span class="badge-urgent">Urgent</span>
+        <span class="badge-urgent" *ngIf="stats.aExaminer > 0">Urgent</span>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
-        <span class="stat-label">Validés ce mois</span>
+        <span class="stat-label">Validés</span>
         <h3 class="stat-value">{{ stats.validesMois }}</h3>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
-        <span class="stat-label">Refusés</span>
+        <span class="stat-label">À corriger</span>
         <h3 class="stat-value">{{ stats.refusesMois }}</h3>
-        <span class="stat-period">ce mois</span>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">Temps moyen de traitement</span>
-        <h3 class="stat-value-time">{{ stats.tempsTraitement }} <small>min</small></h3>
+        <h3 class="stat-value-time">{{ stats.tempsTraitement }}</h3>
       </div>
     </div>
   </div>
@@ -57,17 +56,13 @@
       <option>Mobile</option>
       <option>Data</option>
     </select>
-    <select [(ngModel)]="selectedSort" class="filter-select">
-      <option>Trier : plus récent</option>
-      <option>Trier : plus ancien</option>
-    </select>
   </div>
 
   <!-- Tableau des projets à modérer -->
   <div class="table-card">
     <div class="table-card-header">
       <h3>Projets à modérer</h3>
-      <span class="total-count">{{ projets.length }} projets</span>
+      <span class="total-count">{{ filteredProjets.length }} projets</span>
     </div>
 
     <table class="custom-table">
@@ -82,10 +77,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of projets">
+        <!-- Utilisation de filteredProjets -->
+        <tr *ngFor="let item of filteredProjets">
           <td>
             <div class="project-title-cell">
-              <span class="badge-tag" [ngClass]="item.badge.toLowerCase()">{{ item.badge }}</span>
+              <span class="badge-tag" [ngClass]="(item.badge || 'web').toLowerCase()">{{ item.badge }}</span>
               <div>
                 <strong>{{ item.title }}</strong>
                 <small>{{ item.description }}</small>
@@ -107,9 +103,8 @@
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             <div class="context-menu" *ngIf="item.showMenu">
-              <button><img src="icones/oeil.png" alt="Examiner"> Examiner</button>
-              <button>✓ Valider</button>
-              <button class="delete-option">✕ Refuser</button>
+              <button (click)="changerStatut(item, 'Validé')">✓ Valider</button>
+              <button class="delete-option" (click)="changerStatut(item, 'À corriger')">✕ Demander correction</button>
             </div>
           </td>
         </tr>

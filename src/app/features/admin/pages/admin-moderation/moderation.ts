@@ -1,18 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface ProjetModeration {
-  id: number;
-  badge: string;
-  title: string;
-  description: string;
-  apprenant: string;
-  date: string;
-  status: 'En attente' | 'Validé' | 'À corriger';
-  type: string;
-  showMenu?: boolean;
-}
+import { ModerationService, ProjetModeration } from './moderation.service';
 
 @Component({
   selector: 'app-moderation',
@@ -27,27 +16,77 @@ export class ModerationComponent implements OnInit {
   selectedCategory: string = 'Toutes catégories';
   selectedSort: string = 'Trier : plus récent';
 
-  stats = {
-    aExaminer: 24,
-    validesMois: 118,
-    refusesMois: 9,
-    tempsTraitement: '1h 42 min'
-  };
+  projets: ProjetModeration[] = [];
 
-  projets: ProjetModeration[] = [
-    { id: 1, badge: 'UI', title: 'ODC Learning', description: 'Plateforme e-learning', apprenant: 'Fatoumata Traoré', date: '21 sept. 2026', status: 'En attente', type: 'Web' },
-    { id: 2, badge: 'APP', title: 'Green Market', description: 'Application mobile', apprenant: 'Moussa Diarra', date: '20 sept. 2026', status: 'En attente', type: 'Mobile' },
-    { id: 3, badge: 'DATA', title: 'Analyse des talents', description: 'Tableau de bord data', apprenant: 'Aminata Coulibaly', date: '19 sept. 2026', status: 'Validé', type: 'Data' },
-    { id: 4, badge: 'WEB', title: 'JobConnect', description: 'Plateforme de recrutement', apprenant: 'Ibrahim Keita', date: '18 sept. 2026', status: 'À corriger', type: 'Web' }
-  ];
+  constructor(
+    private moderationService: ModerationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // Connexion future avec le service Spring Boot de modération
+    this.chargerProjets();
+  }
+
+  chargerProjets(): void {
+    this.moderationService.getProjetsModeration().subscribe({
+      next: (data) => {
+        this.projets = data;
+        this.cdr.detectChanges(); // 👈 Force l'affichage immédiat du premier coup
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des projets à modérer :", err);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // Calcul dynamique des stats basées sur les vraies données
+  get stats() {
+    const aExaminer = this.projets.filter(p => p.status === 'En attente').length;
+    const validesMois = this.projets.filter(p => p.status === 'Validé').length;
+    const refusesMois = this.projets.filter(p => p.status === 'À corriger').length;
+
+    return {
+      aExaminer,
+      validesMois,
+      refusesMois,
+      tempsTraitement: '1h 42 min' // Peut être dynamique si calculé par le back
+    };
+  }
+
+  changerStatut(projet: ProjetModeration, nouveauStatut: 'Validé' | 'À corriger' | 'En attente'): void {
+    this.moderationService.changerStatutProjet(projet.id, nouveauStatut).subscribe({
+      next: () => {
+        projet.status = nouveauStatut;
+        projet.showMenu = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors de la mise à jour du statut :", err);
+        alert("Impossible de modifier le statut du projet.");
+      }
+    });
   }
 
   toggleMenu(projet: ProjetModeration, event: Event): void {
     event.stopPropagation();
     this.projets.forEach(p => { if (p !== projet) p.showMenu = false; });
     projet.showMenu = !projet.showMenu;
+  }
+
+  get filteredProjets(): ProjetModeration[] {
+    return this.projets.filter(item => {
+      const matchesSearch = !this.searchTerm || 
+        item.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.apprenant.toLowerCase().includes(this.searchTerm.toLowerCase());
+      
+      const matchesStatus = this.selectedStatus === 'Tous les statuts' || 
+        item.status === this.selectedStatus;
+      
+      const matchesCategory = this.selectedCategory === 'Toutes catégories' || 
+        item.type === this.selectedCategory;
+
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
   }
 }

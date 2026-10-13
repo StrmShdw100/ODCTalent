@@ -97,6 +97,6 @@ export const routes: Routes = [
       { path: '', redirectTo: 'tableau-de-bord', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: '', redirectTo: 'recruteur/inscription', pathMatch: 'full' },
+  { path: '**', redirectTo: 'recruteur/inscription' }
 ];

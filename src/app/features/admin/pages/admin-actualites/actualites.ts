@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Actualite, ActualiteService } from './actualite.service';
@@ -30,7 +30,10 @@ export class ActualitesComponent implements OnInit {
 
   actualites: Actualite[] = [];
 
-  constructor(private actualiteService: ActualiteService) {}
+  constructor(
+    private actualiteService: ActualiteService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.chargerActualites();
@@ -40,9 +43,13 @@ export class ActualitesComponent implements OnInit {
     this.actualiteService.getActualites().subscribe({
       next: (data) => {
         this.actualites = data;
+        
+        // 👈 3. Force l'actualisation immédiate de l'interface dès l'arrivée des données
+        this.cdr.detectChanges(); 
       },
       error: (err) => {
         console.error("Erreur lors du chargement des actualités :", err);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -51,10 +58,12 @@ export class ActualitesComponent implements OnInit {
     this.isModalOpen = true;
     this.formModel = { title: '', category: '', publicationDate: '', description: '', status: 'Publié', imageUrl: '' };
     this.selectedFile = null;
+    this.cdr.detectChanges(); 
   }
 
   closeModal(): void {
     this.isModalOpen = false;
+    this.cdr.detectChanges();
   }
 
   onFileSelected(event: any): void {
@@ -66,10 +75,9 @@ export class ActualitesComponent implements OnInit {
 
   submitActualite(): void {
     if (this.selectedFile) {
-      // 1. Upload du fichier image d'abord
       this.actualiteService.uploadImage(this.selectedFile).subscribe({
         next: (response) => {
-          this.formModel.imageUrl = response.fileUrl; // Récupère l'URL renvoyée par le FileController
+          this.formModel.imageUrl = response.fileUrl; 
           this.sauvegarderEnBase();
         },
         error: (err) => {
@@ -99,7 +107,13 @@ export class ActualitesComponent implements OnInit {
         this.actualites.unshift(created);
         this.isModalOpen = false;
         this.successMessage = "Actualité publiée avec succès. L'opportunité est maintenant visible.";
-        setTimeout(() => { this.successMessage = null; }, 4000);
+        
+        this.cdr.detectChanges();
+
+        setTimeout(() => { 
+          this.successMessage = null; 
+          this.cdr.detectChanges();
+        }, 4000);
       },
       error: (err) => {
         console.error("Erreur lors de l'enregistrement :", err);
@@ -114,6 +128,7 @@ export class ActualitesComponent implements OnInit {
       this.actualiteService.deleteActualite(id).subscribe({
         next: () => {
           this.actualites = this.actualites.filter(a => a.id !== id);
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error("Erreur lors de la suppression :", err);
@@ -143,6 +158,4 @@ export class ActualitesComponent implements OnInit {
       return matchesSearch && matchesCategory && matchesStatus;
     });
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { DashboardService, DashboardStats } from './dashboard.service';
@@ -24,7 +24,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {
@@ -32,19 +33,22 @@ export class DashboardComponent implements OnInit {
   }
 
   chargerStats(): void {
+    this.loading = true;
     this.dashboardService.getStats().subscribe({
       next: (data) => {
         this.stats = data;
         this.loading = false;
+        
+        this.cdr.detectChanges(); 
       },
       error: (err) => {
         console.error("Erreur chargement dashboard :", err);
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  // Getter pour permettre à dashboard.html d'accéder directement à recentActivities
   get recentActivities() {
     return this.stats?.recentActivities || [];
   }

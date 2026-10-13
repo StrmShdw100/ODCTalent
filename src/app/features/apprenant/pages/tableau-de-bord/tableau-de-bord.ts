@@ -9,4 +9,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './tableau-de-bord.html',
   styleUrls: ['./tableau-de-bord.css']
 })
-export class TableauDeBordApprenant {}
+export class TableauDeBordApprenant {
+
+  nom =localStorage.getItem('user_name');
+}
