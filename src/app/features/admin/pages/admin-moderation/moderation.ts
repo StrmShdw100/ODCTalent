@@ -31,7 +31,7 @@ export class ModerationComponent implements OnInit {
     this.moderationService.getProjetsModeration().subscribe({
       next: (data) => {
         this.projets = data;
-        this.cdr.detectChanges(); // 👈 Force l'affichage immédiat du premier coup
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des projets à modérer :", err);
@@ -40,7 +40,6 @@ export class ModerationComponent implements OnInit {
     });
   }
 
-  // Calcul dynamique des stats basées sur les vraies données
   get stats() {
     const aExaminer = this.projets.filter(p => p.status === 'En attente').length;
     const validesMois = this.projets.filter(p => p.status === 'Validé').length;

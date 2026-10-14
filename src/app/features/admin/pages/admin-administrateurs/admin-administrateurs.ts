@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AdministrateurService, AdministrateurBackend } from './administrateur.service';
 
-export interface Administrateur {
+export interface AdministrateurViewModel {
   id: number;
   initials: string;
   name: string;
@@ -25,11 +26,9 @@ export class AdminAdministrateursComponent implements OnInit {
   searchTerm: string = '';
   selectedRole: string = 'Rôle';
 
-  // Gestion de la modale et du succès
   isModalOpen: boolean = false;
   successMessage: string | null = null;
 
-  // Modèle du formulaire d'ajout
   formModel = {
     prenom: '',
     nom: '',
@@ -47,22 +46,58 @@ export class AdminAdministrateursComponent implements OnInit {
     }
   };
 
-  stats = {
-    actifs: 5,
-    superAdmins: 1,
-    rolesPersonnalises: 4,
-    enAttente: 1
-  };
+  administrateurs: AdministrateurViewModel[] = [];
 
-  administrateurs: Administrateur[] = [
-    { id: 1, initials: 'AM', name: 'Fatoumata Kaloga', roleDescription: 'Administratrice principale', email: 'kalogaf@gmail.com', role: 'Super Administrateur', lastAccess: "Aujourd'hui, 10:24", status: 'Actif' },
-    { id: 2, initials: 'OC', name: 'Mamadou Dembele', roleDescription: 'Administrateur', email: 'dembele.23m@gmail.com', role: 'Administrateur', lastAccess: 'Hier, 16:42', status: 'Actif' },
-    { id: 3, initials: 'FL', name: 'Aicha Macoura Koné', roleDescription: 'Gestionnaire de contenu', email: 'aichakone.lo@gmail.com', role: 'Gestionnaire des recruteurs', lastAccess: '20 sept. 2026', status: 'Actif' },
-    { id: 4, initials: 'NK', name: 'Ousmane Soma', roleDescription: 'Modératrice de projets', email: 'soma21ous@gmail.com', role: 'Modérateur projets', lastAccess: '19 sept. 2026', status: 'Actif' },
-    { id: 5, initials: 'FS', name: 'Lamine Cissé', roleDescription: 'Support régional', email: 'laminecisse@gmail.com', role: 'Actualité', lastAccess: '18 sept. 2026', status: 'Inactif' }
-  ];
+  constructor(
+    private adminService: AdministrateurService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.chargerAdministrateurs();
+  }
+
+  chargerAdministrateurs(): void {
+    this.adminService.getAllAdministrateurs().subscribe({
+      next: (data: AdministrateurBackend[]) => {
+        this.administrateurs = data.map(a => {
+          const prenom = a.prenom || '';
+          const nom = a.nom || '';
+          const initials = ((prenom.charAt(0) + nom.charAt(0)) || 'AD').toUpperCase();
+          
+          return {
+            id: a.id,
+            initials: initials,
+            name: `${prenom} ${nom}`.trim(),
+            roleDescription: a.roleAdmin || 'Administrateur',
+            email: a.email,
+            role: a.roleAdmin || 'Administrateur',
+            lastAccess: a.dateInscription ? new Date(a.dateInscription).toLocaleDateString() : 'Récemment',
+            status: a.actif ? 'Actif' : 'Inactif'
+          };
+        });
+        this.cdr.detectChanges(); // Force la mise à jour de l'UI
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des administrateurs :", err);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // Calcul dynamique des KPIs
+  get stats() {
+    const actifs = this.administrateurs.filter(a => a.status === 'Actif').length;
+    const superAdmins = this.administrateurs.filter(a => a.role.includes('Super')).length;
+    const rolesPersonnalises = this.administrateurs.filter(a => !a.role.includes('Super')).length;
+
+    return {
+      actifs,
+      superAdmins,
+      rolesPersonnalises,
+      enAttente: 0
+    };
+  }
 
   openAddModal(): void {
     this.isModalOpen = true;
@@ -75,37 +110,67 @@ export class AdminAdministrateursComponent implements OnInit {
       tempPassword: '',
       permissions: { dashboard: true, actualites: true, projets: true, opportunites: true, apprenants: true, recruteurs: true }
     };
+    this.cdr.detectChanges();
   }
 
   closeModal(): void {
     this.isModalOpen = false;
+    this.cdr.detectChanges();
   }
 
   submitAdministrateur(): void {
-    const newAdmin: Administrateur = {
-      id: this.administrateurs.length + 1,
-      initials: (this.formModel.prenom.charAt(0) + this.formModel.nom.charAt(0)).toUpperCase() || 'AD',
-      name: `${this.formModel.prenom || 'Nouveau'} ${this.formModel.nom || 'Admin'}`,
-      roleDescription: 'Gestionnaire',
-      email: this.formModel.email || 'admin@odctalent.com',
-      role: this.formModel.role || 'Administrateur',
-      lastAccess: "À l'instant",
-      status: 'Actif'
-    };
+    this.adminService.creerAdministrateur(this.formModel).subscribe({
+      next: () => {
+        this.isModalOpen = false;
+        this.successMessage = "Administrateur ajouté avec succès.";
+        this.chargerMissionsOuAdmins();
+        this.cdr.detectChanges();
 
-    this.administrateurs.unshift(newAdmin);
-    this.isModalOpen = false;
-
-    // Affichage de l'alerte de succès comme sur la maquette
-    this.successMessage = "Administrateur est ajouté avec succès.";
-    setTimeout(() => {
-      this.successMessage = null;
-    }, 4000);
+        setTimeout(() => {
+          this.successMessage = null;
+          this.cdr.detectChanges();
+        }, 4000);
+      },
+      error: (err) => {
+        console.error("Erreur lors de la création de l'administrateur :", err);
+        alert("Impossible de créer l'administrateur.");
+      }
+    });
   }
 
-  toggleMenu(item: Administrateur, event: Event): void {
+  chargerMissionsOuAdmins(): void {
+    this.chargerAdministrateurs();
+  }
+
+  toggleStatut(item: AdministrateurViewModel): void {
+    this.adminService.toggleStatut(item.id).subscribe({
+      next: () => {
+        item.status = item.status === 'Actif' ? 'Inactif' : 'Actif';
+        item.showMenu = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors du changement de statut :", err);
+      }
+    });
+  }
+
+  toggleMenu(item: AdministrateurViewModel, event: Event): void {
     event.stopPropagation();
     this.administrateurs.forEach(a => { if (a !== item) a.showMenu = false; });
     item.showMenu = !item.showMenu;
+  }
+
+  get filteredAdministrateurs(): AdministrateurViewModel[] {
+    return this.administrateurs.filter(item => {
+      const matchesSearch = !this.searchTerm || 
+        item.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(this.searchTerm.toLowerCase());
+      
+      const matchesRole = this.selectedRole === 'Rôle' || 
+        item.role.toLowerCase() === this.selectedRole.toLowerCase();
+
+      return matchesSearch && matchesRole;
+    });
   }
 }
