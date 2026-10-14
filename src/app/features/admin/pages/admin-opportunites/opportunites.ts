@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MissionService, MissionResponse, MissionRequest } from './mission.service';
@@ -12,6 +12,7 @@ export interface Opportunite {
   type: string;
   date: string;
   status: 'Publié' | 'Masqué' | 'À valider';
+  rawStatus: string;
   showMenu?: boolean;
 }
 
@@ -47,40 +48,71 @@ export class OpportunitesComponent implements OnInit {
     actives: 0,
     nouvelles: 0,
     enAttente: 0,
-    recruteursActifs: 86,
-    candidatures: 214
-  };
+    recruteursActifs: 0,
+    candidatures: 0
+    };
 
   opportunites: Opportunite[] = [];
 
-  constructor(private missionService: MissionService) {}
+  constructor(
+    private missionService: MissionService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.chargerMissions();
+    this.chargerStatsGlobales();
   }
 
-  // Charger les missions depuis le backend Spring Boot
+  chargerStatsGlobales(): void {
+    this.missionService.getOpportunitesStats().subscribe({
+      next: (data) => {
+        this.stats.recruteursActifs = data.recruteursActifs;
+        this.stats.candidatures = data.candidatures;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des statistiques globales :", err);
+      }
+    });
+  }
+
   chargerMissions(): void {
     this.missionService.getAllMissions().subscribe({
       next: (data: MissionResponse[]) => {
-        this.opportunites = data.map(m => ({
-          id: m.id,
-          badge: m.titre?.toLowerCase().includes('stage') ? 'STG' : 'JOB',
-          title: m.titre,
-          location: 'Dakar • Hybride',
-          recruiter: m.nomRecruteur && m.prenomRecruteur ? `${m.prenomRecruteur} ${m.nomRecruteur}` : 'Recruteur ODC',
-          type: 'Recrutement',
-          date: m.datePublication ? new Date(m.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Récemment',
-          status: m.statut === 'DISPONIBLE' ? 'Publié' : 'À valider'
-        }));
+        this.opportunites = data.map(m => {
+          let mappedStatus: 'Publié' | 'Masqué' | 'À valider' = 'Publié';
+          if (m.statut === 'EN_ATTENTE') mappedStatus = 'À valider';
+          else if (m.statut === 'MASQUE') mappedStatus = 'Masqué';
+          else if (m.statut === 'DISPONIBLE' || m.statut === 'Publié') mappedStatus = 'Publié';
 
-        this.stats.actives = this.opportunites.length;
-        this.stats.nouvelles = this.opportunites.filter(o => o.status === 'Publié').length;
+          return {
+            id: m.id,
+            badge: m.titre?.toLowerCase().includes('stage') ? 'STG' : 'JOB',
+            title: m.titre,
+            location: 'Dakar • Hybride',
+            recruiter: m.nomRecruteur && m.prenomRecruteur ? `${m.prenomRecruteur} ${m.nomRecruteur}` : 'Recruteur ODC',
+            type: 'Recrutement',
+            date: m.datePublication ? new Date(m.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Récemment',
+            status: mappedStatus,
+            rawStatus: m.statut
+          };
+        });
+
+        this.calculerStats();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des opportunités :", err);
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  calculerStats(): void {
+    this.stats.actives = this.opportunites.filter(o => o.status === 'Publié').length;
+    this.stats.nouvelles = this.opportunites.length;
+    this.stats.enAttente = this.opportunites.filter(o => o.status === 'À valider').length;
   }
 
   openAddModal(): void {
@@ -102,7 +134,6 @@ export class OpportunitesComponent implements OnInit {
     this.isModalOpen = false;
   }
 
-  // Soumission d'une nouvelle opportunité via l'API
   submitOpportunite(): void {
     const request: MissionRequest = {
       titre: this.formModel.title,
@@ -115,24 +146,42 @@ export class OpportunitesComponent implements OnInit {
       next: () => {
         this.isModalOpen = false;
         this.successMessage = "L'opportunité est maintenant visible.";
-        this.chargerMissions(); // Recharger la liste depuis le backend
+        this.chargerMissions();
+        this.cdr.detectChanges();
         setTimeout(() => {
           this.successMessage = null;
+          this.cdr.detectChanges();
         }, 4000);
       },
       error: (err) => {
         console.error("Erreur lors de la création :", err);
-        alert("Impossible de publier cette opportunité. Vérifiez que vous êtes connecté en tant que recruteur.");
+        alert("Impossible de publier cette opportunité.");
       }
     });
   }
 
-  // Supprimer une opportunité
+  changerStatut(item: Opportunite, nouveauStatutApi: string, statutVisuel: 'Publié' | 'Masqué' | 'À valider'): void {
+    this.missionService.updateMissionStatus(item.id, nouveauStatutApi).subscribe({
+      next: () => {
+        item.status = statutVisuel;
+        item.rawStatus = nouveauStatutApi;
+        item.showMenu = false;
+        this.calculerStats();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors de la modification du statut :", err);
+      }
+    });
+  }
+
   supprimerOpportunite(id: number): void {
     if (confirm("Voulez-vous vraiment supprimer cette opportunité ?")) {
       this.missionService.deleteMission(id).subscribe({
         next: () => {
-          this.chargerMissions();
+          this.opportunites = this.opportunites.filter(o => o.id !== id);
+          this.calculerStats();
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error("Erreur lors de la suppression :", err);
@@ -145,5 +194,26 @@ export class OpportunitesComponent implements OnInit {
     event.stopPropagation();
     this.opportunites.forEach(o => { if (o !== item) o.showMenu = false; });
     item.showMenu = !item.showMenu;
+    this.cdr.detectChanges();
+  }
+
+  // 👈 Getter de filtrage pour la recherche et les sélecteurs
+  get filteredOpportunites(): Opportunite[] {
+    return this.opportunites.filter(item => {
+      const matchesSearch = !this.searchTerm || 
+        item.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        item.recruiter.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      const matchesType = this.selectedType === "Type d'opportunité" || 
+        item.type === this.selectedType;
+
+      const matchesStatus = this.selectedStatus === 'Statut' || 
+        item.status === this.selectedStatus;
+
+      const matchesRecruiter = this.selectedRecruiter === 'Recruteur' || 
+        item.recruiter === this.selectedRecruiter;
+
+      return matchesSearch && matchesType && matchesStatus && matchesRecruiter;
+    });
   }
 }

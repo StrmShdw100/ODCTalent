@@ -95,7 +95,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of opportunites">
+        <tr *ngFor="let item of filteredOpportunites">
           <td>
             <div class="opportunity-title-cell">
               <span class="badge-tag" [ngClass]="item.badge.toLowerCase()">{{ item.badge }}</span>
@@ -122,8 +122,8 @@
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             <div class="context-menu" *ngIf="item.showMenu">
-              <button>✏️ Modifier</button>
-              <button>👁️ Masquer</button>
+              <button (click)="changerStatut(item, 'DISPONIBLE', 'Publié')">👁️ Publier</button>
+              <button (click)="changerStatut(item, 'MASQUE', 'Masqué')">🙈 Masquer</button>
               <button class="delete-option" (click)="supprimerOpportunite(item.id)">🗑️ Supprimer</button>
             </div>
           </td>
@@ -132,12 +132,7 @@
     </table>
 
     <div class="table-footer">
-      <span>Affichage de 1-4 sur {{ stats.actives }} opportunités</span>
-      <div class="pagination">
-        <button class="page-btn">&lt;</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">&gt;</button>
-      </div>
+      <span>Affichage de {{ filteredOpportunites.length }} opportunité(s)</span>
     </div>
   </div>
 </div>

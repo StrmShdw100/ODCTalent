@@ -14,6 +14,7 @@ export interface Apprenant {
   projectsCount: number;
   status: 'Actif' | 'Inactif' | 'En attente';
   inscriptionDate: string;
+  disponibilite?: boolean;
   showMenu?: boolean;
 }
 
@@ -55,29 +56,37 @@ export class ApprenantsComponent implements OnInit {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // 1. Récupérer TOUS les utilisateurs depuis l'API Admin
-  chargerApprenants() {
-    this.http.get<any[]>('http://localhost:8080/api/v1/admin/utilisateurs', { headers: this.getHeaders() }).subscribe({
+ chargerApprenants() {
+    this.http.get<any[]>('http://localhost:8080/api/v1/admin/apprenants/tous', { headers: this.getHeaders() }).subscribe({
       next: (data) => {
-        // Filtrer uniquement les apprenants
-        this.apprenants = data
-          .filter(u => u.role === 'APPRENANT')
-          .map(u => ({
-            id: u.id,
-            initials: ((u.prenom?.charAt(0) || '') + (u.nom?.charAt(0) || '')).toUpperCase(),
-            name: `${u.prenom} ${u.nom}`,
-            location: u.telephone || 'Mali / Dakar',
-            email: u.email,
-            formation: u.formation || 'Dev Mobile et web',
-            promotion: u.promotion || 'P6',
-            projectsCount: u.projets ? u.projets.length : 0,
-            status: u.actif ? 'Actif' : 'En attente',
-            inscriptionDate: u.dateInscription ? new Date(u.dateInscription).toLocaleDateString() : 'Récemment'
-          }));
+        this.apprenants = data.map(u => ({
+          id: u.id,
+          initials: ((u.prenom?.charAt(0) || '') + (u.nom?.charAt(0) || '')).toUpperCase(),
+          name: `${u.prenom} ${u.nom}`,
+          location: u.localisation || u.telephone || 'Mali / Dakar',
+          email: u.email,
+          formation: u.formation || 'Dev Mobile et web',
+          promotion: u.promotion || 'P6',
+          projectsCount: u.portfolio?.projets ? u.portfolio.projets.length : 0,
+          status: u.actif ? 'Actif' : 'En attente',
+          inscriptionDate: u.dateInscription ? new Date(u.dateInscription).toLocaleDateString() : 'Récemment',
+          disponibilite: u.disponibilite ?? true 
+        }));
 
-        // Mettre à jour les statistiques globales
         this.stats.inscrits = this.apprenants.length.toString();
         this.stats.suivis = this.apprenants.filter(a => a.status === 'Actif').length.toString();
+
+        const total = this.apprenants.length;
+        if (total > 0) {
+          const enRechercheCount = this.apprenants.filter(a => a.disponibilite === true).length;
+          const enEmploiCount = total - enRechercheCount;
+
+          this.stats.enRecherche = Math.round((enRechercheCount / total) * 100) + '%';
+          this.stats.enEmploi = Math.round((enEmploiCount / total) * 100) + '%';
+        } else {
+          this.stats.enRecherche = '0%';
+          this.stats.enEmploi = '0%';
+        }
       },
       error: (err) => {
         console.error("Erreur lors du chargement des apprenants :", err);
@@ -85,7 +94,6 @@ export class ApprenantsComponent implements OnInit {
     });
   }
 
-  // 2. Filtrage dynamique en temps réel (Recherche + Promotion + Formation)
   get filteredApprenants(): Apprenant[] {
     return this.apprenants.filter(item => {
       const matchesSearch = !this.searchTerm ||

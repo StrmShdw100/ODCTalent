@@ -50,4 +50,10 @@ private apiUrl = 'http://localhost:8080/api/v1/projets';
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.patch(`${this.apiUrl}/${id}/statut`, { statut: nouveauStatut }, { headers });
   }
+
+  getModerationStats(): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/stats/moderation`, { headers });
+  }
 }

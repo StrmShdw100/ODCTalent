@@ -18,6 +18,13 @@ export class ModerationComponent implements OnInit {
 
   projets: ProjetModeration[] = [];
 
+  stats = {
+    aExaminer: 0,
+    validesMois: 0,
+    refusesMois: 0,
+    tempsTraitement: 'Calcul...'
+  };
+
   constructor(
     private moderationService: ModerationService,
     private cdr: ChangeDetectorRef
@@ -25,6 +32,7 @@ export class ModerationComponent implements OnInit {
 
   ngOnInit(): void {
     this.chargerProjets();
+    this.chargerStats();
   }
 
   chargerProjets(): void {
@@ -40,17 +48,16 @@ export class ModerationComponent implements OnInit {
     });
   }
 
-  get stats() {
-    const aExaminer = this.projets.filter(p => p.status === 'En attente').length;
-    const validesMois = this.projets.filter(p => p.status === 'Validé').length;
-    const refusesMois = this.projets.filter(p => p.status === 'À corriger').length;
-
-    return {
-      aExaminer,
-      validesMois,
-      refusesMois,
-      tempsTraitement: '1h 42 min' // Peut être dynamique si calculé par le back
-    };
+  chargerStats(): void {
+    this.moderationService.getModerationStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des stats de modération :", err);
+      }
+    });
   }
 
   changerStatut(projet: ProjetModeration, nouveauStatut: 'Validé' | 'À corriger' | 'En attente'): void {
@@ -58,6 +65,8 @@ export class ModerationComponent implements OnInit {
       next: () => {
         projet.status = nouveauStatut;
         projet.showMenu = false;
+        this.chargerStats();
+        this.chargerProjets();
         this.cdr.detectChanges();
       },
       error: (err) => {

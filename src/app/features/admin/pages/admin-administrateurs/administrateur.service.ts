@@ -38,4 +38,9 @@ export class AdministrateurService {
   toggleStatut(id: number): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}/${id}/toggle`, {}, { headers: this.getHeaders() });
   }
+
+  getUtilisateursEnAttente(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/v1/admin/utilisateurs/en-attente', { headers: this.getHeaders() });
+  }
+
 }

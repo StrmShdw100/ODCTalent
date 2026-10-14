@@ -25,7 +25,7 @@ export interface AdministrateurViewModel {
 export class AdminAdministrateursComponent implements OnInit {
   searchTerm: string = '';
   selectedRole: string = 'Rôle';
-
+  enAttenteCount: number = 0;
   isModalOpen: boolean = false;
   successMessage: string | null = null;
 
@@ -53,8 +53,9 @@ export class AdminAdministrateursComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     this.chargerAdministrateurs();
+    this.chargerComptesEnAttente();
   }
 
   chargerAdministrateurs(): void {
@@ -85,6 +86,20 @@ export class AdminAdministrateursComponent implements OnInit {
     });
   }
 
+  
+
+  chargerComptesEnAttente(): void {
+    this.adminService.getUtilisateursEnAttente().subscribe({
+      next: (data) => {
+        this.enAttenteCount = data.length;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des comptes en attente :", err);
+      }
+    });
+  }
+
   // Calcul dynamique des KPIs
   get stats() {
     const actifs = this.administrateurs.filter(a => a.status === 'Actif').length;
@@ -95,9 +110,11 @@ export class AdminAdministrateursComponent implements OnInit {
       actifs,
       superAdmins,
       rolesPersonnalises,
-      enAttente: 0
+      enAttente: this.enAttenteCount
     };
   }
+
+ 
 
   openAddModal(): void {
     this.isModalOpen = true;
@@ -123,7 +140,7 @@ export class AdminAdministrateursComponent implements OnInit {
       next: () => {
         this.isModalOpen = false;
         this.successMessage = "Administrateur ajouté avec succès.";
-        this.chargerMissionsOuAdmins();
+        this.chargerAdministrateurs();
         this.cdr.detectChanges();
 
         setTimeout(() => {

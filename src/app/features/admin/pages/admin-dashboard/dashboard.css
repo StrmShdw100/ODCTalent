@@ -151,6 +151,10 @@
 }
 
 .btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -165,7 +169,6 @@
   background-color: #FF7900;
   color: white;
   border: none;
-  text-align: center;
 }
 
 .btn-action.primary:hover {
@@ -176,6 +179,7 @@
   background-color: white;
   color: #333;
   border: 1px solid #ddd;
+
 }
 
 .btn-action.outline:hover {

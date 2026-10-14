@@ -37,12 +37,24 @@ export class MissionService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
+  getOpportunitesStats(): Observable<any> {
+    const token = localStorage.getItem('auth_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>('http://localhost:8080/api/v1/admin/stats/opportunites', { headers });
+  }
+
+
   getAllMissions(): Observable<MissionResponse[]> {
     return this.http.get<MissionResponse[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
   createMission(request: MissionRequest): Observable<MissionResponse> {
     return this.http.post<MissionResponse>(this.apiUrl, request, { headers: this.getHeaders() });
+  }
+
+  // 👈 Nouvelle méthode pour modifier le statut (Publié / Masqué / En attente)
+  updateMissionStatus(id: number, statut: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/statut`, { statut }, { headers: this.getHeaders() });
   }
 
   deleteMission(id: number): Observable<void> {
