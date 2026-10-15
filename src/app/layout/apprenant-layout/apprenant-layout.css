@@ -154,14 +154,42 @@
   text-decoration: none;
 }
 
-.point-notif {
+.notification-badge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.badge-chiffre {
   position: absolute;
-  top: 0;
-  right: 2px;
-  width: 8px;
-  height: 8px;
+  top: -6px;
+  right: -8px;
   background-color: #ff7900;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: bold;
   border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.badge-notif-menu {
+  margin-left: auto;
+  background-color: #ff7900;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 
 .profil-utilisateur {

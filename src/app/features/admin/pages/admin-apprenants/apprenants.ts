@@ -39,8 +39,8 @@ export class ApprenantsComponent implements OnInit {
   stats = {
     inscrits: '0',
     suivis: '0',
-    enEmploi: '72%',
-    enRecherche: '21%'
+    enEmploi: '0%',
+    enRecherche: '0%'
   };
 
   apprenants: Apprenant[] = [];
@@ -49,14 +49,27 @@ export class ApprenantsComponent implements OnInit {
 
   ngOnInit(): void {
     this.chargerApprenants();
+    this.chargerStats(); 
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('auth_token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // Récupération des statistiques calculées par le backend
+  chargerStats() {
+    this.http.get<any>('http://localhost:8080/api/v1/admin/apprenants/stats', { headers: this.getHeaders() }).subscribe({
+      next: (data) => {
+        this.stats = {
+          inscrits: data.inscrits,
+          suivis: data.suivis,
+          enEmploi: data.enEmploi,
+          enRecherche: data.enRecherche
+        };
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement des statistiques :", err);
+      }
+    });
   }
 
- chargerApprenants() {
+  chargerApprenants() {
     this.http.get<any[]>('http://localhost:8080/api/v1/admin/apprenants/tous', { headers: this.getHeaders() }).subscribe({
       next: (data) => {
         this.apprenants = data.map(u => ({
@@ -73,25 +86,18 @@ export class ApprenantsComponent implements OnInit {
           disponibilite: u.disponibilite ?? true 
         }));
 
-        this.stats.inscrits = this.apprenants.length.toString();
-        this.stats.suivis = this.apprenants.filter(a => a.status === 'Actif').length.toString();
-
-        const total = this.apprenants.length;
-        if (total > 0) {
-          const enRechercheCount = this.apprenants.filter(a => a.disponibilite === true).length;
-          const enEmploiCount = total - enRechercheCount;
-
-          this.stats.enRecherche = Math.round((enRechercheCount / total) * 100) + '%';
-          this.stats.enEmploi = Math.round((enEmploiCount / total) * 100) + '%';
-        } else {
-          this.stats.enRecherche = '0%';
-          this.stats.enEmploi = '0%';
-        }
+        // Actualise également les stats après le chargement des apprenants
+        this.chargerStats();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des apprenants :", err);
       }
     });
+  }
+
+  private getHeaders() {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   get filteredApprenants(): Apprenant[] {
@@ -107,7 +113,6 @@ export class ApprenantsComponent implements OnInit {
     });
   }
 
-  // 3. Action d'autoriser un compte apprenant
   autoriserCompte(id: number) {
     this.http.put(`http://localhost:8080/api/v1/admin/utilisateurs/${id}/autoriser`, {}, { 
       headers: this.getHeaders(), 
@@ -115,7 +120,7 @@ export class ApprenantsComponent implements OnInit {
     }).subscribe({
       next: () => {
         alert("Compte apprenant autorisé avec succès !");
-        this.chargerApprenants(); // On recharge la liste
+        this.chargerApprenants(); 
       },
       error: (err) => {
         console.error("Erreur lors de l'autorisation :", err);

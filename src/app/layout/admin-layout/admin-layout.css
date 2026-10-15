@@ -203,3 +203,30 @@ margin: auto;
 .logodeconnexion{
   width: 12px;
 }
+.notification-link .icon-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-link .nav-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.badge-exposant {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 50%;
+  line-height: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: scale(0.9);
+}

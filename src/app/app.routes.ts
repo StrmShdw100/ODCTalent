@@ -35,6 +35,7 @@ import { NotificationsApprenant } from './features/apprenant/pages/notifications
 import { PortfolioSuccesApprenant } from './features/apprenant/pages/portfolio-succes/portfolio-succes';
 import { PortfolioApprenant } from './features/apprenant/pages/portfolio/portfolio';
 import { ApprenantLayout } from './layout/apprenant-layout/apprenant-layout';
+import { AdminNotificationsComponent } from './features/admin/pages/admin-notifications/admin-notifications';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -53,6 +54,7 @@ export const routes: Routes = [
       { path: 'recruteurs', component: AdminRecruteursComponent },
       { path: 'administrateurs', component: AdminAdministrateursComponent },
       { path: 'parametres', component: AdminParametresComponent },
+      { path: 'notifications', component:AdminNotificationsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

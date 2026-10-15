@@ -12,6 +12,8 @@ export interface Actualite {
   status: 'Publié' | 'Brouillon';
   author: string;
   imageUrl?: string;
+  toutesPromotions?: boolean;
+  promotionsCibles?: string[];
   showMenu?: boolean;
 }
 

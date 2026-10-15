@@ -7,11 +7,18 @@
   <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
     <img src="icones/dashboard.png"> Tableau de bord
   </a>
+  <a routerLink="/admin/notifications" routerLinkActive="active" class="nav-item notification-link">
+    <span class="icon-container">
+      <img src="icones/love-bell.png" alt="Notifications" class="nav-icon">
+      <sup *ngIf="unreadCount > 0" class="badge-exposant">{{ unreadCount }}</sup>
+    </span>
+    <span class="nav-text">Notifications</span>
+  </a>
   <a routerLink="/admin/actualites" routerLinkActive="active" class="nav-item">
     <img src="icones/newspaper.png"> Actualités
   </a>
   <a routerLink="/admin/moderation" routerLinkActive="active" class="nav-item">
-    <img src="icones/self.png"> Modération des projets
+    <img src="icones/project.png"> Modération des projets
   </a>
   <a routerLink="/admin/opportunites" routerLinkActive="active" class="nav-item">
     <img src="icones/briefcase.png"> Opportunités

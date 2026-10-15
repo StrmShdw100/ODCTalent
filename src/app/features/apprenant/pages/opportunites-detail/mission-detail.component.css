@@ -1,0 +1,151 @@
+.mobile-container {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #FAFAFA;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 40px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.detail-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mission-header-card {
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  border: 1px solid #EFEFEF;
+}
+
+.mission-header-card h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin: 10px 0 6px 0;
+}
+
+.company-name {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background-color: #FFF3EB;
+  color: #FF7900;
+}
+
+.info-section {
+  background: #FFFFFF;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid #EFEFEF;
+}
+
+.info-section h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.description-text, .skills-tag {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-item {
+  background: #FFFFFF;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #EFEFEF;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-item .label {
+  font-size: 11px;
+  color: #888;
+}
+
+.info-item .value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+}
+
+.deadline-date {
+  color: #d9534f !important;
+}
+
+.btn-apply {
+  background-color: #FF7900;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 25px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 121, 0, 0.3);
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.btn-apply:hover {
+  background-color: #e56d00;
+}
+
+.state-message {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+  font-size: 14px;
+}
+
+.state-message.error { color: #d9534f; }
+.state-message.success { color: #28a745; font-weight: 600; }

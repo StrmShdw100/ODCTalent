@@ -1,0 +1,25 @@
+<div class="conteneur-notifications">
+  <div class="en-tete-page">
+    <h1 class="titre-principal">Notifications Administrateur</h1>
+    <p class="sous-titre-principal">Suivez les inscriptions des recruteurs et alertes système.</p>
+  </div>
+
+  <div class="liste-notifications" *ngIf="!chargement; else loader">
+    <div class="carte-notification" *ngFor="let notif of notifications" [class.non-lue]="!notif.lu">
+      <div class="vignette-icone orange">🔔</div>
+      <div class="notification-corps">
+        <h3 class="notif-titre">{{ notif.titre }}</h3>
+        <p class="notif-desc">{{ notif.message }}</p>
+        <span class="notif-date">{{ formaterDate(notif.dateCreation) }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="notifications.length === 0" class="carte-notification">
+      <p style="color: #6b7280; margin: 0; text-align: center; width: 100%;">Aucune notification pour le moment.</p>
+    </div>
+  </div>
+
+  <ng-template #loader>
+    <p style="color: #6b7280;">Chargement des notifications...</p>
+  </ng-template>
+</div>

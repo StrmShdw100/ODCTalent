@@ -1,11 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+
+export interface Notification {
+  id: number;
+  titre: string;
+  message: string;
+  dateCreation: string;
+  lu: boolean;
+}
 
 @Component({
   selector: 'app-apprenant-notifications',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './notifications.html',
   styleUrls: ['./notifications.css']
 })
-export class NotificationsApprenant {}
+export class NotificationsApprenant implements OnInit {
+  notifications: Notification[] = [];
+  chargement: boolean = true;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.chargerNotifications();
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  chargerNotifications(): void {
+    this.http.get<Notification[]>('http://localhost:8080/api/v1/apprenants/notifications', { headers: this.getHeaders() })
+      .subscribe({
+        next: (data) => {
+          this.notifications = data;
+          this.chargement = false;
+        },
+        error: (err) => {
+          console.error("Erreur lors du chargement des notifications :", err);
+          this.chargement = false;
+        }
+      });
+  }
+
+  formaterDate(dateString: string): string {
+    if (!dateString) return 'Récemment';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+}

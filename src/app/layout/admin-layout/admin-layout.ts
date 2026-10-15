@@ -1,38 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { Router, RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterModule, HttpClientModule],
   templateUrl: './admin-layout.html',
   styleUrls: ['./admin-layout.css']
 })
 export class AdminLayoutComponent implements OnInit {
-  src="/logoODC.png";
-  adminName = 'Chargement...';
-  adminRole = 'Administrateur';
-  constructor(private authService: AuthService, private router: Router) {}
+  adminName = localStorage.getItem('user_name') || 'Administrateur';
+  adminRole = localStorage.getItem('user_role') || 'ADMIN';
+  src: string = '/logoODC.png'; 
+  unreadCount: number = 0;
+
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    const role = this.authService.getRole();
-    if (role) {
-      this.adminRole = role.replace('ROLE_', '').toLowerCase();
-      this.adminRole = this.adminRole.charAt(0).toUpperCase() + this.adminRole.slice(1);
-    }
+    this.chargerCompteurNotifications();
+  }
 
-    const storedName = localStorage.getItem('user_name');
-    if (storedName) {
-      this.adminName = storedName;
-    } else {
-      this.adminName = 'Utilisateur ODC';
-    }
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  chargerCompteurNotifications(): void {
+    this.http.get<any[]>('http://localhost:8080/api/v1/admin/recruteurs/notifications', { headers: this.getHeaders() })
+      .subscribe({
+        next: (notifications) => {
+          this.unreadCount = notifications.filter(n => !n.lu).length;
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des notifications admin :', err);
+        }
+      });
   }
 
   onLogout(): void {
-    this.authService.logout(); 
-    this.router.navigate(['/login']); 
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user_name');
+    
+    this.router.navigate(['/login']);
   }
 }

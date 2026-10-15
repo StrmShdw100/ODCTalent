@@ -19,13 +19,17 @@ export class ActualitesComponent implements OnInit {
   successMessage: string | null = null;
   selectedFile: File | null = null;
 
+  availablePromotions: string[] = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P9', 'P10', 'P11', 'P12'];
+
   formModel = {
     title: '',
     category: '',
     publicationDate: '',
     description: '',
     status: 'Publié' as 'Publié' | 'Brouillon',
-    imageUrl: ''
+    imageUrl: '',
+    toutesPromotions: true,
+    promotionsCibles: [] as string[]
   };
 
   actualites: Actualite[] = [];
@@ -43,8 +47,6 @@ export class ActualitesComponent implements OnInit {
     this.actualiteService.getActualites().subscribe({
       next: (data) => {
         this.actualites = data;
-        
-        // 👈 3. Force l'actualisation immédiate de l'interface dès l'arrivée des données
         this.cdr.detectChanges(); 
       },
       error: (err) => {
@@ -56,20 +58,26 @@ export class ActualitesComponent implements OnInit {
 
   openAddModal(): void {
     this.isModalOpen = true;
-    this.formModel = { title: '', category: '', publicationDate: '', description: '', status: 'Publié', imageUrl: '' };
+    this.formModel = { 
+      title: '', 
+      category: '', 
+      publicationDate: '', 
+      description: '', 
+      status: 'Publié', 
+      imageUrl: '', 
+      toutesPromotions: true, 
+      promotionsCibles: [] 
+    };
     this.selectedFile = null;
     this.cdr.detectChanges(); 
   }
 
-  closeModal(): void {
-    this.isModalOpen = false;
-    this.cdr.detectChanges();
-  }
-
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
+  // Gérer la sélection multiple des promotions
+  onPromotionCheckboxChange(promo: string, event: any): void {
+    if (event.target.checked) {
+      this.formModel.promotionsCibles.push(promo);
+    } else {
+      this.formModel.promotionsCibles = this.formModel.promotionsCibles.filter(p => p !== promo);
     }
   }
 
@@ -99,15 +107,16 @@ export class ActualitesComponent implements OnInit {
       publicationDate: this.formModel.publicationDate || 'Aujourd\'hui',
       status: this.formModel.status,
       author: 'Admin ODC',
-      imageUrl: this.formModel.imageUrl
+      imageUrl: this.formModel.imageUrl,
+      toutesPromotions: this.formModel.toutesPromotions,
+      promotionsCibles: this.formModel.toutesPromotions ? [] : this.formModel.promotionsCibles
     };
 
     this.actualiteService.createActualite(nouvelleActualite).subscribe({
       next: (created) => {
         this.actualites.unshift(created);
         this.isModalOpen = false;
-        this.successMessage = "Actualité publiée avec succès. L'opportunité est maintenant visible.";
-        
+        this.successMessage = "Actualité publiée et notifications envoyées aux apprenants concernés !";
         this.cdr.detectChanges();
 
         setTimeout(() => { 
@@ -120,6 +129,18 @@ export class ActualitesComponent implements OnInit {
         alert("Erreur lors de la création de l'actualité.");
       }
     });
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.cdr.detectChanges();
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
 
   supprimerActualite(id?: number) {

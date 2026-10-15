@@ -70,7 +70,7 @@
             </div>
           </td>
           <td>{{ item.category }}</td>
-          <td>{{ item.publicationDate  }}</td>
+          <td>{{ item.publicationDate }}</td>
           <td>
             <span class="status-badge" [ngClass]="item.status === 'Publié' ? 'published' : 'draft'">
               {{ item.status }}
@@ -127,6 +127,29 @@
         <div class="form-group">
           <label>Date de publication *</label>
           <input type="text" [(ngModel)]="formModel.publicationDate" placeholder="JJ/MM/AAAA" />
+        </div>
+      </div>
+
+      <!-- SECTION CIBLAGE DES PROMOTIONS -->
+      <div class="form-group" style="background: #fdfdfd; padding: 15px; border: 1px solid #eaeaea; border-radius: 8px;">
+        <label style="margin-bottom: 8px; display: block;">Ciblage des promotions *</label>
+        
+        <div style="margin-bottom: 10px;">
+          <label style="font-weight: normal; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" [(ngModel)]="formModel.toutesPromotions" style="width: 16px; height: 16px;" />
+            <strong>Envoyer à toutes les promotions</strong>
+          </label>
+        </div>
+
+        <!-- Si "toutes les promotions" est décoché, afficher la grille de sélection multiple -->
+        <div *ngIf="!formModel.toutesPromotions" style="margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 10px;">
+          <span style="font-size: 0.8rem; color: #666; display: block; margin-bottom: 8px;">Sélectionnez une ou plusieurs promotions cibles :</span>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <label *ngFor="let promo of availablePromotions" style="font-weight: normal; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
+              <input type="checkbox" (change)="onPromotionCheckboxChange(promo, $event)" [checked]="formModel.promotionsCibles.includes(promo)" />
+              {{ promo }}
+            </label>
+          </div>
         </div>
       </div>
 

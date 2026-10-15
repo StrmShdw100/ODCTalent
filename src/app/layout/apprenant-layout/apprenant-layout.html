@@ -18,7 +18,9 @@
         <span class="icone-menu"><img src="/icones/opportinuty.png" alt=""></span> Opportunités
       </a>
       <a routerLink="/apprenant/notifications" routerLinkActive="lien-actif" class="lien-menu">
-        <span class="icone-menu"><img src="/icones/love-bell.png" alt="icone-alert"></span> Notifications
+        <span class="icone-menu"><img src="/icones/love-bell.png" alt="icone-alert"></span> 
+        Notifications
+        <span class="badge-notif-menu" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
       </a>
       <a routerLink="/apprenant/portfolio" routerLinkActive="lien-actif" class="lien-menu">
         <span class="icone-menu"><img src="/icones/portfolio.png" alt="icone-portfolio"></span> Mon Portfolio
@@ -43,16 +45,17 @@
           <input type="text" class="champ-recherche" placeholder="Rechercher..." />
         </div>
 
+        <!-- Cloche de notification dans le header avec badge numéroté -->
         <a routerLink="/apprenant/notifications" class="notification-badge">
-          <span class="point-notif"></span>
+          <span class="badge-chiffre" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
           <img src="/icones/love-bell.png" alt="icone-notification">
         </a>
 
         <div class="profil-utilisateur">
-          <div class="avatar-cercle">MC</div>
+          <div class="avatar-cercle">{{ nom.charAt(0).toUpperCase() }}</div>
           <div class="infos-utilisateur">
-            <span class="nom-utilisateur">{{nom}}</span>
-            <span class="role-utilisateur">{{role}}</span>
+            <span class="nom-utilisateur">{{ nom }}</span>
+            <span class="role-utilisateur">{{ role }}</span>
           </div>
         </div>
       </div>

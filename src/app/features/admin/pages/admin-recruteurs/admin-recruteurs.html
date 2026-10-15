@@ -66,34 +66,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of recruteurs">
-          <td>
-            <div class="company-profile-cell">
-              <div class="company-avatar" [style.background-color]="item.badgeBg">{{ item.initials }}</div>
-              <div>
-                <strong>{{ item.companyName }}</strong>
-                <small>{{ item.location }}</small>
-              </div>
-            </div>
-          </td>
-          <td>{{ item.recruiterName }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.sector }}</td>
-          <td>
-            <span class="status-badge" [ngClass]="item.status === 'Actif' ? 'active' : 'inactive'">
-              {{ item.status }}
-            </span>
-          </td>
-          <td><strong>{{ item.offresCount }}</strong></td>
-          <td class="actions-cell">
-            <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
-           <div class="context-menu" *ngIf="item.showMenu">
-            <button *ngIf="item.status === 'En attente'" (click)="autoriserCompte(item.id)" class="approve-option">✅ Autoriser le compte</button>
-            <button>👁️ Voir profil</button>
-            <button class="delete-option">🚫 Suspendre</button>
-          </div>
-          </td>
-        </tr>
+        <tr *ngFor="let recruteur of recruteurs">
+  <td>{{ recruteur.nom }} {{ recruteur.prenom }}</td>
+  <td>{{ recruteur.nomEntreprise || recruteur.email }}</td>
+  <td>
+    <span class="status-badge" [class.actif]="recruteur.actif" [class.en-attente]="!recruteur.actif">
+      {{ recruteur.actif ? 'Actif' : 'En attente' }}
+    </span>
+  </td>
+  <td>
+    <button *ngIf="!recruteur.actif" class="btn-success" (click)="autoriserRecruteur(recruteur.id)">
+      ✓ Autoriser
+    </button>
+  </td>
+</tr>
       </tbody>
     </table>
   </div>
