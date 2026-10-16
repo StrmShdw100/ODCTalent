@@ -5,6 +5,7 @@
       <h2>Apprenants</h2>
       <p>Gérez les comptes, profils et parcours des apprenants inscrits sur ODCTalent.</p>
     </div>
+    <button class="btn-primary" (click)="ouvrirModalAjout()">+ Ajouter des apprenants</button>
   </div>
 
   <!-- Cartes Statistiques (KPIs) -->
@@ -114,5 +115,94 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- MODALE AJOUT / IMPORT APPRENANTS -->
+<div class="modal-backdrop" *ngIf="isAddModalOpen">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3>Ajouter des apprenants</h3>
+        <p>Inscrivez un élève individuellement ou importez une promotion entière par fichier Excel.</p>
+      </div>
+      <button class="modal-close-btn" (click)="fermerModalAjout()">✕</button>
+    </div>
+
+    <!-- Onglets de choix -->
+    <div class="modal-tabs">
+      <button [class.active]="activeTab === 'unique'" (click)="activeTab = 'unique'">Ajout individuel</button>
+      <button [class.active]="activeTab === 'import'" (click)="activeTab = 'import'">Importation Excel (Promotion)</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- FORMULAIRE AJOUT UNIQUE -->
+      <div *ngIf="activeTab === 'unique'" class="form-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" [(ngModel)]="nouveauApprenant.nom" placeholder="Ex. Diallo" />
+          </div>
+          <div class="form-group">
+            <label>Prénom *</label>
+            <input type="text" [(ngModel)]="nouveauApprenant.prenom" placeholder="Ex. Ibrahim" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" [(ngModel)]="nouveauApprenant.email" placeholder="ibrahim.diallo@odc.ml" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="text" [(ngModel)]="nouveauApprenant.telephone" placeholder="+223 ..." />
+          </div>
+          <div class="form-group">
+            <label>Promotion *</label>
+            <select [(ngModel)]="nouveauApprenant.promotion">
+              <option *ngFor="let p of promotions.slice(1)" [value]="p">{{ p }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Formation *</label>
+          <select [(ngModel)]="nouveauApprenant.formation">
+            <option *ngFor="let f of formations.slice(1)" [value]="f">{{ f }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- FORMULAIRE IMPORT EXCEL -->
+      <div *ngIf="activeTab === 'import'" class="form-section">
+        <div class="form-group">
+          <label>Promotion cible pour l'import *</label>
+          <select [(ngModel)]="promotionImport">
+            <option *ngFor="let p of promotions.slice(1)" [value]="p">{{ p }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Fichier Excel (.xlsx) *</label>
+          <div class="upload-box" (click)="fileInput.click()" style="cursor: pointer;">
+            <div class="upload-icon-placeholder">📊</div>
+            <div class="upload-text">
+              <strong>{{ selectedFile ? selectedFile.name : 'Sélectionner un fichier Excel' }}</strong>
+              <span>Format .xlsx requis (Nom, Prénom, Email, Téléphone)</span>
+            </div>
+            <button type="button" class="btn-browse">Parcourir</button>
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="fermerModalAjout()">Annuler</button>
+      <button class="btn-primary" *ngIf="activeTab === 'unique'" (click)="creerApprenantUnique()">Enregistrer l'apprenant</button>
+      <button class="btn-primary" *ngIf="activeTab === 'import'" (click)="importerPromotion()">Lancer l'importation</button>
+    </div>
   </div>
 </div>

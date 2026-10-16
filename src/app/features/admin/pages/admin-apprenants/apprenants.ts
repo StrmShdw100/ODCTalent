@@ -26,6 +26,24 @@ export interface Apprenant {
   styleUrls: ['./apprenants.css']
 })
 export class ApprenantsComponent implements OnInit {
+
+  // Gestion de la modale d'ajout / import
+  isAddModalOpen: boolean = false;
+  activeTab: 'unique' | 'import' = 'unique';
+
+  nouveauApprenant = {
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    promotion: 'P6',
+    formation: 'Dev Mobile et web'
+  };
+
+  selectedFile: File | null = null;
+  promotionImport: string = 'P6';
+
+  // Filtres & listes
   searchTerm: string = '';
   selectedPromotion: string = 'Toutes les promotions';
   selectedFormation: string = 'Toutes les formations';
@@ -52,7 +70,67 @@ export class ApprenantsComponent implements OnInit {
     this.chargerStats(); 
   }
 
-  // Récupération des statistiques calculées par le backend
+  ouvrirModalAjout() {
+    this.isAddModalOpen = true;
+    this.nouveauApprenant = { nom: '', prenom: '', email: '', telephone: '', promotion: 'P6', formation: 'Dev Mobile et web' };
+    this.selectedFile = null;
+    this.activeTab = 'unique';
+  }
+
+  fermerModalAjout() {
+    this.isAddModalOpen = false;
+    this.selectedFile = null;
+  }
+
+  creerApprenantUnique() {
+    if (!this.nouveauApprenant.nom || !this.nouveauApprenant.prenom || !this.nouveauApprenant.email) {
+      alert("Veuillez remplir les champs obligatoires (Nom, Prénom, Email).");
+      return;
+    }
+
+    this.http.post('http://localhost:8080/api/v1/admin/apprenants', this.nouveauApprenant, { headers: this.getHeaders() }).subscribe({
+      next: () => {
+        alert("Apprenant ajouté avec succès !");
+        this.fermerModalAjout();
+        this.chargerApprenants();
+      },
+      error: (err) => {
+        console.error("Erreur lors de l'ajout :", err);
+        alert("Erreur lors de la création de l'apprenant.");
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  importerPromotion() {
+    if (!this.selectedFile) {
+      alert("Veuillez sélectionner un fichier Excel.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('promotion', this.promotionImport);
+
+    this.http.post('http://localhost:8080/api/v1/admin/apprenants/import', formData, { headers: this.getHeaders() }).subscribe({
+      next: (res: any) => {
+        alert(res.message || "Importation réussie avec succès !");
+        this.fermerModalAjout();
+        this.chargerApprenants();
+      },
+      error: (err) => {
+        console.error("Erreur lors de l'importation :", err);
+        alert("Erreur lors de l'importation du fichier Excel.");
+      }
+    });
+  }
+
   chargerStats() {
     this.http.get<any>('http://localhost:8080/api/v1/admin/apprenants/stats', { headers: this.getHeaders() }).subscribe({
       next: (data) => {
@@ -86,7 +164,6 @@ export class ApprenantsComponent implements OnInit {
           disponibilite: u.disponibilite ?? true 
         }));
 
-        // Actualise également les stats après le chargement des apprenants
         this.chargerStats();
       },
       error: (err) => {

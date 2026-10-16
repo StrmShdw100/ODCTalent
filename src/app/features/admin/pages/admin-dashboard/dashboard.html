@@ -1,87 +1,81 @@
-<div class="dashboard-view">
-  <div class="dashboard-header">
-    <h2>Tableau de bord</h2>
-    <p>Vue d'ensemble de l'activité de la plateforme ODCTalent.</p>
+<div class="dashboard-container">
+  <!-- En-tête -->
+  <div class="page-header-row">
+    <div>
+      <h2>Tableau de bord général</h2>
+      <p>Bienvenue sur l'espace d'administration centralisé d'ODCTalent.</p>
+    </div>
+    <button class="btn-refresh" (click)="chargerStats()">🔄 Actualiser</button>
   </div>
 
-  <!-- Cartes Statistiques (KPIs) -->
+  <!-- Grille des KPIs -->
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-info">
-        <span class="stat-label">Apprenants</span>
-        <h3 class="stat-value">{{ stats.apprenants | number }}</h3>
-        <span class="stat-period">ce mois</span>
+      <div class="stat-icon-wrapper orange">👨‍🎓</div>
+      <div class="stat-content">
+        <span class="stat-label">Total Apprenants</span>
+        <h3 class="stat-value">{{ stats.totalApprenants }}</h3>
+        <span class="stat-sub">Inscrits sur la plateforme</span>
       </div>
-      <div class="stat-icon users-icon"><img src="icones/group.png" alt="icones-personnes"></div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-info">
-        <span class="stat-label">Recruteurs</span>
-        <h3 class="stat-value">{{ stats.recruteurs }}</h3>
-        <span class="stat-period">ce mois</span>
+      <div class="stat-icon-wrapper blue">🏢</div>
+      <div class="stat-content">
+        <span class="stat-label">Entreprises & Recruteurs</span>
+        <h3 class="stat-value">{{ stats.totalRecruteurs }}</h3>
+        <span class="stat-sub">Partenaires actifs</span>
       </div>
-      <div class="stat-icon recruiters-icon"><img src="icones/recruteurs.png" alt="icone-recruteurs"></div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-info">
-        <span class="stat-label">Projets à modérer</span>
-        <h3 class="stat-value">{{ stats.projetsAModerer }}</h3>
-        <span class="badge-pending">À traiter</span>
+      <div class="stat-icon-wrapper green">💼</div>
+      <div class="stat-content">
+        <span class="stat-label">Opportunités publiées</span>
+        <h3 class="stat-value">{{ stats.totalOpportunites }}</h3>
+        <span class="stat-sub">Offres & Stages</span>
       </div>
-      <div class="stat-icon projects-icon"><img src="icones/project.png" alt="icone-projets"></div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-info">
-        <span class="stat-label">Opportunités actives</span>
-        <h3 class="stat-value">{{ stats.opportunitesActives }}</h3>
-        <span class="badge-new">{{ stats.nouvellesOpportunites }} nouvelles</span>
+      <div class="stat-icon-wrapper purple">📄</div>
+      <div class="stat-content">
+        <span class="stat-label">Candidatures</span>
+        <h3 class="stat-value">{{ stats.totalCandidatures }}</h3>
+        <span class="stat-sub">Suivi global</span>
       </div>
-      <div class="stat-icon opportunities-icon"><img src="icones/opportinuty.png" alt="icone-opportunites"></div>
     </div>
   </div>
 
-  <!-- Section Centrale : Activité récente & Actions rapides -->
-  <div class="dashboard-grid-middle">
-    <!-- Activité récente -->
-    <div class="card activity-card">
-      <div class="card-header">
-        <h3>Activité récente</h3>
-        <a href="#" class="see-all">Voir tout</a>
-      </div>
-      <div class="activity-list">
-        <div class="activity-item" *ngFor="let activity of recentActivities">
-          <span class="dot-indicator"></span>
-          <div class="activity-details">
-            <strong>{{ activity.title }}</strong>
-            <small>{{ activity.time }}</small>
-          </div>
+  <!-- Section secondaire : Activité & Alertes -->
+  <div class="dashboard-sections-grid">
+    <div class="card-box">
+      <h3>Validation des comptes</h3>
+      <p>Comptes utilisateurs en attente de modération et d'activation.</p>
+      <div class="alert-box" *.ngIf="stats.comptesEnAttente > 0; else noAlert">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>{{ stats.comptesEnAttente }} compte(s) en attente</strong>
+          <small>Nécessitent une validation par un administrateur.</small>
         </div>
       </div>
+      <ng-template #noAlert>
+        <div class="success-box">
+          <span>✓</span> Tous les comptes sont validés et actifs.
+        </div>
+      </ng-template>
     </div>
 
-
-    <div class="card actions-card">
-      <h3>Actions rapides</h3>
-      <div class="actions-list">
-        <button class="btn-action primary" (click)="naviguerVersActualites()"><img src="/icones/plus.png" alt=""> Ajouter une actualité</button>
-        <button class="btn-action outline" (click)="naviguerVersProjets()"><img src="/icones/check.png" alt=""> Modérer les projets</button>
-        <button class="btn-action outline" (click)="naviguerVersOpportunites()"><img src="/icones/plus.png" alt="">Ajouter une opportunité</button>
+    <div class="card-box">
+      <h3>Sécurité & Système</h3>
+      <p>Informations sur l'équipe d'administration active.</p>
+      <div class="admin-summary-row">
+        <span>Administrateurs système enregistrés :</span>
+        <strong>{{ stats.totalAdministrateurs }}</strong>
       </div>
-    </div>
-  </div>
-
-  <div class="card chart-card">
-    <div class="card-header">
-      <h3>Aperçu des inscriptions</h3>
-    </div>
-    <p class="chart-subtitle">Évolution des inscriptions au cours des 6 derniers mois</p>
-    <div class="chart-placeholder">
-      <!-- Zone graphique (courbe simulant Avril à Octobre) -->
-      <div class="fake-curve-container">
-        <span>Avril</span><span>Mai</span><span>Juin</span><span>Juillet</span><span>Août</span><span>Sept.</span><span>Oct.</span>
+      <div class="admin-summary-row">
+        <span>Statut de la base de données :</span>
+        <strong style="color: #27ae60;">Opérationnel (MySQL)</strong>
       </div>
     </div>
   </div>

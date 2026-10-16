@@ -168,6 +168,7 @@ export class AdminAdministrateursComponent implements OnInit {
       },
       error: (err) => {
         console.error("Erreur lors du changement de statut :", err);
+        alert("Impossible de modifier le statut de cet administrateur.");
       }
     });
   }

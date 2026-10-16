@@ -1,45 +1,47 @@
 <div class="admin-dashboard-container">
   <!-- SIDEBAR (Menu latéral) -->
   <aside class="sidebar">
-    <img [src]="src" [alt] id="logo">
+    <div class="sidebar-logo-container">
+      <img [src]="src" alt="Logo ODC" id="logo">
+    </div>
 
     <nav class="sidebar-nav">
-  <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
-    <img src="icones/dashboard.png"> Tableau de bord
-  </a>
-  <a routerLink="/admin/notifications" routerLinkActive="active" class="nav-item notification-link">
-    <span class="icon-container">
-      <img src="icones/love-bell.png" alt="Notifications" class="nav-icon">
-      <sup *ngIf="unreadCount > 0" class="badge-exposant">{{ unreadCount }}</sup>
-    </span>
-    <span class="nav-text">Notifications</span>
-  </a>
-  <a routerLink="/admin/actualites" routerLinkActive="active" class="nav-item">
-    <img src="icones/newspaper.png"> Actualités
-  </a>
-  <a routerLink="/admin/moderation" routerLinkActive="active" class="nav-item">
-    <img src="icones/project.png"> Modération des projets
-  </a>
-  <a routerLink="/admin/opportunites" routerLinkActive="active" class="nav-item">
-    <img src="icones/briefcase.png"> Opportunités
-  </a>
-  <a routerLink="/admin/apprenants" routerLinkActive="active" class="nav-item">
-    <img src="icones/group.png"> Apprenants
-  </a>
-  <a routerLink="/admin/recruteurs" routerLinkActive="active" class="nav-item">
-    <img src="icones/group.png"> Recruteurs
-  </a>
-  <a routerLink="/admin/administrateurs" routerLinkActive="active" class="nav-item">
-    <img src="icones/admin_settings.png">Administrateurs
-  </a>
-  <a routerLink="/admin/parametres" routerLinkActive="active" class="nav-item">
-    <img src="icones/setting.png"> Paramètres
-  </a>
-</nav>
+      <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <img src="icones/dashboard.png" alt="" class="nav-icon"> Tableau de bord
+      </a>
+      <a routerLink="/admin/notifications" routerLinkActive="active" class="nav-item notification-link">
+        <span class="icon-container">
+          <img src="icones/love-bell.png" alt="Notifications" class="nav-icon">
+          <sup *ngIf="unreadCount > 0" class="badge-exposant">{{ unreadCount }}</sup>
+        </span>
+        <span class="nav-text">Notifications</span>
+      </a>
+      <a routerLink="/admin/actualites" routerLinkActive="active" class="nav-item">
+        <img src="icones/newspaper.png" alt="" class="nav-icon"> Actualités
+      </a>
+      <a routerLink="/admin/moderation" routerLinkActive="active" class="nav-item">
+        <img src="icones/project.png" alt="" class="nav-icon"> Modération des projets
+      </a>
+      <a routerLink="/admin/opportunites" routerLinkActive="active" class="nav-item">
+        <img src="icones/briefcase.png" alt="" class="nav-icon"> Opportunités
+      </a>
+      <a routerLink="/admin/apprenants" routerLinkActive="active" class="nav-item">
+        <img src="icones/group.png" alt="" class="nav-icon"> Apprenants
+      </a>
+      <a routerLink="/admin/recruteurs" routerLinkActive="active" class="nav-item">
+        <img src="icones/group.png" alt="" class="nav-icon"> Recruteurs
+      </a>
+      <a routerLink="/admin/administrateurs" routerLinkActive="active" class="nav-item">
+        <img src="icones/admin_settings.png" alt="" class="nav-icon"> Administrateurs
+      </a>
+      <a routerLink="/admin/parametres" routerLinkActive="active" class="nav-item">
+        <img src="icones/setting.png" alt="" class="nav-icon"> Paramètres
+      </a>
+    </nav>
 
     <div class="sidebar-footer">
       <button (click)="onLogout()" class="btn-logout">
-            <img src="icones/power-off.png" id="logodeconnexion"> Déconnexion
+        <img src="icones/power-off.png" alt="" class="logodeconnexion"> Déconnexion
       </button>
     </div>
   </aside>
@@ -52,8 +54,12 @@
         <input type="text" placeholder="Rechercher dans la plateforme..." />
       </div>
       <div class="admin-profile-info">
-        <button class="notification-btn" title="Notifications"><img src="/icones/love-bell.png"></button>
-        <div class="avatar-badge">IMAGE</div>
+        <button class="notification-btn" title="Notifications" routerLink="/admin/notifications">
+          <img src="/icones/love-bell.png" alt="Notif" style="width: 18px; height: 18px;">
+        </button>
+        <div class="avatar-badge">
+          {{ adminName.charAt(0).toUpperCase() }}
+        </div>
         <div class="admin-details">
           <span class="admin-name">{{ adminName }}</span>
           <span class="admin-role">{{ adminRole }}</span>

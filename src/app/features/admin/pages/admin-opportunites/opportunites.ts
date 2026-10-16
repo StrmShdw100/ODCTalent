@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MissionService, MissionResponse, MissionRequest } from './mission.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface Opportunite {
   id: number;
@@ -14,6 +15,14 @@ export interface Opportunite {
   status: 'Publié' | 'Masqué' | 'À valider';
   rawStatus: string;
   showMenu?: boolean;
+}
+
+export interface AdminRecruteur {
+  id: number;
+  nom: string;
+  prenom?: string;
+  email: string;
+  nomEntreprise?: string;
 }
 
 @Component({
@@ -32,9 +41,13 @@ export class OpportunitesComponent implements OnInit {
   isModalOpen: boolean = false;
   successMessage: string | null = null;
 
+  // Liste dynamique des recruteurs
+  recruteursDisponibles: AdminRecruteur[] = [];
+  selectedRecruteurId: number | null = null;
+
   formModel = {
     title: '',
-    recruiter: '',
+    recruiterId: null as number | null,
     type: 'Recrutement',
     location: '',
     deadline: '',
@@ -50,18 +63,38 @@ export class OpportunitesComponent implements OnInit {
     enAttente: 0,
     recruteursActifs: 0,
     candidatures: 0
-    };
+  };
 
   opportunites: Opportunite[] = [];
 
   constructor(
     private missionService: MissionService,
+    private http: HttpClient,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.chargerMissions();
     this.chargerStatsGlobales();
+    this.chargerRecruteursDisponibles();
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  chargerRecruteursDisponibles(): void {
+    this.http.get<AdminRecruteur[]>('http://localhost:8080/api/v1/admin/recruteurs', { headers: this.getHeaders() })
+      .subscribe({
+        next: (data) => {
+          this.recruteursDisponibles = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error("Erreur lors du chargement des recruteurs :", err);
+        }
+      });
   }
 
   chargerStatsGlobales(): void {
@@ -91,7 +124,9 @@ export class OpportunitesComponent implements OnInit {
             badge: m.titre?.toLowerCase().includes('stage') ? 'STG' : 'JOB',
             title: m.titre,
             location: 'Dakar • Hybride',
-            recruiter: m.nomRecruteur && m.prenomRecruteur ? `${m.prenomRecruteur} ${m.nomRecruteur}` : 'Recruteur ODC',
+            recruiter: m.nomRecruteur && m.prenomRecruteur 
+              ? `${m.prenomRecruteur} ${m.nomRecruteur}` 
+              : 'Partenaire ODC',
             type: 'Recrutement',
             date: m.datePublication ? new Date(m.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Récemment',
             status: mappedStatus,
@@ -119,7 +154,7 @@ export class OpportunitesComponent implements OnInit {
     this.isModalOpen = true;
     this.formModel = {
       title: '',
-      recruiter: '',
+      recruiterId: null,
       type: 'Recrutement',
       location: '',
       deadline: '',
@@ -128,13 +163,20 @@ export class OpportunitesComponent implements OnInit {
       documentUrl: '',
       publishImmediately: true
     };
+    this.cdr.detectChanges();
   }
 
   closeModal(): void {
     this.isModalOpen = false;
+    this.cdr.detectChanges();
   }
 
   submitOpportunite(): void {
+    if (!this.formModel.title || !this.formModel.description) {
+      alert("Veuillez renseigner le titre et la description de l'opportunité.");
+      return;
+    }
+
     const request: MissionRequest = {
       titre: this.formModel.title,
       description: this.formModel.description,
@@ -142,10 +184,10 @@ export class OpportunitesComponent implements OnInit {
       statut: this.formModel.publishImmediately ? 'DISPONIBLE' : 'EN_ATTENTE'
     };
 
-    this.missionService.createMission(request).subscribe({
+    this.missionService.createMission(request, this.formModel.recruiterId || undefined).subscribe({
       next: () => {
         this.isModalOpen = false;
-        this.successMessage = "L'opportunité est maintenant visible.";
+        this.successMessage = "L'opportunité a été enregistrée et publiée avec succès.";
         this.chargerMissions();
         this.cdr.detectChanges();
         setTimeout(() => {
@@ -197,7 +239,6 @@ export class OpportunitesComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // 👈 Getter de filtrage pour la recherche et les sélecteurs
   get filteredOpportunites(): Opportunite[] {
     return this.opportunites.filter(item => {
       const matchesSearch = !this.searchTerm || 

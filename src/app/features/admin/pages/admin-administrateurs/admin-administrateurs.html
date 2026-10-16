@@ -83,7 +83,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of administrateurs">
+        <tr *ngFor="let item of filteredAdministrateurs">
           <td>
             <div class="admin-profile-cell">
               <div class="admin-avatar">{{ item.initials }}</div>
@@ -108,7 +108,9 @@
             <div class="context-menu" *ngIf="item.showMenu">
               <button>✏️ Modifier</button>
               <button>🔑 Réinitialiser MDP</button>
-              <button class="delete-option">🚫 Désactiver</button>
+              <button class="delete-option" (click)="toggleStatut(item)">
+                {{ item.status === 'Actif' ? '🚫 Désactiver' : '✅ Activer' }}
+              </button>
             </div>
           </td>
         </tr>

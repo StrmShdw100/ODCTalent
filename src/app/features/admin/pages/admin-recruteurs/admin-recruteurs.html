@@ -5,6 +5,7 @@
       <h2>Recruteurs</h2>
       <p>Gérez les entreprises partenaires et leurs comptes recruteurs sur ODCTalent.</p>
     </div>
+    <button class="btn-primary" (click)="ouvrirModal()">+ Ajouter un recruteur</button>
   </div>
 
   <!-- Cartes Statistiques (KPIs) -->
@@ -50,7 +51,7 @@
   <div class="table-card">
     <div class="table-card-header">
       <h3>Liste des recruteurs</h3>
-      <span class="total-count">{{ recruteurs.length }} recruteurs affichés</span>
+      <span class="total-count">{{ recruteursFiltres.length }} recruteurs affichés</span>
     </div>
 
     <table class="custom-table">
@@ -58,29 +59,116 @@
         <tr>
           <th>ENTREPRISE</th>
           <th>RECRUTEUR</th>
-          <th>EMAIL</th>
+          <th>EMAIL / TEL</th>
           <th>SECTEUR</th>
           <th>STATUT</th>
-          <th>OFFRES</th>
           <th>ACTIONS</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let recruteur of recruteurs">
-  <td>{{ recruteur.nom }} {{ recruteur.prenom }}</td>
-  <td>{{ recruteur.nomEntreprise || recruteur.email }}</td>
-  <td>
-    <span class="status-badge" [class.actif]="recruteur.actif" [class.en-attente]="!recruteur.actif">
-      {{ recruteur.actif ? 'Actif' : 'En attente' }}
-    </span>
-  </td>
-  <td>
-    <button *ngIf="!recruteur.actif" class="btn-success" (click)="autoriserRecruteur(recruteur.id)">
-      ✓ Autoriser
-    </button>
-  </td>
-</tr>
+        <tr *ngFor="let recruteur of recruteursFiltres">
+          <td>
+            <div class="company-profile-cell">
+              <div class="company-avatar">{{ (recruteur.nomEntreprise?.charAt(0) || 'E').toUpperCase() }}</div>
+              <div>
+                <strong>{{ recruteur.nomEntreprise || 'N/A' }}</strong>
+                <small>{{ recruteur.adresse || 'Adresse non renseignée' }}</small>
+              </div>
+            </div>
+          </td>
+          <td><strong>{{ recruteur.prenom }} {{ recruteur.nom }}</strong></td>
+          <td>
+            <div>{{ recruteur.email }}</div>
+            <small style="color: #888;">{{ recruteur.telephone || 'Non renseigné' }}</small>
+          </td>
+          <td>{{ recruteur.secteurActivite || 'Technologie' }}</td>
+          <td>
+            <span class="status-badge" [class.active]="recruteur.actif" [class.inactive]="!recruteur.actif">
+              {{ recruteur.actif ? 'Actif' : 'En attente' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button *ngIf="!recruteur.actif" class="btn-success" (click)="autoriserRecruteur(recruteur.id)">
+              ✓ Autoriser
+            </button>
+            <span *ngIf="recruteur.actif" style="color: #27ae60; font-weight: 600; font-size: 0.85rem;">✓ Validé</span>
+          </td>
+        </tr>
+        <tr *ngIf="recruteursFiltres.length === 0">
+          <td colspan="6" style="text-align: center; color: #888; padding: 2rem;">
+            Aucun recruteur ne correspond à votre recherche.
+          </td>
+        </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- BOÎTE MODALE AJOUT RECRUTEUR -->
+<div class="modal-backdrop" *ngIf="isModalOpen">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3>Ajouter un recruteur</h3>
+        <p>Enregistrez une entreprise partenaire et son représentant sur ODCTalent.</p>
+      </div>
+      <button class="modal-close-btn" (click)="fermerModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom du représentant *</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.nom" placeholder="Ex. Coulibaly" />
+        </div>
+        <div class="form-group">
+          <label>Prénom du représentant</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.prenom" placeholder="Ex. Fatoumata" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" [(ngModel)]="nouveauRecruteur.email" placeholder="f.coulibaly@entreprise.com" />
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.telephone" placeholder="+223 ..." />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom de l'entreprise *</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.nomEntreprise" placeholder="Ex. Orange Mali" />
+        </div>
+        <div class="form-group">
+          <label>Secteur d'activité</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.secteurActivite" placeholder="Ex. Télécoms / IT" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Adresse</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.adresse" placeholder="Ex. Bamako, Hamdallaye ACI" />
+        </div>
+        <div class="form-group">
+          <label>Site Web</label>
+          <input type="text" [(ngModel)]="nouveauRecruteur.siteWeb" placeholder="https://..." />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description de l'entreprise</label>
+        <textarea rows="3" [(ngModel)]="nouveauRecruteur.descriptionEntreprise" placeholder="Présentation rapide..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="fermerModal()">Annuler</button>
+      <button class="btn-primary" (click)="creerRecruteur()">Enregistrer le recruteur</button>
+    </div>
   </div>
 </div>

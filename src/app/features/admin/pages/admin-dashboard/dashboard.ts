@@ -1,31 +1,29 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { DashboardService, DashboardStats } from './dashboard.service';
+import { DashboardStats } from './dashboard.service';
+import { AdminDashboardService } from '../admin-administrateurs/administrateur.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  imports: [CommonModule],
+  templateUrl: './admin-dashboard.html',
+  styleUrls: ['./admin-dashboard.css']
 })
-export class DashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit {
   stats: DashboardStats = {
-    apprenants: 0,
-    recruteurs: 0,
-    projetsAModerer: 0,
-    opportunitesActives: 0,
-    nouvellesOpportunites: 0,
-    recentActivities: []
+    totalApprenants: 0,
+    totalRecruteurs: 0,
+    totalOpportunites: 0,
+    totalAdministrateurs: 0,
+    comptesEnAttente: 0,
+    totalCandidatures: 0
   };
-
-  loading: boolean = true;
+  chargement: boolean = true;
 
   constructor(
-    private dashboardService: DashboardService,
-    private router: Router,
-    private cdr: ChangeDetectorRef 
+    private dashboardService: AdminDashboardService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -33,35 +31,17 @@ export class DashboardComponent implements OnInit {
   }
 
   chargerStats(): void {
-    this.loading = true;
     this.dashboardService.getStats().subscribe({
       next: (data) => {
         this.stats = data;
-        this.loading = false;
-        
-        this.cdr.detectChanges(); 
+        this.chargement = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur chargement dashboard :", err);
-        this.loading = false;
+        this.chargement = false;
         this.cdr.detectChanges();
       }
     });
-  }
-
-  get recentActivities() {
-    return this.stats?.recentActivities || [];
-  }
-
-  naviguerVersActualites(): void {
-    this.router.navigate(['/admin/actualites']);
-  }
-
-  naviguerVersProjets(): void {
-    this.router.navigate(['/admin/moderation']);
-  }
-
-  naviguerVersOpportunites(): void {
-    this.router.navigate(['/admin/opportunites']);
   }
 }

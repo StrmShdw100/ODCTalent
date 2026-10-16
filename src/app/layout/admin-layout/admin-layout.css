@@ -6,10 +6,18 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
 }
-#logo{
-width: 30%;
-margin: auto;
+
+.sidebar-logo-container {
+  text-align: center;
+  padding: 10px 0;
 }
+
+#logo {
+  width: 50%;
+  max-width: 100px;
+  margin: auto;
+}
+
 .sidebar {
   width: 260px;
   background-color: #ffffff;
@@ -21,43 +29,11 @@ margin: auto;
   flex-shrink: 0;
 }
 
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 20px 20px 20px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.logo-box {
-  width: 35px;
-  height: 35px;
-  background-color: #FF7900;
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-}
-
-.brand-logo span {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #111;
-}
-
-.brand-logo span strong {
-  color: #FF7900;
-  font-weight: 800;
-}
-
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 20px 10px;
+  padding: 15px 10px;
   flex-grow: 1;
   overflow-y: auto;
 }
@@ -75,9 +51,19 @@ margin: auto;
   transition: all 0.2s;
 }
 
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
 .nav-item:hover, .nav-item.active {
   background-color: #FF7900;
   color: #fff;
+}
+
+.nav-item.active .nav-icon, .nav-item:hover .nav-icon {
+  filter: brightness(0) invert(1);
 }
 
 .sidebar-footer {
@@ -104,6 +90,12 @@ margin: auto;
 
 .btn-logout:hover {
   background-color: #fdf0ed;
+}
+
+.logodeconnexion {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 /* Main Content & Topbar */
@@ -153,7 +145,6 @@ margin: auto;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -200,20 +191,12 @@ margin: auto;
   padding: 30px;
   background-color: #fafafa;
 }
-.logodeconnexion{
-  width: 12px;
-}
+
 .notification-link .icon-container {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.notification-link .nav-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }
 
 .badge-exposant {
