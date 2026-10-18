@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout';
 import { LoginComponent } from './features/admin/pages/admin-auth/login/login.component';
-import { DashboardComponent } from './features/admin/pages/admin-dashboard/dashboard';
+import { AdminDashboardComponent } from './features/admin/pages/admin-dashboard/dashboard';
 import { ActualitesComponent } from './features/admin/pages/admin-actualites/actualites';
 import { AdminAdministrateursComponent } from './features/admin/pages/admin-administrateurs/admin-administrateurs';
 import { ApprenantEvolutionComponent } from './features/admin/pages/admin-apprenant-evolution/apprenant-evolution';
@@ -45,7 +45,7 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'actualites', component: ActualitesComponent },
       { path: 'moderation', component: ModerationComponent },
       { path: 'opportunites', component: OpportunitesComponent },

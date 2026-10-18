@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AdministrateurService, AdministrateurBackend } from './administrateur.service';
+import { AdminDashboardService, AdministrateurBackend } from './administrateur.service';
 
 export interface AdministrateurViewModel {
   id: number;
@@ -49,7 +49,7 @@ export class AdminAdministrateursComponent implements OnInit {
   administrateurs: AdministrateurViewModel[] = [];
 
   constructor(
-    private adminService: AdministrateurService,
+    private adminService: AdminDashboardService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -79,7 +79,7 @@ export class AdminAdministrateursComponent implements OnInit {
         });
         this.cdr.detectChanges(); // Force la mise à jour de l'UI
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error("Erreur lors du chargement des administrateurs :", err);
         this.cdr.detectChanges();
       }
@@ -90,11 +90,11 @@ export class AdminAdministrateursComponent implements OnInit {
 
   chargerComptesEnAttente(): void {
     this.adminService.getUtilisateursEnAttente().subscribe({
-      next: (data) => {
+      next: (data:any) => {
         this.enAttenteCount = data.length;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error("Erreur lors du chargement des comptes en attente :", err);
       }
     });
@@ -148,7 +148,7 @@ export class AdminAdministrateursComponent implements OnInit {
           this.cdr.detectChanges();
         }, 4000);
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error("Erreur lors de la création de l'administrateur :", err);
         alert("Impossible de créer l'administrateur.");
       }
@@ -166,7 +166,7 @@ export class AdminAdministrateursComponent implements OnInit {
         item.showMenu = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Erreur lors du changement de statut :", err);
         alert("Impossible de modifier le statut de cet administrateur.");
       }

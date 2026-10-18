@@ -52,7 +52,7 @@
     <div class="card-box">
       <h3>Validation des comptes</h3>
       <p>Comptes utilisateurs en attente de modération et d'activation.</p>
-      <div class="alert-box" *.ngIf="stats.comptesEnAttente > 0; else noAlert">
+      <div class="alert-box" *ngIf="stats.comptesEnAttente > 0; else noAlert">
         <span class="alert-icon">⚠️</span>
         <div>
           <strong>{{ stats.comptesEnAttente }} compte(s) en attente</strong>

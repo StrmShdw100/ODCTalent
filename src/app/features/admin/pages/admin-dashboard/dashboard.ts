@@ -1,14 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardStats } from './dashboard.service';
-import { AdminDashboardService } from '../admin-administrateurs/administrateur.service';
+import { AdminDashboardService, DashboardStats } from './dashboard.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './admin-dashboard.html',
-  styleUrls: ['./admin-dashboard.css']
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css']
 })
 export class AdminDashboardComponent implements OnInit {
   stats: DashboardStats = {
