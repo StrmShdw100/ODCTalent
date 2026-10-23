@@ -1,21 +1,33 @@
 <div class="parametres-container">
-  <!-- Notification de succès (Toast) -->
+  <!-- Notification de succès -->
   <div class="success-banner" *ngIf="successMessage">
     <div class="success-content">
       <span class="success-icon">✓</span>
       <div>
-        <strong>Paramètres mis à jour</strong>
+        <strong>Succès</strong>
         <p>{{ successMessage }}</p>
       </div>
     </div>
     <button class="close-banner" (click)="successMessage = null">✕</button>
   </div>
 
+  <!-- Notification d'erreur -->
+  <div class="error-banner" *ngIf="errorMessage">
+    <div class="success-content">
+      <span class="error-icon">✕</span>
+      <div>
+        <strong>Erreur</strong>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+    <button class="close-banner" (click)="errorMessage = null">✕</button>
+  </div>
+
   <!-- En-tête -->
   <div class="page-header-row">
     <div>
-      <h2>Paramètres de la plateforme</h2>
-      <p>Gérez la configuration générale, vos informations de compte, les notifications et la sécurité.</p>
+      <h2>Paramètres du compte</h2>
+      <p>Gérez vos informations personnelles et sécurisez vos accès à la plateforme.</p>
     </div>
   </div>
 
@@ -24,86 +36,23 @@
     
     <!-- Sidebar des onglets -->
     <div class="settings-sidebar">
-      <span class="sidebar-category">PRÉFÉRENCES</span>
-      <button class="sidebar-tab" [class.active]="activeTab === 'general'" (click)="switchTab('general')">
-        <img src="/icones/setting.png" alt="icones-angenage"> <span>Général</span>
-      </button>
+      <span class="sidebar-category">MON PROFIL</span>
       <button class="sidebar-tab" [class.active]="activeTab === 'account'" (click)="switchTab('account')">
-        <img src="icones/admin_settings.png" alt="icones-personnes"> Mon Compte
-      </button>
-      <button class="sidebar-tab" [class.active]="activeTab === 'notifications'" (click)="switchTab('notifications')">
-        <img src="/icones/love-bell.png" alt="icones-notifications"> <span>Notifications</span>
+        <img src="icones/admin_settings.png" alt="icones-personnes"> <span>Informations & Compte</span>
       </button>
       <button class="sidebar-tab" [class.active]="activeTab === 'security'" (click)="switchTab('security')">
-        <img src="/icones/permission.png" alt="icones-cadenas"> <span>Sécurité</span>
-      </button>
-      <button class="sidebar-tab" [class.active]="activeTab === 'permissions'" (click)="switchTab('permissions')">
-        <img src="/icones/verified.png" alt="icones-permissions"> <span>Permissions</span>
+        <img src="/icones/permission.png" alt="icones-cadenas"> <span>Sécurité & Mot de passe</span>
       </button>
     </div>
 
     <!-- Contenu Principal -->
     <div class="settings-content-card">
 
-      <!-- ONGLET 1 : GÉNÉRAL -->
-      <div *ngIf="activeTab === 'general'" class="tab-pane">
-        <div class="pane-header">
-          <h3>Paramètres généraux</h3>
-          <p>Configurez les informations globales et l'affichage de la plateforme ODCTalent.</p>
-        </div>
-
-        <div class="form-row-settings">
-          <div class="form-group">
-            <label>Nom de la plateforme</label>
-            <input type="text" [(ngModel)]="generalSettings.platformName" />
-          </div>
-          <div class="form-group">
-            <label>Langue par défaut</label>
-            <select [(ngModel)]="generalSettings.language">
-              <option>Français</option>
-              <option>Anglais</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-settings">
-          <div class="form-group">
-            <label>Fuseau horaire</label>
-            <select [(ngModel)]="generalSettings.timezone">
-              <option>GMT+00:00 — Afrique de l'Ouest</option>
-              <option>GMT+01:00 — Central Africa Time</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Format de date</label>
-            <select [(ngModel)]="generalSettings.dateFormat">
-              <option>JJ/MM/AAAA</option>
-              <option>AAAA-MM-JJ</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Notifications administrateur globales</strong>
-            <p>Activer ou désactiver les alertes système globales.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="generalSettings.adminNotifications" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="pane-footer">
-          <button class="btn-primary" (click)="saveChanges()">Enregistrer les modifications</button>
-        </div>
-      </div>
-
-      <!-- ONGLET 2 : MON COMPTE -->
+      <!-- ONGLET 1 : MON COMPTE -->
       <div *ngIf="activeTab === 'account'" class="tab-pane">
         <div class="pane-header">
-          <h3>Mon Compte Administrateur</h3>
-          <p>Gérez vos informations personnelles et vos identifiants de connexion.</p>
+          <h3>Informations personnelles</h3>
+          <p>Mettez à jour vos coordonnées professionnelles.</p>
         </div>
 
         <div class="form-row-settings">
@@ -128,129 +77,41 @@
           </div>
         </div>
 
-        <div class="password-section">
-          <label>Mot de passe</label>
-          <p class="sub-info">Dernière modification : {{ accountSettings.lastPasswordChange }}</p>
-          <button class="btn-outline-orange">Modifier le mot de passe</button>
+        <div class="form-group-full">
+          <label>Rôle sur la plateforme</label>
+          <input type="text" [value]="accountSettings.roleAdmin" disabled class="disabled-input" />
         </div>
 
         <div class="pane-footer">
-          <button class="btn-primary" (click)="saveChanges()">Enregistrer les modifications</button>
+          <button class="btn-primary" (click)="saveProfil()">Enregistrer les modifications</button>
         </div>
       </div>
 
-      <!-- ONGLET 3 : NOTIFICATIONS -->
-      <div *ngIf="activeTab === 'notifications'" class="tab-pane">
-        <div class="pane-header">
-          <h3>Préférences de notifications</h3>
-          <p>Choisissez les événements qui déclenchent une notification pour les administrateurs.</p>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Nouvelles actualités publiées</strong>
-            <p>Recevoir une alerte lors de la création d'un article ou d'une actualité.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="notificationSettings.actualitesPubliees" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Nouveaux projets soumis</strong>
-            <p>Être notifié lorsqu'un apprenant soumet un projet en attente de modération.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="notificationSettings.nouveauxProjets" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Nouvelles opportunités</strong>
-            <p>Être averti lors de la publication d'une offre par un recruteur.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="notificationSettings.nouvellesOpportunites" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Nouveaux comptes en attente</strong>
-            <p>Alerte lorsqu'un nouvel utilisateur ou recruteur s'inscrit.</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="notificationSettings.nouveauxComptes" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="pane-footer">
-          <button class="btn-primary" (click)="saveChanges()">Enregistrer les préférences</button>
-        </div>
-      </div>
-
-      <!-- ONGLET 4 : SÉCURITÉ -->
+      <!-- ONGLET 2 : SÉCURITÉ -->
       <div *ngIf="activeTab === 'security'" class="tab-pane">
         <div class="pane-header">
-          <h3>Sécurité et Authentification</h3>
-          <p>Renforcez la sécurité de votre compte administrateur.</p>
+          <h3>Modification du mot de passe</h3>
+          <p>Choisissez un mot de passe fort pour sécuriser votre accès administrateur.</p>
         </div>
 
-        <div class="toggle-row">
-          <div>
-            <strong>Authentification à deux facteurs (2FA)</strong>
-            <p>Exiger un code de vérification par email lors de chaque connexion.</p>
+        <div class="form-group-full">
+          <label>Ancien mot de passe</label>
+          <input type="password" [(ngModel)]="passwordForm.ancienMotDePasse" placeholder="••••••••••••" />
+        </div>
+
+        <div class="form-row-settings">
+          <div class="form-group">
+            <label>Nouveau mot de passe</label>
+            <input type="password" [(ngModel)]="passwordForm.nouveauMotDePasse" placeholder="••••••••••••" />
           </div>
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="securitySettings.twoFactorAuth" />
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="security-log-section">
-          <strong>Sessions actives</strong>
-          <p class="sub-info">Vous êtes actuellement connecté depuis ce navigateur (Dakar, Sénégal).</p>
-        </div>
-
-        <div class="pane-footer">
-          <button class="btn-primary" (click)="saveChanges()">Enregistrer la sécurité</button>
-        </div>
-      </div>
-
-      <!-- ONGLET 5 : PERMISSIONS -->
-      <div *ngIf="activeTab === 'permissions'" class="tab-pane">
-        <div class="pane-header">
-          <h3>Matrice des permissions</h3>
-          <p>Aperçu des droits d'accès par module pour le rôle administrateur.</p>
-        </div>
-
-        <div class="permissions-table-container">
-          <div class="perm-table-header">
-            <strong>Rôle actuel : Administrateur principal</strong>
-            <small>Les permissions de lecture et d'écriture définissent vos accès sur la plateforme.</small>
-          </div>
-
-          <div class="perm-row" *ngFor="let perm of permissionsList">
-            <span class="section-name">{{ perm.section }}</span>
-            <div class="perm-checkboxes">
-              <label>
-                <input type="checkbox" [(ngModel)]="perm.read" disabled /> Lecture
-              </label>
-              <label>
-                <input type="checkbox" [(ngModel)]="perm.write" disabled /> Écriture
-              </label>
-            </div>
+          <div class="form-group">
+            <label>Confirmer le mot de passe</label>
+            <input type="password" [(ngModel)]="passwordForm.confirmationMotDePasse" placeholder="••••••••••••" />
           </div>
         </div>
 
         <div class="pane-footer">
-          <button class="btn-primary" (click)="saveChanges()">Enregistrer</button>
+          <button class="btn-primary" (click)="updatePassword()">Mettre à jour le mot de passe</button>
         </div>
       </div>
 

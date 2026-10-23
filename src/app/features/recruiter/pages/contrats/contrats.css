@@ -24,6 +24,10 @@
 }
 
 .bouton-creer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
   background-color: #ff7900;
   color: #ffffff;
   border: none;

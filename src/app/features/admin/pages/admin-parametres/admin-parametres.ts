@@ -11,49 +11,24 @@ import { ParametresService } from './parametres.service';
   styleUrl: './admin-parametres.css'
 })
 export class AdminParametresComponent implements OnInit {
-  activeTab: string = 'general';
-
-  generalSettings = {
-    platformName: 'ODCTalent',
-    language: 'Français',
-    timezone: 'GMT+00:00 — Afrique de l\'Ouest',
-    dateFormat: 'JJ/MM/AAAA',
-    theme: 'Clair',
-    adminNotifications: true
-  };
+  activeTab: string = 'account'; // Par défaut sur Mon Compte
 
   accountSettings = {
     prenom: '',
     nom: '',
     email: '',
     telephone: '',
-    role: 'Administrateur principal',
-    lastPasswordChange: 'il y a 30 jours'
+    roleAdmin: 'Administrateur'
   };
 
-  notificationSettings = {
-    actualitesPubliees: true,
-    nouveauxProjets: true,
-    nouvellesOpportunites: true,
-    nouveauxComptes: false
+  passwordForm = {
+    ancienMotDePasse: '',
+    nouveauMotDePasse: '',
+    confirmationMotDePasse: ''
   };
-
-  securitySettings = {
-    twoFactorAuth: true
-  };
-
-  permissionsList = [
-    { section: 'Tableau de bord', read: true, write: true },
-    { section: 'Actualités', read: true, write: true },
-    { section: 'Projets', read: true, write: true },
-    { section: 'Opportunités', read: true, write: true },
-    { section: 'Apprenants', read: true, write: true },
-    { section: 'Recruteurs', read: true, write: true },
-    { section: 'Administrateurs', read: true, write: true },
-    { section: 'Paramètres', read: true, write: true }
-  ];
 
   successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private parametresService: ParametresService,
@@ -71,43 +46,74 @@ export class AdminParametresComponent implements OnInit {
         this.accountSettings.nom = data.nom || '';
         this.accountSettings.email = data.email || '';
         this.accountSettings.telephone = data.telephone || '';
+        this.accountSettings.roleAdmin = data.roleAdmin || 'Administrateur';
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement du profil admin :", err);
-        this.cdr.detectChanges();
       }
     });
   }
 
   switchTab(tab: string): void {
     this.activeTab = tab;
+    this.successMessage = null;
+    this.errorMessage = null;
     this.cdr.detectChanges();
   }
 
-  saveChanges(): void {
-    if (this.activeTab === 'account') {
-      this.parametresService.updateProfil({
-        prenom: this.accountSettings.prenom,
-        nom: this.accountSettings.nom,
-        telephone: this.accountSettings.telephone
-      }).subscribe({
-        next: () => {
-          this.successMessage = "Profil mis à jour avec succès.";
-          this.declencherMessageSucces();
-        },
-        error: (err) => {
-          console.error("Erreur lors de la mise à jour :", err);
-          alert("Impossible d'enregistrer les modifications du compte.");
-        }
-      });
-    } else {
-      this.successMessage = "Paramètres enregistrés avec succès.";
-      this.declencherMessageSucces();
-    }
+  saveProfil(): void {
+    this.parametresService.updateProfil({
+      prenom: this.accountSettings.prenom,
+      nom: this.accountSettings.nom,
+      telephone: this.accountSettings.telephone
+    }).subscribe({
+      next: () => {
+        this.successMessage = "Profil mis à jour avec succès.";
+        this.declencherMessage();
+      },
+      error: (err) => {
+        console.error("Erreur lors de la mise à jour :", err);
+        this.errorMessage = "Impossible d'enregistrer les modifications du profil.";
+        this.cdr.detectChanges();
+      }
+    });
   }
 
-  private declencherMessageSucces(): void {
+  updatePassword(): void {
+    if (!this.passwordForm.ancienMotDePasse || !this.passwordForm.nouveauMotDePasse) {
+      this.errorMessage = "Veuillez remplir tous les champs.";
+      this.cdr.detectChanges();
+      return;
+    }
+
+    if (this.passwordForm.nouveauMotDePasse !== this.passwordForm.confirmationMotDePasse) {
+      this.errorMessage = "Les nouveaux mots de passe ne correspondent pas.";
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.parametresService.updatePassword({
+      ancienMotDePasse: this.passwordForm.ancienMotDePasse,
+      nouveauMotDePasse: this.passwordForm.nouveauMotDePasse
+    }).subscribe({
+      next: (response) => {
+        this.successMessage = "Mot de passe mis à jour avec succès.";
+        this.passwordForm = { ancienMotDePasse: '', nouveauMotDePasse: '', confirmationMotDePasse: '' };
+        this.declencherMessage();
+      },
+      error: (err) => {
+        console.error("Erreur lors du changement de mot de passe :", err);
+        this.errorMessage = typeof err.error === 'string' && err.error 
+          ? err.error 
+          : "Échec du changement de mot de passe (vérifiez votre ancien mot de passe).";
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private declencherMessage(): void {
+    this.errorMessage = null;
     this.cdr.detectChanges();
     setTimeout(() => {
       this.successMessage = null;

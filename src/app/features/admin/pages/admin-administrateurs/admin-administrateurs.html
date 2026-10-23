@@ -25,7 +25,7 @@
       <span class="stat-label">Administrateurs actifs</span>
       <div class="stat-main">
         <h3 class="stat-value">{{ stats.actifs }}</h3>
-        <span class="stat-icon-placeholder">👥</span>
+        <span class="stat-icon-placeholder"><img src="icones/self.png" alt="icones-administrateurs"></span>
       </div>
     </div>
     <div class="stat-card">
@@ -156,12 +156,12 @@
         </div>
         <div class="form-group">
           <label>Rôle</label>
-          <select [(ngModel)]="formModel.role">
+          <select [(ngModel)]="formModel.role" name="role">
             <option value="" disabled selected>Sélectionner un rôle</option>
-            <option>Super Administrateur</option>
-            <option>Administrateur</option>
-            <option>Gestionnaire des recruteurs</option>
-            <option>Modérateur projets</option>
+            <option value="Super Administrateur">Super Administrateur</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Gestionnaire des recruteurs">Gestionnaire des recruteurs</option>
+            <option value="Modérateur projets">Modérateur projets</option>
           </select>
         </div>
       </div>

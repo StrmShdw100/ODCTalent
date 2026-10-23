@@ -34,20 +34,18 @@ export class AdminLayoutComponent implements OnInit {
     this.http.get<any[]>('http://localhost:8080/api/v1/admin/recruteurs/notifications', { headers: this.getHeaders() })
       .subscribe({
         next: (notifications) => {
-          this.unreadCount = notifications.filter(n => !n.lu).length;
+          const list = notifications || [];
+          this.unreadCount = list.filter(n => n && !n.lu).length;
         },
         error: (err) => {
           console.error('Erreur lors du chargement des notifications admin :', err);
+          this.unreadCount = 0;
         }
       });
   }
 
   onLogout(): void {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('user_name');
-    
+    localStorage.clear(); 
     this.router.navigate(['/login']);
   }
 }

@@ -1,25 +1,62 @@
-<div class="conteneur-notifications">
-  <div class="en-tete-page">
-    <h1 class="titre-principal">Notifications Administrateur</h1>
-    <p class="sous-titre-principal">Suivez les inscriptions des recruteurs et alertes système.</p>
+<div class="notifications-container">
+  <!-- En-tête -->
+  <div class="notifications-header-row">
+    <div>
+      <h2>Centre de Notifications</h2>
+      <p class="subtitle">Alertes système en temps réel • <span class="retention-info">Conservation pendant 5 heures</span></p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary-orange" (click)="genererTest()">
+        + Générer des notifications
+      </button>
+      <button 
+        class="btn-outline" 
+        (click)="toutMarquerCommeLu()" 
+        [disabled]="nombreNonLues === 0">
+        Tout marquer comme lu ({{ nombreNonLues }})
+      </button>
+    </div>
   </div>
 
-  <div class="liste-notifications" *ngIf="!chargement; else loader">
-    <div class="carte-notification" *ngFor="let notif of notifications" [class.non-lue]="!notif.lu">
-      <div class="vignette-icone orange">🔔</div>
-      <div class="notification-corps">
-        <h3 class="notif-titre">{{ notif.titre }}</h3>
-        <p class="notif-desc">{{ notif.message }}</p>
-        <span class="notif-date">{{ formaterDate(notif.dateCreation) }}</span>
+  <!-- Conteneur principal -->
+  <div class="notifications-card">
+    <div *ngIf="isLoading" class="state-box">
+      <p>Chargement des alertes...</p>
+    </div>
+
+    <div *ngIf="!isLoading && notifications.length === 0" class="state-box empty">
+      <div class="bell-empty-icon">🔔</div>
+      <h3>Aucune notification récente</h3>
+      <p>Les notifications de plus de 5 heures sont automatiquement supprimées du système.</p>
+    </div>
+
+    <!-- Liste des notifications -->
+    <div class="notification-feed" *ngIf="!isLoading && notifications.length > 0">
+      <div 
+        *ngFor="let item of notifications" 
+        class="notification-card-item" 
+        [class.unread]="!item.lue"
+        (click)="marquerCommeLue(item)">
+        
+        <!-- Puce & Icône -->
+        <div class="icon-wrapper" [ngClass]="item.type">
+          <span *ngIf="item.type === 'COMPTE_EN_ATTENTE'"><img src="icones/new-account.png" alt="icones-compte-plus"></span>
+          <span *ngIf="item.type === 'PROJET_SOUMIS'"><img src="icones/folder.png" alt="icones-dossier"></span>
+          <span *ngIf="item.type === 'OFFRE_PUBLIEE'"><img src="icones/suitcase.png" alt="icones tableau"></span>
+          <span *ngIf="!item.type"><img src="icones/love-bell.png" alt="icones-notifications"></span>
+        </div>
+
+        <!-- Contenu -->
+        <div class="card-content">
+          <div class="card-top-row">
+            <span class="card-title">{{ item.titre }}</span>
+            <span class="card-time">{{ item.dateCreation | date:'HH:mm' }}</span>
+          </div>
+          <p class="card-description">{{ item.message }}</p>
+        </div>
+
+        <div class="unread-dot-badge" *ngIf="!item.lue"></div>
       </div>
     </div>
-
-    <div *ngIf="notifications.length === 0" class="carte-notification">
-      <p style="color: #6b7280; margin: 0; text-align: center; width: 100%;">Aucune notification pour le moment.</p>
-    </div>
   </div>
-
-  <ng-template #loader>
-    <p style="color: #6b7280;">Chargement des notifications...</p>
-  </ng-template>
 </div>

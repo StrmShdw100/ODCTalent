@@ -5,13 +5,13 @@
       <h2>Tableau de bord général</h2>
       <p>Bienvenue sur l'espace d'administration centralisé d'ODCTalent.</p>
     </div>
-    <button class="btn-refresh" (click)="chargerStats()">🔄 Actualiser</button>
+    <button class="btn-refresh" (click)="chargerStats()"><img src="icones/refresh.png" alt="icones-recharger"> Actualiser</button>
   </div>
 
   <!-- Grille des KPIs -->
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-icon-wrapper orange">👨‍🎓</div>
+      <div class="stat-icon-wrapper orange"><img src="icones/apprenants-fill.png" alt="icones-apprenants"></div>
       <div class="stat-content">
         <span class="stat-label">Total Apprenants</span>
         <h3 class="stat-value">{{ stats.totalApprenants }}</h3>
@@ -20,25 +20,25 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon-wrapper blue">🏢</div>
+      <div class="stat-icon-wrapper blue"><img src="icones/building.png" alt="icones-entreprises"></div>
       <div class="stat-content">
-        <span class="stat-label">Entreprises & Recruteurs</span>
+        <span class="stat-label">Entreprises et Recruteurs</span>
         <h3 class="stat-value">{{ stats.totalRecruteurs }}</h3>
         <span class="stat-sub">Partenaires actifs</span>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon-wrapper green">💼</div>
+      <div class="stat-icon-wrapper green"><img src="icones/choosing.png" alt="icones-candidature"></div>
       <div class="stat-content">
         <span class="stat-label">Opportunités publiées</span>
         <h3 class="stat-value">{{ stats.totalOpportunites }}</h3>
-        <span class="stat-sub">Offres & Stages</span>
+        <span class="stat-sub">Offres et Stages</span>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon-wrapper purple">📄</div>
+      <div class="stat-icon-wrapper purple"><img src="icones/form.png" alt="icones-candidatures"></div>
       <div class="stat-content">
         <span class="stat-label">Candidatures</span>
         <h3 class="stat-value">{{ stats.totalCandidatures }}</h3>
@@ -47,13 +47,12 @@
     </div>
   </div>
 
-  <!-- Section secondaire : Activité & Alertes -->
   <div class="dashboard-sections-grid">
     <div class="card-box">
       <h3>Validation des comptes</h3>
       <p>Comptes utilisateurs en attente de modération et d'activation.</p>
       <div class="alert-box" *ngIf="stats.comptesEnAttente > 0; else noAlert">
-        <span class="alert-icon">⚠️</span>
+        <span class="alert-icon"><img src="icones/danger.png" alt="icones-danger"></span>
         <div>
           <strong>{{ stats.comptesEnAttente }} compte(s) en attente</strong>
           <small>Nécessitent une validation par un administrateur.</small>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
@@ -27,7 +27,6 @@ export interface Apprenant {
 })
 export class ApprenantsComponent implements OnInit {
 
-  // Gestion de la modale d'ajout / import
   isAddModalOpen: boolean = false;
   activeTab: 'unique' | 'import' = 'unique';
 
@@ -43,7 +42,6 @@ export class ApprenantsComponent implements OnInit {
   selectedFile: File | null = null;
   promotionImport: string = 'P6';
 
-  // Filtres & listes
   searchTerm: string = '';
   selectedPromotion: string = 'Toutes les promotions';
   selectedFormation: string = 'Toutes les formations';
@@ -63,7 +61,10 @@ export class ApprenantsComponent implements OnInit {
 
   apprenants: Apprenant[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef 
+  ) {}
 
   ngOnInit(): void {
     this.chargerApprenants();
@@ -75,11 +76,13 @@ export class ApprenantsComponent implements OnInit {
     this.nouveauApprenant = { nom: '', prenom: '', email: '', telephone: '', promotion: 'P6', formation: 'Dev Mobile et web' };
     this.selectedFile = null;
     this.activeTab = 'unique';
+    this.cdr.detectChanges();
   }
 
   fermerModalAjout() {
     this.isAddModalOpen = false;
     this.selectedFile = null;
+    this.cdr.detectChanges();
   }
 
   creerApprenantUnique() {
@@ -93,6 +96,7 @@ export class ApprenantsComponent implements OnInit {
         alert("Apprenant ajouté avec succès !");
         this.fermerModalAjout();
         this.chargerApprenants();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors de l'ajout :", err);
@@ -123,6 +127,7 @@ export class ApprenantsComponent implements OnInit {
         alert(res.message || "Importation réussie avec succès !");
         this.fermerModalAjout();
         this.chargerApprenants();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors de l'importation :", err);
@@ -140,6 +145,7 @@ export class ApprenantsComponent implements OnInit {
           enEmploi: data.enEmploi,
           enRecherche: data.enRecherche
         };
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des statistiques :", err);
@@ -165,6 +171,7 @@ export class ApprenantsComponent implements OnInit {
         }));
 
         this.chargerStats();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors du chargement des apprenants :", err);
@@ -198,6 +205,7 @@ export class ApprenantsComponent implements OnInit {
       next: () => {
         alert("Compte apprenant autorisé avec succès !");
         this.chargerApprenants(); 
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Erreur lors de l'autorisation :", err);
@@ -209,26 +217,31 @@ export class ApprenantsComponent implements OnInit {
   togglePromotionDropdown(): void {
     this.isPromotionOpen = !this.isPromotionOpen;
     this.isFormationOpen = false;
+    this.cdr.detectChanges();
   }
 
   selectPromotion(promo: string): void {
     this.selectedPromotion = promo;
     this.isPromotionOpen = false;
+    this.cdr.detectChanges();
   }
 
   toggleFormationDropdown(): void {
     this.isFormationOpen = !this.isFormationOpen;
     this.isPromotionOpen = false;
+    this.cdr.detectChanges();
   }
 
   selectFormation(formation: string): void {
     this.selectedFormation = formation;
     this.isFormationOpen = false;
+    this.cdr.detectChanges();
   }
 
   toggleMenu(item: Apprenant, event: Event): void {
     event.stopPropagation();
     this.apprenants.forEach(a => { if (a !== item) a.showMenu = false; });
     item.showMenu = !item.showMenu;
+    this.cdr.detectChanges();
   }
 }

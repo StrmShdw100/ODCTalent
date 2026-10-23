@@ -1,0 +1,59 @@
+<div class="notifications-container">
+  <!-- En-tête -->
+  <div class="notifications-header-row">
+    <div>
+      <h2>Mes Notifications</h2>
+      <p class="subtitle">Espace Recruteur • <span class="retention-info">Suivi en temps réel</span></p>
+    </div>
+    <div class="header-actions">
+      <button 
+        class="btn-outline" 
+        (click)="toutMarquerCommeLu()" 
+        [disabled]="nombreNonLues === 0">
+        Tout marquer comme lu ({{ nombreNonLues }})
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteneur principal -->
+  <div class="notifications-card">
+    <div *ngIf="isLoading" class="state-box">
+      <p>Chargement de vos alertes...</p>
+    </div>
+
+    <div *ngIf="!isLoading && notifications.length === 0" class="state-box empty">
+      <div class="bell-empty-icon">📭</div>
+      <h3>Aucune notification pour le moment</h3>
+      <p>Vous recevrez ici les messages et alertes de l'administration concernant vos missions et candidatures.</p>
+    </div>
+
+    <!-- Liste des notifications -->
+    <div class="notification-feed" *ngIf="!isLoading && notifications.length > 0">
+      <div 
+        *ngFor="let item of notifications" 
+        class="notification-card-item" 
+        [class.unread]="!item.lue"
+        (click)="marquerCommeLue(item)">
+        
+        <!-- Puce & Icône adaptables selon les types du recruteur -->
+        <div class="icon-wrapper" [ngClass]="item.type">
+          <span *ngIf="item.type === 'MISSION_VALIDEE'">🎯</span>
+          <span *ngIf="item.type === 'CANDIDATURE_RECUE'">👥</span>
+          <span *ngIf="item.type === 'CONTRAT_SIGNE'">📄</span>
+          <span *ngIf="!item.type || (item.type !== 'MISSION_VALIDEE' && item.type !== 'CANDIDATURE_RECUE' && item.type !== 'CONTRAT_SIGNE')">🔔</span>
+        </div>
+
+        <!-- Contenu -->
+        <div class="card-content">
+          <div class="card-top-row">
+            <span class="card-title">{{ item.titre }}</span>
+            <span class="card-time">{{ item.dateCreation | date:'dd/MM/yyyy à HH:mm' }}</span>
+          </div>
+          <p class="card-description">{{ item.message }}</p>
+        </div>
+
+        <div class="unread-dot-badge" *ngIf="!item.lue"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout';
 import { LoginComponent } from './features/admin/pages/admin-auth/login/login.component';
 import { AdminDashboardComponent } from './features/admin/pages/admin-dashboard/dashboard';
@@ -12,7 +11,7 @@ import { ModerationComponent } from './features/admin/pages/admin-moderation/mod
 import { OpportunitesComponent } from './features/admin/pages/admin-opportunites/opportunites';
 import { AdminParametresComponent } from './features/admin/pages/admin-parametres/admin-parametres';
 import { AdminRecruteursComponent } from './features/admin/pages/admin-recruteurs/admin-recruteurs';
-
+import { AdminNotificationsComponent } from './features/admin/pages/admin-notifications/admin-notifications';
 
 import { RecruiterLayout } from './layout/recruiter-layout/recruiter-layout';
 import { Bienvenue as BienvenueRecruteur } from './features/recruiter/pages/bienvenue/bienvenue';
@@ -27,7 +26,6 @@ import { CandidatureDetail } from './features/recruiter/pages/candidature-detail
 import { Contrats } from './features/recruiter/pages/contrats/contrats';
 import { Parametres as ParametresRecruteur } from './features/recruiter/pages/parametres/parametres';
 
-
 import { Inscription as InscriptionApprenant } from './features/apprenant/pages/inscription/inscription';
 import { InscriptionCompetences } from './features/apprenant/pages/inscription-competences/inscription-competences';
 import { TableauDeBordApprenant } from './features/apprenant/pages/tableau-de-bord/tableau-de-bord';
@@ -35,11 +33,11 @@ import { NotificationsApprenant } from './features/apprenant/pages/notifications
 import { PortfolioSuccesApprenant } from './features/apprenant/pages/portfolio-succes/portfolio-succes';
 import { PortfolioApprenant } from './features/apprenant/pages/portfolio/portfolio';
 import { ApprenantLayout } from './layout/apprenant-layout/apprenant-layout';
-import { AdminNotificationsComponent } from './features/admin/pages/admin-notifications/admin-notifications';
+import { RecruteurNotifications } from './features/recruiter/pages/notifications/recruteur-notifications';
+import { ActualitesComponent as ActualitesApprenant } from './features/admin/pages/admin-actualites/actualites';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  
 
   {
     path: 'admin',
@@ -54,7 +52,7 @@ export const routes: Routes = [
       { path: 'recruteurs', component: AdminRecruteursComponent },
       { path: 'administrateurs', component: AdminAdministrateursComponent },
       { path: 'parametres', component: AdminParametresComponent },
-      { path: 'notifications', component:AdminNotificationsComponent },
+      { path: 'notifications', component: AdminNotificationsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
@@ -75,30 +73,26 @@ export const routes: Routes = [
       { path: 'candidatures/detail', component: CandidatureDetail },
       { path: 'contrats', component: Contrats },
       { path: 'parametres', component: ParametresRecruteur },
+      { path: 'notifications', component: RecruteurNotifications }, 
       { path: '', redirectTo: 'tableau-de-bord', pathMatch: 'full' }
     ]
   },
 
-  // ----------------------------------------------------
-  // 3. ESPACE APPRENANT / TALENTS
-  // ----------------------------------------------------
-  // Tunnel d'inscription (Plein écran)
   { path: 'apprenant/inscription', component: InscriptionApprenant },
   { path: 'apprenant/inscription-competences', component: InscriptionCompetences },
   { path: 'apprenant/portfolio-succes', component: PortfolioSuccesApprenant },
-
   {
     path: 'apprenant',
     component: ApprenantLayout,
     children: [
       { path: 'tableau-de-bord', component: TableauDeBordApprenant },
-      // { path: 'projets', component: ProjetsApprenant },
-      // { path: 'opportunites', component: OpportunitesApprenant },
+      { path: 'actualites', component: ActualitesApprenant }, 
       { path: 'notifications', component: NotificationsApprenant },
       { path: 'portfolio', component: PortfolioApprenant },
       { path: '', redirectTo: 'tableau-de-bord', pathMatch: 'full' }
     ]
   },
+
   { path: '', redirectTo: 'recruteur/inscription', pathMatch: 'full' },
   { path: '**', redirectTo: 'recruteur/inscription' }
 ];

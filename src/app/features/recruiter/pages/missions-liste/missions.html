@@ -2,48 +2,47 @@
   <!-- En-tête de la page -->
   <div class="en-tete-page">
     <div>
-      <h1 class="titre-principal">Missions[cite: 9]</h1>
-      <p class="sous-titre-principal">Créez, suivez et optimisez vos offres pour attirer les bons profils.[cite: 9]</p>
+      <h1 class="titre-principal">Missions</h1>
+      <p class="sous-titre-principal">Créez, suivez et optimisez vos offres pour attirer les bons profils.</p>
     </div>
-    <button class="bouton-creer" (click)="ouvrirModal()">+ Créer une mission[cite: 9]</button>
+    <button class="bouton-creer" (click)="ouvrirModal()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAACfUlEQVR4AbSUPWtUQRSGZ836C1JE8AO0TCVESCFoLEyjkEDs/PgJWqQIxNpAihT6E/zoDCSgTRCSFBYBBStLBT/AFPkFblifZ+6Zu9nd7AZZspz3njNn3vOeuTM790w65d/QBu12exw8Bu/AL9AKGJtzbnzYGgc2QOgZhfvgObgDzoOxgLE55/aDy1S/9TWAPAk+QV0GCm7iH4Ir4CxoAmNzzslZtgZMMtdlXQ2CsAVjCnwGM41GYx68Bt9BCxwCY3PzcoBca7ZCg1RlXQ1IvQS+viubRmiX8VALzjQka6xVg2FldQM6u+euwtUsUHhYUU5+BncBprVTocUwpdyAhP+EpZxJaTEKYthx8HbBdifTiaJmMTJL8NSsGpC8DzysTYjDtuUGvBlwrEWtW6WWmnWD2ah4G34UVzSyZt4i1K4C7aOPEVE0smZpcC5Ef4TPjn3cBrXlJI86UQW9Z/ITipY1SwMTouHjP9Hq4bePjkuDP5G8GD47Du0WqC0nedSJKrhN6qhdikHWLA2+RPJ6+FFc0ciapYGfB0Xv+RgRRSNrlgZvEPXmznFuN4kHmXfkw6DJqJ1jXi01q3vAVh6QXAXaGkQvinEX4Pnx693zzImatTxIaRWumlUDkySe4vO3BL8eBYQnW3DXYeZvWWgxTJ0GeZTSI/xv4GvuUThsu6ClFJw9BtZYqwbDysoZ5BGdvxJ4xcub7CCwAR6Ay2AMNIGxuQ34OyCvHD8bGoSVdTUwJQFcI14BHpYre0X8DXip/uKNzTknZ8Ua4AKZ7lhfgzIF2TOZYPwEvAe+vmLC2JxzE8GF0m8DG0il8AC8AHfBBdAMGJtzLv9b5B+HfwAAAP//HcwpAwAAAAZJREFUAwDSigZA9htiPAAAAABJRU5ErkJggg==" alt="icones-ajouter"> Créer une mission</button>
   </div>
 
-  <!-- 4 Cartes statistiques -->
   <div class="grille-statistiques">
     <div class="carte-stat">
       <div class="stat-info">
-        <span class="libelle-stat">Missions publiées[cite: 9]</span>
-        <span class="valeur-stat">12[cite: 9]</span>
-        <span class="tendance-stat">Actuellement[cite: 9]</span>
+        <span class="libelle-stat">Missions publiées</span>
+        <span class="valeur-stat">{{ missionsPubliees }}</span>
+        <span class="tendance-stat">Actuellement</span>
       </div>
-      <div class="icone-stat">📁</div>
+      <div class="icone-stat"><img src="icones/folder.png" alt="icones-fichiers"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
-        <span class="libelle-stat">Brouillons[cite: 9]</span>
-        <span class="valeur-stat">4[cite: 9]</span>
-        <span class="tendance-stat">À finaliser[cite: 9]</span>
+        <span class="libelle-stat">Brouillons</span>
+        <span class="valeur-stat">{{ brouillons }}</span>
+        <span class="tendance-stat">À finaliser</span>
       </div>
-      <div class="icone-stat">📄</div>
+      <div class="icone-stat"><img src="icones/pencil.png" alt="icones-crayon"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
-        <span class="libelle-stat">En pause[cite: 9]</span>
-        <span class="valeur-stat">2[cite: 9]</span>
-        <span class="tendance-stat">À relancer[cite: 9]</span>
+        <span class="libelle-stat">En pause</span>
+        <span class="valeur-stat">{{ enPause }}</span>
+        <span class="tendance-stat">À relancer</span>
       </div>
-      <div class="icone-stat">⏳</div>
+      <div class="icone-stat"><img src="icones/pause.png" alt="icones-pause"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
-        <span class="libelle-stat">Candidatures[cite: 9]</span>
-        <span class="valeur-stat">84[cite: 9]</span>
-        <span class="tendance-stat">Toutes missions[cite: 9]</span>
+        <span class="libelle-stat">Total Missions</span>
+        <span class="valeur-stat">{{ totalMissions }}</span>
+        <span class="tendance-stat">Toutes missions</span>
       </div>
-      <div class="icone-stat">👥</div>
+      <div class="icone-stat"><img src="icones/somme.png" alt="icones-somme-missions"></div>
     </div>
   </div>
 
@@ -51,85 +50,47 @@
   <div class="barre-filtres">
     <div class="recherche-groupe">
       <span class="icone-rech">🔍</span>
-      <input type="text" class="champ-rech" placeholder="Rechercher une mission...[cite: 9]" />
+      <input type="text" class="champ-rech" placeholder="Rechercher une mission..." />
     </div>
     <div class="filtres-droite">
-      <div class="select-filtre">Statut : <strong>Tous ▾</strong>[cite: 9]</div>
-      <div class="select-filtre">Type : <strong>Tous ▾</strong>[cite: 9]</div>
-      <div class="select-filtre">Trier : <strong>Plus récentes ▾</strong>[cite: 9]</div>
+      <div class="select-filtre">Statut : <strong>Tous ▾</strong></div>
+      <div class="select-filtre">Type : <strong>Tous ▾</strong></div>
+      <div class="select-filtre">Trier : <strong>Plus récentes ▾</strong></div>
     </div>
   </div>
 
-  <!-- Tableau des missions -->
+  <!-- Tableau des missions DYNAMIQUE -->
   <div class="tableau-conteneur">
     <div class="tableau-en-tete-titre">
-      <h2 class="titre-tableau">Toutes mes missions[cite: 9]</h2>
-      <span class="total-missions">12 missions[cite: 9]</span>
+      <h2 class="titre-tableau">Toutes mes missions</h2>
+      <span class="total-missions">{{ totalMissions }} missions</span>
     </div>
 
     <table class="table-donnees">
       <thead>
         <tr>
-          <th>MISSION[cite: 9]</th>
-          <th>TYPE[cite: 9]</th>
-          <th>CAND.[cite: 9]</th>
-          <th>DATE[cite: 9]</th>
-          <th>STATUT[cite: 9]</th>
-          <th class="colonne-action">ACTIONS[cite: 9]</th>
+          <th>MISSION</th>
+          <th>COMPÉTENCES</th>
+          <th>BUDGET</th>
+          <th>DATE</th>
+          <th>STATUT</th>
+          <th class="colonne-action">ACTIONS</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="nom-mission-cell">Développeur React confirmé[cite: 9]</td>
-          <td>CDI[cite: 9]</td>
-          <td>12[cite: 9]</td>
-          <td>17 sept. 2026[cite: 9]</td>
-          <td><span class="badge publiee">Publiée[cite: 9]</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span>[cite: 9]</td>
+        <tr *ngFor="let mission of missions">
+          <td class="nom-mission-cell">{{ mission.titre }}</td>
+          <td>{{ mission.competencesRequises }}</td>
+          <td>{{ mission.budget ? mission.budget + ' FCFA' : 'N/A' }}</td>
+          <td>{{ mission.datePublication || 'Récemment' }}</td>
+          <td><span class="badge" [ngClass]="mission.statut ? mission.statut.toLowerCase() : 'publiee'">{{ mission.statut }}</span></td>
+          <td class="colonne-action"><span class="points-actions">•••</span></td>
         </tr>
-        <tr>
-          <td class="nom-mission-cell">Data Analyst[cite: 9]</td>
-          <td>CDI[cite: 9]</td>
-          <td>8[cite: 9]</td>
-          <td>14 sept. 2026[cite: 9]</td>
-          <td><span class="badge publiee">Publiée[cite: 9]</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span>[cite: 9]</td>
-        </tr>
-        <tr>
-          <td class="nom-mission-cell">UX/UI Designer[cite: 9]</td>
-          <td>CDD[cite: 9]</td>
-          <td>15[cite: 9]</td>
-          <td>10 sept. 2026[cite: 9]</td>
-          <td><span class="badge pause">En pause[cite: 9]</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span>[cite: 9]</td>
-        </tr>
-        <tr>
-          <td class="nom-mission-cell">Développeur mobile Flutter[cite: 9]</td>
-          <td>Freelance[cite: 9]</td>
-          <td>5[cite: 9]</td>
-          <td>08 sept. 2026[cite: 9]</td>
-          <td><span class="badge brouillon">Brouillon[cite: 9]</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span>[cite: 9]</td>
-        </tr>
-        <tr>
-          <td class="nom-mission-cell">Développeur backend[cite: 9]</td>
-          <td>CDI[cite: 9]</td>
-          <td>11[cite: 9]</td>
-          <td>02 sept. 2026[cite: 9]</td>
-          <td><span class="badge publiee">Publiée[cite: 9]</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span>[cite: 9]</td>
+        <tr *ngIf="missions.length === 0">
+          <td colspan="6" style="text-align: center; padding: 20px; color: #777;">Aucune mission enregistrée pour le moment.</td>
         </tr>
       </tbody>
     </table>
-
-    <div class="tableau-pied">
-      <span class="info-pagination">Affichage de 1 à 5 sur 12 missions[cite: 9]</span>
-      <div class="pagination-boutons">
-        <button class="page-btn actif">1[cite: 9]</button>
-        <button class="page-btn">2[cite: 9]</button>
-        <button class="page-btn">3[cite: 9]</button>
-      </div>
-    </div>
   </div>
 
   <!-- MODALE CRÉER UNE MISSION -->
@@ -147,58 +108,38 @@
         <div class="ligne-form">
           <div class="groupe-f">
             <label class="lab">Titre de la mission *</label>
-            <input type="text" class="inp" placeholder="Ex. Développeur Front-end" />
+            <input type="text" class="inp" [(ngModel)]="nouvelleMission.titre" placeholder="Ex. Développeur Front-end" />
           </div>
           <div class="groupe-f">
             <label class="lab">Type de contrat *</label>
-            <select class="inp">
-              <option>Sélectionner ▾</option>
-              <option>CDI</option>
-              <option>CDD</option>
-              <option>Freelance</option>
+            <select class="inp" [(ngModel)]="nouvelleMission.typeContrat">
+              <option value="CDI">CDI</option>
+              <option value="CDD">CDD</option>
+              <option value="Freelance">Freelance</option>
             </select>
-          </div>
-        </div>
-
-        <div class="ligne-trois">
-          <div class="groupe-f">
-            <label class="lab">Lieu du travail</label>
-            <input type="text" class="inp" placeholder="Mali/Bamako" />
-          </div>
-          <div class="groupe-f">
-            <label class="lab">Nombre de postes</label>
-            <input type="number" class="inp" value="1" />
-          </div>
-          <div class="groupe-f">
-            <label class="lab">Date limite *</label>
-            <input type="text" class="inp" placeholder="JJ/MM/AAAA" />
           </div>
         </div>
 
         <div class="groupe-f">
           <label class="lab">Compétences recherchées *</label>
-          <div class="tags-conteneur">
-            <span class="tag-badge">React <span class="croix-tag">×</span></span>
-            <span class="tag-badge">JavaScript <span class="croix-tag">×</span></span>
-            <input type="text" class="inp-tag" placeholder="Ajouter une compétence..." />
-          </div>
+          <input type="text" class="inp" [(ngModel)]="nouvelleMission.competencesRequises" placeholder="Ex. React, Java, Spring Boot" />
         </div>
 
         <div class="groupe-f">
           <label class="lab">Description de la mission *</label>
-          <textarea class="zone-txt" rows="3" placeholder="Présentez les responsabilités, objectifs et profil recherché..."></textarea>
+          <textarea class="zone-txt" rows="3" [(ngModel)]="nouvelleMission.description" placeholder="Présentez les responsabilités..."></textarea>
         </div>
 
         <div class="ligne-form">
           <div class="groupe-f">
             <label class="lab">Budget / salaire</label>
-            <input type="text" class="inp" placeholder="Ex. 300 000 FCFA / mois" />
+            <input type="number" class="inp" [(ngModel)]="nouvelleMission.budget" placeholder="Ex. 300000" />
           </div>
           <div class="groupe-f">
             <label class="lab">Statut</label>
-            <select class="inp">
-              <option>Publier ▾</option>
-              <option>Brouillon</option>
+            <select class="inp" [(ngModel)]="nouvelleMission.statut">
+              <option value="DISPONIBLE">Publier</option>
+              <option value="BROUILLON">Brouillon</option>
             </select>
           </div>
         </div>
@@ -219,8 +160,7 @@
           <span class="coche-verte">✓</span>
         </div>
       </div>
-      <h2 class="titre-succes">Mission publie avec succès</h2>
-      <!-- Bouton invisible ou action de fermeture automatique si besoin -->
+      <h2 class="titre-succes">Mission publiée avec succès</h2>
     </div>
   </div>
 </div>

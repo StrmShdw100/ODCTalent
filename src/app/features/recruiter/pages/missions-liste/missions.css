@@ -24,6 +24,10 @@
 }
 
 .bouton-creer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
   background-color: #ff7900;
   color: #ffffff;
   border: none;
@@ -33,6 +37,7 @@
   cursor: pointer;
   box-shadow: 0 4px 6px -1px rgba(255, 121, 0, 0.2);
 }
+
 
 .bouton-creer:hover {
   background-color: #e06800;

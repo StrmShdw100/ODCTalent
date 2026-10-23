@@ -11,7 +11,7 @@ export class ParametresService {
   constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -21,5 +21,9 @@ export class ParametresService {
 
   updateProfil(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/profil`, data, { headers: this.getHeaders() });
+  }
+
+  updatePassword(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/mot-de-passe`, data, { headers: this.getHeaders(), responseType: 'text' });
   }
 }

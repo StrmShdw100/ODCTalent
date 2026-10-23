@@ -31,12 +31,24 @@ export class AdminDashboardService {
     return this.http.get<AdministrateurBackend[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  creerAdministrateur(data: any): Observable<AdministrateurBackend> {
-    return this.http.post<AdministrateurBackend>(this.apiUrl, data, { headers: this.getHeaders() });
+  creerAdministrateur(formData: any): Observable<AdministrateurBackend> {
+    const payload = {
+      prenom: formData.prenom,
+      nom: formData.nom,
+      telephone: formData.telephone,
+      email: formData.email,
+      role: formData.role,       // On envoie 'role' pour le DTO
+      roleAdmin: formData.role,  // On envoie aussi 'roleAdmin' pour plus de sécurité
+      motDePasse: formData.tempPassword 
+    };
+    return this.http.post<AdministrateurBackend>(this.apiUrl, payload, { headers: this.getHeaders() });
   }
 
-  toggleStatut(id: number): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}/${id}/toggle`, {}, { headers: this.getHeaders() });
+  toggleStatut(id: number): Observable<any> {
+    return this.http.put(`http://localhost:8080/api/v1/admin/utilisateurs/${id}/autoriser`, {}, { 
+      headers: this.getHeaders(),
+      responseType: 'text' 
+    });
   }
 
   getUtilisateursEnAttente(): Observable<any[]> {

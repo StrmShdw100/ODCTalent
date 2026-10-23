@@ -5,39 +5,39 @@
     <p class="sous-titre-principal">Suivez et gérez les candidats de vos missions.</p>
   </div>
 
-  <!-- Statistiques (4 blocs) -->
+  <!-- Statistiques DYNAMIQUES (4 blocs) -->
   <div class="grille-statistiques">
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Total</span>
-        <span class="valeur-stat">84</span>
+        <span class="valeur-stat">{{ totalCandidatures }}</span>
         <span class="tendance-stat">Candidatures reçues</span>
       </div>
-      <div class="icone-stat orange">➕</div>
+      <div class="icone-stat orange"><img src="icones/somme.png" alt="icones-somme"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">En cours</span>
-        <span class="valeur-stat">27</span>
+        <span class="valeur-stat">{{ candidaturesEnCours }}</span>
         <span class="tendance-stat">À traiter</span>
       </div>
-      <div class="icone-stat bleu">✓</div>
+      <div class="icone-stat bleu"><img src="icones/check.png" alt="icones-verifier"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Entretiens</span>
-        <span class="valeur-stat">12</span>
+        <span class="valeur-stat">{{ candidaturesEntretiens }}</span>
         <span class="tendance-stat">Planifiés</span>
       </div>
-      <div class="icone-stat vert">✓</div>
+      <div class="icone-stat vert"><img src="icones/entretiens.png" alt="icones-entretiens"></div>
     </div>
 
     <div class="carte-stat sombre">
       <div class="stat-info">
         <span class="libelle-stat blanc">Acceptées</span>
-        <span class="valeur-stat blanc">9</span>
+        <span class="valeur-stat blanc">{{ candidaturesAcceptees }}</span>
         <span class="tendance-stat gris">Candidats retenus</span>
       </div>
       <div class="icone-stat-coche">✓</div>
@@ -47,7 +47,7 @@
   <!-- Filtres et recherche -->
   <div class="barre-filtres">
     <div class="recherche-groupe">
-      <span class="icone-rech">🔍</span>
+      <span class="icone-rech"><img src="icones/search.png" alt="icones-recherche"></span>
       <input type="text" class="champ-rech" placeholder="Rechercher un candidat..." />
     </div>
     <div class="filtres-droite">
@@ -57,11 +57,11 @@
     </div>
   </div>
 
-  <!-- Tableau -->
+  <!-- Tableau DYNAMIQUE -->
   <div class="tableau-conteneur">
     <div class="tableau-en-tete-titre">
       <h2 class="titre-tableau">Liste des candidatures</h2>
-      <span class="total-candidatures">84 candidatures</span>
+      <span class="total-candidatures">{{ totalCandidatures }} candidatures</span>
     </div>
 
     <table class="table-donnees">
@@ -70,85 +70,36 @@
           <th>CANDIDAT</th>
           <th>MISSION</th>
           <th>DATE</th>
+          <th>STATUT</th>
           <th class="colonne-action">ACTION</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngFor="let c of candidatures">
           <td>
             <div class="profil-cellule">
-              <div class="avatar-initiales">NS</div>
+              <div class="avatar-initiales">{{ (c.prenomApprenant.charAt(0) || '') + (c.nomApprenant?.charAt(0) || '') }}</div>
               <div>
-                <span class="nom-personne">Alou Barry</span>
-                <span class="statut-personne">Profil candidat</span>
+                <span class="nom-personne">{{ c.prenomApprenant }} {{ c.nomApprenant }}</span>
+                <span class="statut-personne">{{ c.emailApprenant }}</span>
               </div>
             </div>
           </td>
-          <td class="mission-cellule">Développeur React confirmé</td>
-          <td>18 sept. 2026</td>
+          <td class="mission-cellule">{{ c.titreMission }}</td>
+          <td>{{ c.dateCandidature || 'Récemment' }}</td>
+          <td><span class="badge">{{ c.statut }}</span></td>
           <td class="colonne-action">
-            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
+            <a [routerLink]="['/recruteur/candidatures/detail']" [queryParams]="{id: c.id}" class="bouton-voir-profil">Voir le profil</a>
           </td>
         </tr>
-        <tr>
-          <td>
-            <div class="profil-cellule">
-              <div class="avatar-initiales">MK</div>
-              <div>
-                <span class="nom-personne">Modou Kane</span>
-                <span class="statut-personne">Profil candidat</span>
-              </div>
-            </div>
-          </td>
-          <td class="mission-cellule">Data Analyst</td>
-          <td>17 sept. 2026</td>
-          <td class="colonne-action">
-            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="profil-cellule">
-              <div class="avatar-initiales">AB</div>
-              <div>
-                <span class="nom-personne">Aïssatou Barry</span>
-                <span class="statut-personne">Profil candidat</span>
-              </div>
-            </div>
-          </td>
-          <td class="mission-cellule">UX/UI Designer</td>
-          <td>15 sept. 2026</td>
-          <td class="colonne-action">
-            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="profil-cellule">
-              <div class="avatar-initiales">IF</div>
-              <div>
-                <span class="nom-personne">Ibrahima Fall</span>
-                <span class="statut-personne">Profil candidat</span>
-              </div>
-            </div>
-          </td>
-          <td class="mission-cellule">Développeur mobile Flutter</td>
-          <td>14 sept. 2026</td>
-          <td class="colonne-action">
-            <a routerLink="/recruiter/candidatures/detail" class="bouton-voir-profil">Voir le profil</a>
-          </td>
+        <tr *ngIf="candidatures.length === 0">
+          <td colspan="5" style="text-align: center; padding: 25px; color: #777;">Aucune candidature reçue pour le moment.</td>
         </tr>
       </tbody>
     </table>
 
     <div class="tableau-pied">
-      <span class="info-pagination">Affichage 1–4 sur 84 candidatures</span>
-      <div class="pagination-boutons">
-        <button class="page-btn actif">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">Suiv.</button>
-      </div>
+      <span class="info-pagination">Total : {{ totalCandidatures }} candidatures</span>
     </div>
   </div>
 </div>

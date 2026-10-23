@@ -1,181 +1,65 @@
 <div class="conteneur-contrats">
-  <!-- En-tête -->
   <div class="en-tete-page">
     <div>
-      <h1 class="titre-principal">Contrats[cite: 15]</h1>
-      <p class="sous-titre-principal">Gérez vos contrats selon la catégorie de l'offre.[cite: 15]</p>
+      <h1 class="titre-principal">Contrats</h1>
+      <p class="sous-titre-principal">Gérez vos contrats et suivez leur statut.</p>
     </div>
-    <button class="bouton-creer" (click)="ouvrirCreation()">+ Nouveau contrat[cite: 15]</button>
+    <button class="bouton-creer" (click)="ouvrirCreation()"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAACfUlEQVR4AbSUPWtUQRSGZ836C1JE8AO0TCVESCFoLEyjkEDs/PgJWqQIxNpAihT6E/zoDCSgTRCSFBYBBStLBT/AFPkFblifZ+6Zu9nd7AZZspz3njNn3vOeuTM790w65d/QBu12exw8Bu/AL9AKGJtzbnzYGgc2QOgZhfvgObgDzoOxgLE55/aDy1S/9TWAPAk+QV0GCm7iH4Ir4CxoAmNzzslZtgZMMtdlXQ2CsAVjCnwGM41GYx68Bt9BCxwCY3PzcoBca7ZCg1RlXQ1IvQS+viubRmiX8VALzjQka6xVg2FldQM6u+euwtUsUHhYUU5+BncBprVTocUwpdyAhP+EpZxJaTEKYthx8HbBdifTiaJmMTJL8NSsGpC8DzysTYjDtuUGvBlwrEWtW6WWmnWD2ah4G34UVzSyZt4i1K4C7aOPEVE0smZpcC5Ef4TPjn3cBrXlJI86UQW9Z/ITipY1SwMTouHjP9Hq4bePjkuDP5G8GD47Du0WqC0nedSJKrhN6qhdikHWLA2+RPJ6+FFc0ciapYGfB0Xv+RgRRSNrlgZvEPXmznFuN4kHmXfkw6DJqJ1jXi01q3vAVh6QXAXaGkQvinEX4Pnx693zzImatTxIaRWumlUDkySe4vO3BL8eBYQnW3DXYeZvWWgxTJ0GeZTSI/xv4GvuUThsu6ClFJw9BtZYqwbDysoZ5BGdvxJ4xcub7CCwAR6Ay2AMNIGxuQ34OyCvHD8bGoSVdTUwJQFcI14BHpYre0X8DXip/uKNzTknZ8Ua4AKZ7lhfgzIF2TOZYPwEvAe+vmLC2JxzE8GF0m8DG0il8AC8AHfBBdAMGJtzLv9b5B+HfwAAAP//HcwpAwAAAAZJREFUAwDSigZA9htiPAAAAABJRU5ErkJggg==" alt="icones-ajouter"> Nouveau contrat</button>
   </div>
 
-  <!-- SECTION RECRUTEMENT -->
   <div class="section-groupe">
     <div class="en-tete-groupe">
-      <h2 class="titre-section">Recrutement[cite: 15]</h2>
-      <p class="desc-section">Contrats liés aux offres de recrutement[cite: 15]</p>
+      <h2 class="titre-section">Liste des contrats</h2>
+      <p class="desc-section">Tous les contrats générés pour vos candidats</p>
     </div>
 
     <div class="grille-cartes-contrats">
-      <!-- Carte 1 -->
-      <div class="carte-contrat">
+      <div class="carte-contrat" *ngFor="let c of contrats">
         <div class="ligne-carte-haut">
-          <span class="ref-contrat">Contrat #CTR-2026-001[cite: 15]</span>
-          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
+          <span class="ref-contrat">Contrat #CTR-2026-00{{ c.id }}</span>
+          <span class="badge-type recrutement">{{ c.candidature?.mission?.titre || 'Mission' }}</span>
         </div>
         <div class="corps-carte-contrat">
-          <h3 class="nom-salarie">Aminata Diallo[cite: 15]</h3>
-          <span class="poste-salarie">Développeuse Front-end[cite: 15]</span>
-          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
+          <h3 class="nom-salarie">{{ c.candidature?.apprenant?.prenom }} {{ c.candidature?.apprenant?.nom }}</h3>
+          <span class="poste-salarie">{{ c.candidature?.apprenant.formation || 'Candidat' }}</span>
+          <span class="date-creation">Créé le {{ c.dateCreation | date:'dd MMM yyyy' }}</span>
         </div>
         <div class="pied-carte-contrat">
-          <span class="statut-badge en-attente">En attente[cite: 15]</span>
+          <span class="statut-badge" [ngClass]="{'actif': c.statut === 'ACTIF', 'en-attente': c.statut === 'EN_ATTENTE_SIGNATURE', 'termine': c.statut === 'TERMINE'}">{{ c.statut }}</span>
           <span class="points-actions">•••</span>
         </div>
       </div>
-
-      <!-- Carte 2 -->
-      <div class="carte-contrat">
-        <div class="ligne-carte-haut">
-          <span class="ref-contrat">Contrat #CTR-2026-002[cite: 15]</span>
-          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
-        </div>
-        <div class="corps-carte-contrat">
-          <h3 class="nom-salarie">Ibrahim Traoré[cite: 15]</h3>
-          <span class="poste-salarie">Product Designer[cite: 15]</span>
-          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
-        </div>
-        <div class="pied-carte-contrat">
-          <span class="statut-badge actif">Actif[cite: 15]</span>
-          <span class="points-actions">•••</span>
-        </div>
-      </div>
-
-      <!-- Carte 3 -->
-      <div class="carte-contrat">
-        <div class="ligne-carte-haut">
-          <span class="ref-contrat">Contrat #CTR-2026-003[cite: 15]</span>
-          <span class="badge-type recrutement">Recrutement[cite: 15]</span>
-        </div>
-        <div class="corps-carte-contrat">
-          <h3 class="nom-salarie">Fatoumata Coulibaly[cite: 15]</h3>
-          <span class="poste-salarie">Développeuse Full-stack[cite: 15]</span>
-          <span class="date-creation">Créé le 12 sept. 2026[cite: 15]</span>
-        </div>
-        <div class="pied-carte-contrat">
-          <span class="statut-badge termine">Terminé[cite: 15]</span>
-          <span class="points-actions">•••</span>
-        </div>
+      <div *ngIf="contrats.length === 0" style="color: #6b7280; font-size: 0.85rem;">
+        Aucun contrat enregistré pour le moment.
       </div>
     </div>
   </div>
 
-  <!-- SECTION FREELANCE -->
-  <div class="section-groupe">
-    <div class="en-tete-groupe">
-      <h2 class="titre-section">Freelance[cite: 15]</h2>
-      <p class="desc-section">Contrats liés aux missions freelance[cite: 15]</p>
-    </div>
-
-    <div class="grille-cartes-contrats">
-      <!-- Carte 4 -->
-      <div class="carte-contrat">
-        <div class="ligne-carte-haut">
-          <span class="ref-contrat">Contrat #FRL-2026-002[cite: 15]</span>
-          <span class="badge-type freelance">Freelance[cite: 15]</span>
-        </div>
-        <div class="corps-carte-contrat">
-          <h3 class="nom-salarie">Mamadou Keita[cite: 15]</h3>
-          <span class="poste-salarie">Développeur Mobile[cite: 15]</span>
-          <span class="date-creation">Créé le 10 sept. 2026[cite: 15]</span>
-        </div>
-        <div class="pied-carte-contrat">
-          <span class="statut-badge actif">Actif[cite: 15]</span>
-          <span class="points-actions">•••</span>
-        </div>
-      </div>
-
-      <!-- Carte 5 -->
-      <div class="carte-contrat">
-        <div class="ligne-carte-haut">
-          <span class="ref-contrat">Contrat #FRL-2026-006[cite: 15]</span>
-          <span class="badge-type freelance">Freelance[cite: 15]</span>
-        </div>
-        <div class="corps-carte-contrat">
-          <h3 class="nom-salarie">Sira Camara[cite: 15]</h3>
-          <span class="poste-salarie">UI/UX Designer[cite: 15]</span>
-          <span class="date-creation">Créé le 02 sept. 2026[cite: 15]</span>
-        </div>
-        <div class="pied-carte-contrat">
-          <span class="statut-badge en-attente">En attente[cite: 15]</span>
-          <span class="points-actions">•••</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODALE NOUVEAU CONTRAT -->
+  <!-- MODALE CRÉATION -->
   <div class="fond-modal" *ngIf="modalCreationOuverte">
     <div class="boite-modal-large">
       <div class="modal-entete">
         <div>
-          <h2 class="modal-titre">Créer un nouveau contrat[cite: 14]</h2>
-          <p class="modal-sous-titre">Choisissez la catégorie de l'offre puis complétez les informations.[cite: 14]</p>
+          <h2 class="modal-titre">Créer un nouveau contrat</h2>
+          <p class="modal-sous-titre">Renseignez l'ID de la candidature acceptée et les termes.</p>
         </div>
         <button class="bouton-fermer" (click)="fermerCreation()">✕</button>
       </div>
 
       <div class="modal-corps">
         <div class="groupe-f">
-          <label class="lab">Catégorie de l'offre[cite: 14]</label>
-          <div class="grille-options-selection">
-            <div class="option-carte selectionnee">
-              <span class="titre-option">Recrutement[cite: 14]</span>
-              <span class="desc-option">Contrat d'embauche pour un poste.[cite: 14]</span>
-            </div>
-            <div class="option-carte">
-              <span class="titre-option">Freelance[cite: 14]</span>
-              <span class="desc-option">Contrat pour une mission freelance.[cite: 14]</span>
-            </div>
-          </div>
+          <label class="lab">ID de la Candidature *</label>
+          <input type="number" class="inp" [(ngModel)]="nouveauContrat.candidatureId" placeholder="Ex: 1" />
         </div>
-
-        <div class="ligne-form">
-          <div class="groupe-f">
-            <label class="lab">Candidat / Freelance[cite: 14]</label>
-            <input type="text" class="inp" placeholder="Sélectionner un candidat[cite: 14]" />
-          </div>
-          <div class="groupe-f">
-            <label class="lab">Offre / Mission[cite: 14]</label>
-            <input type="text" class="inp" placeholder="Sélectionner une offre[cite: 14]" />
-          </div>
-        </div>
-
-        <div class="ligne-form">
-          <div class="groupe-f">
-            <label class="lab">Date de début[cite: 14]</label>
-            <input type="text" class="inp" placeholder="JJ/MM/AAAA[cite: 14]" />
-          </div>
-          <div class="groupe-f">
-            <label class="lab">Date de fin[cite: 14]</label>
-            <input type="text" class="inp" placeholder="JJ/MM/AAAA[cite: 14]" />
-          </div>
-        </div>
-
-        <div class="ligne-form">
-          <div class="groupe-f">
-            <label class="lab">Rémunération / Salaire[cite: 14]</label>
-            <input type="text" class="inp" placeholder="Montant en FCFA[cite: 14]" />
-          </div>
-          <div class="groupe-f">
-            <label class="lab">Statut[cite: 14]</label>
-            <input type="text" class="inp" placeholder="Brouillon[cite: 14]" />
-          </div>
+        <div class="groupe-f">
+          <label class="lab">Termes et Conditions</label>
+          <textarea class="inp" rows="4" [(ngModel)]="nouveauContrat.termesEtConditions" placeholder="Détails du contrat..."></textarea>
         </div>
       </div>
 
       <div class="modal-pied">
-        <button class="btn-annul" (click)="fermerCreation()">Annuler[cite: 14]</button>
-        <button class="btn-publier" (click)="creerContrat()">Créer[cite: 14]</button>
+        <button class="btn-annul" (click)="fermerCreation()">Annuler</button>
+        <button class="btn-publier" (click)="creerContrat()">Créer</button>
       </div>
     </div>
   </div>
@@ -189,7 +73,7 @@
           <span class="coche-verte">✓</span>
         </div>
       </div>
-      <h2 class="titre-succes">Contrat créer avec succès[cite: 13]</h2>
+      <h2 class="titre-succes">Contrat créé avec succès</h2>
     </div>
   </div>
 </div>

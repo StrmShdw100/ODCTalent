@@ -5,15 +5,17 @@
     <p class="sous-titre-principal">Gérez votre profil, vos notifications et vos préférences.</p>
   </div>
 
-  <!-- Bloc Profil Utilisateur -->
+  <!-- Bloc Profil Utilisateur DYNAMIQUE -->
   <div class="carte-blanche-profil">
     <div class="profil-info-gauche">
-      <div class="avatar-grand">FM</div>
+      <div class="avatar-grand">{{ initiales }}</div>
       <div>
-        <h2 class="nom-utilisateur">Alou Koné</h2>
-        <span class="role-entreprise-texte">Recruteur &bull; Orange Digital Center</span>
-        <span class="email-texte">alouk23&#64;gamil.com</span>
-        <span class="ville-texte">Bamako, Mali</span>
+        <h2 class="nom-utilisateur">{{ nomComplet }}</h2>
+        <span class="role-entreprise-texte">
+          {{ profil.fonction || 'Recruteur' }} &bull; {{ profil.nomEntreprise || 'Orange Digital Center' }}
+        </span>
+        <span class="email-texte">{{ profil.email }}</span>
+        <span class="ville-texte">{{ profil.adresse || 'Bamako, Mali' }}</span>
       </div>
     </div>
     <div class="actions-profil-droite">
@@ -22,7 +24,7 @@
     </div>
   </div>
 
-  <!-- Bloc Préférences -->
+  <!-- Bloc Préférences DYNAMIQUE -->
   <div class="carte-blanche-section">
     <h3 class="titre-section">Préférences</h3>
     <p class="desc-section">Personnalisez votre expérience de recrutement.</p>
@@ -30,28 +32,28 @@
     <div class="liste-preferences">
       <div class="ligne-preference">
         <div class="preference-gauche">
-          <div class="icone-preference">🔔</div>
+          <div class="icone-preference"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABAUlEQVR4AeyRzQoBURiGUciWLJVSJOUeLNyBu7CwUSjyu7GzcD9yEy5AcRXCcxammfnOZ+bQ7Ebvk9P7/bz65DIJf1wCJvyWK1xgALHkErBmYw3asIJYihNQZdMWivBRh8cGKvBVUQEjpm8wh7AWGHcYgqpvATOmDpAHTQUKRxiDVVpAk+4dxNWexhYIaQFLOrUaJSHTOxUuhinwJdQVTrRhndECGtH7REddOBhaQImaq8q2AS3A1vuTlwZEni09kfOJTky84FeZWbPDm0/iP3h423mEA3p42T/pM+8pHOAVLI8znjmBIXAGfFUuAU/flsAZfL54ugT4zxc4g9jqM94AAAD//1hyDZgAAAAGSURBVAMAFPgZMRgQIOwAAAAASUVORK5CYII=" alt="icones-notifications"></div>
           <div>
             <span class="titre-pref">Notifications des candidatures</span>
             <span class="desc-pref">Recevoir une notification lorsqu'un candidat postule.</span>
           </div>
         </div>
         <label class="interrupteur">
-          <input type="checkbox" checked />
+          <input type="checkbox" [(ngModel)]="profil.notificationsCandidatures" />
           <span class="curseur"></span>
         </label>
       </div>
 
       <div class="ligne-preference">
         <div class="preference-gauche">
-          <div class="icone-preference">✉️</div>
+          <div class="icone-preference"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABZ0lEQVR4AeySuy5EURSGDxVeQadB4RI8hUY0CpeEqPA4IhRCgUKn8hYukaCSeAghKr5/J2vOOTNr7z1nkikmmcn69tpn7X/tf86aGS36/BkaZAfsjWiNrnf465E3+lYhhGdwwskM9BqzNB5DCM9gMpwUxQ95C0a6ZA/dNyimtAjPQHUxznIDl6A9yY0xqrcg3QS5FimDHZT6RrvkB9Crk2oxzdMzbIC06mFbRsrgGtk8vIIul8kmewuN5JEHmUgjrXoolZEykOqDZRnOQGPSyM7ZX8EFaCSnZGmkZVsPz8B+VFP+sjmAdfiCfdgG7VU7ZC8NqTOqBqn/vTrvWBbhCTSuObJqpHhUDeKq8kRjWOJxBT4hG1UDG42XsxfFBFUD08RGZeeNsmfQ6IKc2DPwRqSa3RV7Q6tL1/p9PAMJDGuybPVUfuHwCELkDIKobdHbpFhAfw8hcgbtF4WmJkvOoMldrnbwDf4BAAD///YOHmAAAAAGSURBVAMAV5VQMfAFewAAAAAASUVORK5CYII=" alt="icones-email"></div>
           <div>
             <span class="titre-pref">Notifications par e-mail</span>
             <span class="desc-pref">Recevoir les alertes importantes par e-mail.</span>
           </div>
         </div>
         <label class="interrupteur">
-          <input type="checkbox" checked />
+          <input type="checkbox" [(ngModel)]="profil.notificationsEmail" />
           <span class="curseur"></span>
         </label>
       </div>
@@ -60,22 +62,24 @@
         <div class="groupe-f">
           <label class="lab">Langue</label>
           <span class="sous-lab">Langue de l'interface</span>
-          <select class="inp">
-            <option>Français ▾</option>
+          <select class="inp" [(ngModel)]="profil.langue">
+            <option value="Français">Français</option>
+            <option value="Anglais">Anglais</option>
           </select>
         </div>
         <div class="groupe-f">
           <label class="lab">Fuseau horaire</label>
           <span class="sous-lab">Heure utilisée dans l'application</span>
-          <select class="inp">
-            <option>GMT+0 ▾</option>
+          <select class="inp" [(ngModel)]="profil.fuseauHoraire">
+            <option value="GMT+0">GMT+0</option>
+            <option value="GMT+1">GMT+1</option>
           </select>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bloc Sécurité -->
+  <!-- Bloc Sécurité DYNAMIQUE -->
   <div class="carte-blanche-section">
     <h3 class="titre-section">Sécurité</h3>
     <p class="desc-section">Protégez l'accès à votre espace recruteur.</p>
@@ -89,11 +93,11 @@
     </div>
 
     <div class="pied-enregistrement">
-      <button class="btn-enregistrer-noir">Enregistrer</button>
+      <button class="btn-enregistrer-noir" (click)="enregistrerPreferences()">Enregistrer les préférences</button>
     </div>
   </div>
 
-  <!-- MODALE MODIFIER LE PROFIL -->
+  <!-- MODALE MODIFIER LE PROFIL INTERACTIVE -->
   <div class="fond-modal" *ngIf="modalProfilOuverte">
     <div class="boite-modal-large">
       <div class="modal-entete">
@@ -106,57 +110,63 @@
 
       <div class="modal-corps">
         <div class="ligne-avatar-modif">
-          <div class="avatar-grand-orange">FM</div>
+          <div class="avatar-grand-orange">{{ initiales }}</div>
           <button class="btn-changer-photo">Changer la photo<span class="sous-texte-photo">JPG ou PNG • 2 Mo max.</span></button>
         </div>
 
         <div class="ligne-form">
           <div class="groupe-f">
-            <label class="lab">Nom complet *</label>
-            <input type="text" class="inp" value="Alou Koné" />
+            <label class="lab">Prénom *</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.prenom" />
           </div>
           <div class="groupe-f">
+            <label class="lab">Nom *</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.nom" />
+          </div>
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
             <label class="lab">Fonction *</label>
-            <input type="text" class="inp" value="Responsable recrutement" />
+            <input type="text" class="inp" [(ngModel)]="profilForm.fonction" placeholder="Ex: Responsable recrutement" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Téléphone</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.telephone" placeholder="+223 70 00 00 00" />
           </div>
         </div>
 
         <div class="ligne-form">
           <div class="groupe-f">
             <label class="lab">Adresse e-mail *</label>
-            <input type="email" class="inp" value="fatoumata&#64;odctalent.com" />
+            <input type="email" class="inp" [(ngModel)]="profilForm.email" />
           </div>
           <div class="groupe-f">
-            <label class="lab">Téléphone</label>
-            <input type="text" class="inp" value="+223 70 00 00 00" />
+            <label class="lab">Nom de l'Entreprise</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.nomEntreprise" />
           </div>
         </div>
 
         <div class="ligne-form">
           <div class="groupe-f">
-            <label class="lab">Nom de l'Entreprise</label>
-            <input type="text" class="inp" value="Orange Digital Center" />
+            <label class="lab">Ville / Pays</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.adresse" placeholder="Bamako, Mali" />
           </div>
           <div class="groupe-f">
-            <label class="lab">Ville</label>
-            <input type="text" class="inp" value="Bamako, Mali" />
+            <label class="lab">Lien du site web</label>
+            <input type="text" class="inp" [(ngModel)]="profilForm.siteWeb" placeholder="https://orangedigitalcenter.mali" />
           </div>
-        </div>
-
-        <div class="groupe-f">
-          <label class="lab">Lien du site web</label>
-          <input type="text" class="inp" value="http/:orangedigitalcenter.mali" />
         </div>
       </div>
 
       <div class="modal-pied">
         <button class="btn-annul" (click)="fermerProfil()">Annuler</button>
-        <button class="btn-publier" (click)="fermerProfil()">Enregistrer</button>
+        <button class="btn-publier" (click)="enregistrerProfil()">Enregistrer</button>
       </div>
     </div>
   </div>
 
-  <!-- MODALE MODIFIER LE MOT DE PASSE -->
+  <!-- MODALE MODIFIER LE MOT DE PASSE INTERACTIVE -->
   <div class="fond-modal" *ngIf="modalMotDePasseOuverte">
     <div class="boite-modal">
       <div class="modal-entete">
@@ -170,15 +180,15 @@
       <div class="modal-corps">
         <div class="groupe-f">
           <label class="lab">Mot de passe actuel *</label>
-          <input type="password" class="inp" value="............" />
+          <input type="password" class="inp" [(ngModel)]="passwordData.ancienMotDePasse" placeholder="Mot de passe actuel" />
         </div>
         <div class="groupe-f">
           <label class="lab">Nouveau mot de passe *</label>
-          <input type="password" class="inp" value="............" />
+          <input type="password" class="inp" [(ngModel)]="passwordData.nouveauMotDePasse" placeholder="Au moins 8 caractères" />
         </div>
         <div class="groupe-f">
           <label class="lab">Confirmer le nouveau mot de passe *</label>
-          <input type="password" class="inp" value="............" />
+          <input type="password" class="inp" [(ngModel)]="passwordData.confirmationMotDePasse" placeholder="Confirmer le nouveau mot de passe" />
         </div>
 
         <div class="alerte-securite">
@@ -192,7 +202,7 @@
 
       <div class="modal-pied">
         <button class="btn-annul" (click)="fermerMotDePasse()">Annuler</button>
-        <button class="btn-publier" (click)="fermerMotDePasse()">Modifier</button>
+        <button class="btn-publier" (click)="modifierMotDePasse()">Modifier</button>
       </div>
     </div>
   </div>

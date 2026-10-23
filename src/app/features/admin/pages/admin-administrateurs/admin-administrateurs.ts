@@ -135,7 +135,7 @@ export class AdminAdministrateursComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  submitAdministrateur(): void {
+ submitAdministrateur(): void {
     this.adminService.creerAdministrateur(this.formModel).subscribe({
       next: () => {
         this.isModalOpen = false;
@@ -148,9 +148,10 @@ export class AdminAdministrateursComponent implements OnInit {
           this.cdr.detectChanges();
         }, 4000);
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error("Erreur lors de la création de l'administrateur :", err);
-        alert("Impossible de créer l'administrateur.");
+        const messageErreur = typeof err.error === 'string' ? err.error : "Accès refusé ou erreur technique.";
+        alert(messageErreur);
       }
     });
   }

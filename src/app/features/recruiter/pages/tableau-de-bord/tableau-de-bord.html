@@ -5,42 +5,42 @@
     <p class="sous-titre-principal">Pilotez vos missions, candidatures et contrats depuis un seul espace.</p>
   </div>
 
-  <!-- Cartes de statistiques (4 blocs) -->
+  <!-- Cartes de statistiques DYNAMIQUES (4 blocs) -->
   <div class="grille-statistiques">
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Missions publiées</span>
-        <span class="valeur-stat">12</span>
-        <span class="tendance-stat">+2 ce mois</span>
+        <span class="valeur-stat">{{ stats.missionsPubliees }}</span>
+        <span class="tendance-stat">Missions en ligne</span>
       </div>
-      <div class="icone-stat">📁</div>
+      <div class="icone-stat"><img src="icones/folder.png" alt=""></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Candidatures reçues</span>
-        <span class="valeur-stat">84</span>
-        <span class="tendance-stat">18 nouvelles</span>
+        <span class="valeur-stat">{{ stats.candidaturesRecues }}</span>
+        <span class="tendance-stat">Total des profils reçus</span>
       </div>
-      <div class="icone-stat">👥</div>
+      <div class="icone-stat"><img src="icones/apprenants-fill.png" alt="icones-candidatures-recues"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Candidatures en cours</span>
-        <span class="valeur-stat">27</span>
-        <span class="tendance-stat">À traiter cette semaine</span>
+        <span class="valeur-stat">{{ stats.candidaturesEnCours }}</span>
+        <span class="tendance-stat">À traiter par vos équipes</span>
       </div>
-      <div class="icone-stat">⏳</div>
+      <div class="icone-stat"><img src="icones/clock.png" alt="icones-temps"></div>
     </div>
 
     <div class="carte-stat">
       <div class="stat-info">
         <span class="libelle-stat">Contrats actifs</span>
-        <span class="valeur-stat">9</span>
-        <span class="tendance-stat">2 signatures attendues</span>
+        <span class="valeur-stat">{{ stats.contratsActifs }}</span>
+        <span class="tendance-stat">Engagements en cours</span>
       </div>
-      <div class="icone-stat">📄</div>
+      <div class="icone-stat"><img src="icones/contract.png" alt="icones-contrats"></div>
     </div>
   </div>
 
@@ -51,7 +51,7 @@
     <div class="bloc-section candidature-section">
       <div class="en-tete-section">
         <h2 class="titre-section">Candidatures récentes</h2>
-        <a routerLink="/recruiter/candidatures" class="lien-voir-tout">Voir tout →</a>
+        <a routerLink="/recruteur/candidatures" class="lien-voir-tout">Voir tout →</a>
       </div>
 
       <div class="liste-elements">
@@ -112,15 +112,15 @@
       <div class="bloc-section">
         <h2 class="titre-section">Actions rapides</h2>
         <div class="liste-actions">
-          <a routerLink="/recruiter/missions/create" class="action-item">
+          <a routerLink="/recruteur/missions/create" class="action-item">
             <span class="action-titre">+ Créer une mission</span>
             <span class="action-desc">Publier un nouveau besoin</span>
           </a>
-          <a routerLink="/recruiter/candidatures" class="action-item">
+          <a routerLink="/recruteur/candidatures" class="action-item">
             <span class="action-titre">Voir les candidatures</span>
             <span class="action-desc">Examiner les profils reçus</span>
           </a>
-          <a routerLink="/recruiter/contrats" class="action-item">
+          <a routerLink="/recruteur/contrats" class="action-item">
             <span class="action-titre">Gérer les contrats</span>
             <span class="action-desc">Suivre les signatures</span>
           </a>
@@ -131,7 +131,7 @@
       <div class="bloc-section">
         <div class="en-tete-section">
           <h2 class="titre-section">Mes missions</h2>
-          <a routerLink="/recruiter/missions" class="lien-voir-tout">Voir tout →</a>
+          <a routerLink="/recruteur/missions" class="lien-voir-tout">Voir tout →</a>
         </div>
 
         <div class="liste-missions-rapide">
