@@ -25,7 +25,7 @@ public class Mission {
 
     private Double budget;
     private String competencesRequises;
-    private String statut; // DISPONIBLE, EN_COURS, TERMINEE
+    private String statut;
     private LocalDate datePublication;
 
     @ManyToOne(fetch = FetchType.LAZY)

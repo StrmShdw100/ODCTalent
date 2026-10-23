@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/projets")
@@ -20,13 +21,23 @@ public class ProjetController {
 
     private final ProjetService projetService;
 
-    // GET /api/v1/projets/portfolio/{portfolioId}
+
+    @GetMapping
+    public ResponseEntity<List<ProjetResponse>> getAllProjets() {
+        return ResponseEntity.ok(projetService.getAllProjets());
+    }
+
+    @GetMapping("/stats/moderation")
+    public ResponseEntity<Map<String, Object>> getModerationStats() {
+        return ResponseEntity.ok(projetService.getModerationStats());
+    }
+
+
     @GetMapping("/portfolio/{portfolioId}")
     public ResponseEntity<List<ProjetResponse>> getProjetsByPortfolio(@PathVariable Long portfolioId) {
         return ResponseEntity.ok(projetService.getProjetsByPortfolioId(portfolioId));
     }
 
-    // POST /api/v1/projets
     @PostMapping
     public ResponseEntity<ProjetResponse> addProjet(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -35,7 +46,6 @@ public class ProjetController {
                 .body(projetService.addProjetToMyPortfolio(userDetails.getUsername(), request));
     }
 
-    // DELETE /api/v1/projets/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProjet(
             @PathVariable Long id,
@@ -44,13 +54,11 @@ public class ProjetController {
         return ResponseEntity.noContent().build();
     }
 
-    // GET /api/v1/projets/{id}
     @GetMapping("/{id}")
     public ResponseEntity<ProjetResponse> getProjetById(@PathVariable Long id) {
         return ResponseEntity.ok(projetService.getProjetById(id));
     }
 
-    // PUT /api/v1/projets/{id}
     @PutMapping("/{id}")
     public ResponseEntity<ProjetResponse> updateProjet(
             @PathVariable Long id,

@@ -46,4 +46,10 @@ public class CandidatureController {
             @RequestParam String statut) {
         return ResponseEntity.ok(candidatureService.updateStatutCandidature(id, userDetails.getUsername(), statut));
     }
+    
+    @GetMapping("/recruteur")
+    public ResponseEntity<List<CandidatureResponse>> getCandidaturesForRecruteur(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(candidatureService.getCandidaturesForRecruteur(userDetails.getUsername()));
+    }
 }

@@ -1,6 +1,7 @@
 package com.odctalent.odctalent_backend.controller;
 
 import com.odctalent.odctalent_backend.entity.Apprenant;
+import com.odctalent.odctalent_backend.repository.ApprenantRepository;
 import com.odctalent.odctalent_backend.service.ApprenantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/admin/apprenants")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // À ajuster selon l'URL de votre frontend Angular
+@CrossOrigin(origins = "*") 
 public class AdminApprenantController {
 
     private final ApprenantService apprenantService;
+    private final ApprenantRepository apprenantRepository; 
 
-   
+    @GetMapping("/tous")
+    public ResponseEntity<List<Apprenant>> getAllApprenants() {
+        List<Apprenant> apprenants = apprenantRepository.findAll();
+        return ResponseEntity.ok(apprenants);
+    }
+
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> importerApprenants(
             @RequestParam("file") MultipartFile file,
@@ -47,7 +54,6 @@ public class AdminApprenantController {
         }
     }
 
-    
     @PostMapping
     public ResponseEntity<Apprenant> creerApprenant(@RequestBody Apprenant apprenant) {
         Apprenant nouveau = apprenantService.creerApprenant(apprenant);

@@ -13,6 +13,5 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class Administrateur extends Utilisateur {
-// SUPER_ADMIN, MODERATEUR
     private String roleAdmin; 
 }

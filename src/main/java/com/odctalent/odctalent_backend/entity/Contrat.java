@@ -21,7 +21,7 @@ public class Contrat {
 
     private LocalDateTime dateSignature;
 
-    private String statut; // BROUILLON, EN_ATTENTE_SIGNATURE, ACTIF, TERMINE, ANNULE
+    private String statut;
 
     @Column(columnDefinition = "TEXT")
     private String termesEtConditions;

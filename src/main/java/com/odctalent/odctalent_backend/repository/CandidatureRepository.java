@@ -9,4 +9,5 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long> 
     List<Candidature> findByMissionId(Long missionId);
     List<Candidature> findByApprenantId(Long apprenantId);
     Optional<Candidature> findByMissionIdAndApprenantId(Long missionId, Long apprenantId);
+    List<Candidature> findByMissionRecruteurId(Long recruteurId);
 }

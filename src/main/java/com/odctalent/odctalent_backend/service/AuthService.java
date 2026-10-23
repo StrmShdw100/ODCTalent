@@ -3,15 +3,9 @@ package com.odctalent.odctalent_backend.service;
 import com.odctalent.odctalent_backend.dto.AuthResponse;
 import com.odctalent.odctalent_backend.dto.LoginRequest;
 import com.odctalent.odctalent_backend.dto.RegisterRequest;
-import com.odctalent.odctalent_backend.entity.Apprenant;
-import com.odctalent.odctalent_backend.entity.Portfolio;
-import com.odctalent.odctalent_backend.entity.Recruteur;
-import com.odctalent.odctalent_backend.entity.Utilisateur;
+import com.odctalent.odctalent_backend.entity.*;
 import com.odctalent.odctalent_backend.entity.enums.Role;
-import com.odctalent.odctalent_backend.repository.ApprenantRepository;
-import com.odctalent.odctalent_backend.repository.PortfolioRepository;
-import com.odctalent.odctalent_backend.repository.RecruteurRepository;
-import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
+import com.odctalent.odctalent_backend.repository.*;
 import com.odctalent.odctalent_backend.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime; 
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +24,7 @@ public class AuthService {
     private final ApprenantRepository apprenantRepository;
     private final RecruteurRepository recruteurRepository;
     private final PortfolioRepository portfolioRepository;
+    private final NotificationRepository notificationRepository; 
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -39,9 +36,13 @@ public class AuthService {
             throw new RuntimeException("Un utilisateur avec cet email existe déjà.");
         }
 
-        Role userRole = request.getRole() != null ? request.getRole() : Role.APPRENANT;
-
+        Role userRole = (request.getRole() != null) 
+            ? Role.valueOf(request.getRole().toUpperCase()) 
+            : Role.APPRENANT;
         Utilisateur user;
+
+        String typeNotification = "";
+        String titreNotification = "";
 
         if (userRole == Role.RECRUTEUR) {
             Recruteur recruteur = new Recruteur();
@@ -51,13 +52,11 @@ public class AuthService {
             recruteur.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             recruteur.setTelephone(request.getTelephone());
             recruteur.setRole(Role.RECRUTEUR);
-            // actif = false et statut = "EN_ATTENTE" par défaut
             user = recruteurRepository.save(recruteur);
+
+            typeNotification = "COMPTE_EN_ATTENTE";
+            titreNotification = "Nouveau recruteur en attente";
         } else {
-
-            
-
-
             Apprenant apprenant = new Apprenant();
             apprenant.setNom(request.getNom());
             apprenant.setPrenom(request.getPrenom());
@@ -65,15 +64,27 @@ public class AuthService {
             apprenant.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
             apprenant.setTelephone(request.getTelephone());
             apprenant.setRole(Role.APPRENANT);
-            // actif = false et statut = "EN_ATTENTE" par défaut
             user = apprenantRepository.save(apprenant);
 
-            // Créer automatiquement un portfolio vide pour le nouvel apprenant
             Portfolio portfolio = Portfolio.builder()
                     .apprenant((Apprenant) user)
                     .build();
             portfolioRepository.save(portfolio);
+
+            typeNotification = "COMPTE_EN_ATTENTE";
+            titreNotification = "Nouveau compte apprenant";
         }
+
+        Notification notification = Notification.builder()
+                .titre(titreNotification)
+                .message(user.getPrenom() + " " + user.getNom() + " vient de créer un compte et attend la validation de son profil.")
+                .type(typeNotification)
+                .referenceId(user.getId())
+                .lue(false)
+                .dateCreation(LocalDateTime.now())
+                .build();
+
+        notificationRepository.save(notification);
 
         // Envoi de l'e-mail de bienvenue
         emailService.sendWelcomeEmail(user.getEmail(), user.getPrenom());

@@ -93,6 +93,35 @@ public class ProjetService {
         return mapToResponse(updated);
     }
 
+    @Transactional(readOnly = true)
+    public List<ProjetResponse> getAllProjets() {
+        return projetRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.Map<String, Object> getModerationStats() {
+        List<Projet> projets = projetRepository.findAll();
+        long total = projets.size();
+        
+        long aModerer = projets.stream()
+                .filter(p -> "EN_ATTENTE".equalsIgnoreCase(p.getStatut()) || p.getStatut() == null)
+                .count();
+                
+        long valides = projets.stream()
+                .filter(p -> "VALIDE".equalsIgnoreCase(p.getStatut()))
+                .count();
+
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("total", total);
+        stats.put("aModerer", aModerer);
+        stats.put("valides", valides);
+
+        return stats;
+    }
+
+
     private ProjetResponse mapToResponse(Projet projet) {
         return ProjetResponse.builder()
                 .id(projet.getId())
