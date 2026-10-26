@@ -27,6 +27,11 @@ public class ProjetController {
         return ResponseEntity.ok(projetService.getAllProjets());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<List<ProjetResponse>> getMyProjets(@AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(projetService.getProjetsByApprenantEmail(userDetails.getUsername()));
+    }
+
     @GetMapping("/stats/moderation")
     public ResponseEntity<Map<String, Object>> getModerationStats() {
         return ResponseEntity.ok(projetService.getModerationStats());
