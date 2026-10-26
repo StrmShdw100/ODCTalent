@@ -21,7 +21,7 @@
         </div>
         <div class="corps-carte-contrat">
           <h3 class="nom-salarie">{{ c.candidature?.apprenant?.prenom }} {{ c.candidature?.apprenant?.nom }}</h3>
-          <span class="poste-salarie">{{ c.candidature?.apprenant.formation || 'Candidat' }}</span>
+          <span class="poste-salarie">{{ c.candidature?.apprenant?.formation || 'Candidat' }}</span>
           <span class="date-creation">Créé le {{ c.dateCreation | date:'dd MMM yyyy' }}</span>
         </div>
         <div class="pied-carte-contrat">

@@ -1,0 +1,346 @@
+.conteneur-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.en-tete-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titre-principal {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.sous-titre-principal {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.bouton-creer {
+  background-color: #ff7900;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(255, 121, 0, 0.2);
+}
+
+.bouton-creer:hover {
+  background-color: #e06800;
+}
+
+.grille-projets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.carte-projet {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  overflow: hidden; /* Garde l'image bien ajustée dans les coins arrondis */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  transition: all 0.2s;
+}
+
+.carte-projet:hover {
+  border-color: #ff7900;
+  box-shadow: 0 4px 6px -1px rgba(255, 121, 0, 0.1);
+}
+
+/* 🖼️ CONTENEUR IMAGE / BANNIÈRE */
+.carte-image-container {
+  width: 100%;
+  height: 160px;
+  background-color: #f3f4f6;
+  position: relative;
+  overflow: hidden;
+}
+
+.projet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.projet-fallback-techno {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  color: #ff7900;
+}
+
+.tech-angular { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); color: #dc2626; }
+.tech-java { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #2563eb; }
+.tech-flutter { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); color: #16a34a; }
+.tech-default { background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); color: #4b5563; }
+
+.fallback-icon { font-size: 1.8rem; }
+.fallback-text { font-size: 0.8rem; font-weight: 700; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 90%; }
+
+/* CONTENU CARTE */
+.carte-contenu {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.carte-contenu h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.carte-contenu p {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.techno-tag {
+  font-size: 0.75rem;
+  color: #ff7900;
+  background-color: #fff7ed;
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+  width: fit-content;
+  font-weight: 600;
+}
+
+.liens-projet-groupe {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.lien-projet {
+  font-size: 0.8rem;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lien-projet:hover {
+  text-decoration: underline;
+}
+
+.aucun-projet {
+  grid-column: span 3;
+  color: #6b7280;
+  font-size: 0.85rem;
+  padding: 2.5rem;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px dashed #e5e7eb;
+  border-radius: 1rem;
+}
+
+/* MODALES */
+.fond-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 100;
+}
+
+.boite-modal-large {
+  background-color: #ffffff; border-radius: 1rem;
+  width: 100%; max-width: 48rem; padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+.modal-entete {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+
+.modal-titre {
+  font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0;
+}
+
+.modal-sous-titre {
+  font-size: 0.85rem; color: #6b7280; margin: 0;
+}
+
+.bouton-fermer {
+  background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #9ca3af;
+}
+
+.modal-corps {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+.ligne-form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+
+.groupe-f {
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+
+.lab {
+  font-size: 0.8rem; font-weight: 600; color: #374151;
+}
+
+.inp {
+  padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.85rem; outline: none;
+}
+
+.inp:focus { border-color: #ff7900; }
+
+.modal-pied {
+  display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid #f3f4f6; padding-top: 1rem;
+}
+
+.btn-annul {
+  padding: 0.6rem 1.2rem; border: 1px solid #d1d5db; background-color: #ffffff; border-radius: 0.5rem; font-weight: 500; cursor: pointer;
+}
+
+.btn-publier {
+  padding: 0.6rem 1.5rem; background-color: #ff7900; color: #ffffff; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;
+}
+
+.tech-icon-img {
+  width: 35%;
+  object-fit: contain;
+  margin-bottom: 0.3rem;
+}
+
+/* Curseur pointer pour indiquer que les cartes sont cliquables */
+.carte-projet {
+  cursor: pointer;
+}
+
+/* Styles spécifiques pour la modale de détails */
+.modal-corps-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-image-grand {
+  width: 100%;
+  height: 200px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #1f2937;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-image-grand img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.projet-fallback-techno-grand {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  color: #ff7900;
+}
+
+.tech-icon-img-grand {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.fallback-text-grand {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.details-contenu-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.groupe-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lab-titre {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.texte-description {
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.liens-flex {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.btn-lien {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: background-color 0.2s;
+}
+
+.btn-lien:hover {
+  background-color: #e5e7eb;
+}
+
+@media (max-width: 1024px) {
+  .grille-projets { grid-template-columns: 1fr; }
+  .aucun-projet { grid-column: span 1; }
+  .ligne-form { grid-template-columns: 1fr; }
+}

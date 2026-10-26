@@ -35,6 +35,7 @@ import { PortfolioApprenant } from './features/apprenant/pages/portfolio/portfol
 import { ApprenantLayout } from './layout/apprenant-layout/apprenant-layout';
 import { RecruteurNotifications } from './features/recruiter/pages/notifications/recruteur-notifications';
 import { ActualitesComponent as ActualitesApprenant } from './features/admin/pages/admin-actualites/actualites';
+import { ProjetsApprenant } from './features/apprenant/pages/projets/projets';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -86,6 +87,7 @@ export const routes: Routes = [
     component: ApprenantLayout,
     children: [
       { path: 'tableau-de-bord', component: TableauDeBordApprenant },
+      { path: 'projets', component: ProjetsApprenant },
       { path: 'actualites', component: ActualitesApprenant }, 
       { path: 'notifications', component: NotificationsApprenant },
       { path: 'portfolio', component: PortfolioApprenant },

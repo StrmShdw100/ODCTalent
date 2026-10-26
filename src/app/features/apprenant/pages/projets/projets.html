@@ -1,0 +1,131 @@
+<div class="conteneur-page">
+  <div class="en-tete-page">
+    <div>
+      <h1 class="titre-principal">Mes Projets</h1>
+      <p class="sous-titre-principal">Suivez l'avancement de vos projets et réalisations.</p>
+    </div>
+    <button class="bouton-creer" (click)="ouvrirModal()">+ Nouveau projet</button>
+  </div>
+
+  <div class="grille-projets">
+    <!-- CLIC SUR LA CARTE POUR OUVRIR LES DETAILS -->
+    <div class="carte-projet" *ngFor="let p of projets" (click)="ouvrirDetail(p)">
+      <div class="carte-image-container">
+        <img *ngIf="p.imageUrl" [src]="p.imageUrl" [alt]="p.titre" class="projet-img" />
+        <div *ngIf="!p.imageUrl" class="projet-fallback-techno" [ngClass]="getTechClass(p.technologies)">
+          <img [src]="getTechIcon(p.technologies)" alt="icone techno" class="tech-icon-img" />
+          <span class="fallback-text">{{ p.technologies || 'Projet ODC' }}</span>
+        </div>
+      </div>
+
+      <div class="carte-contenu">
+        <h3>{{ p.titre }}</h3>
+        <p>{{ p.description }}</p>
+        <div class="techno-tag" *ngIf="p.technologies">🛠️ {{ p.technologies }}</div>
+        <div class="liens-projet-groupe">
+          <a *ngIf="p.githubUrl" [href]="p.githubUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">GitHub ↗</a>
+          <a *ngIf="p.demoUrl" [href]="p.demoUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">Démo Live ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="projets.length === 0" class="aucun-projet">
+      <p>Aucun projet enregistré pour le moment. Cliquez sur "Nouveau projet" pour commencer !</p>
+    </div>
+  </div>
+
+  <!-- MODALE DETAILS DU PROJET -->
+  <div class="fond-modal" *ngIf="modalDetailOuverte && projetSelectionne">
+    <div class="boite-modal-large boite-modal-details">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">{{ projetSelectionne.titre }}</h2>
+          <p class="modal-sous-titre" *ngIf="projetSelectionne.dateCreation">Créé le {{ projetSelectionne.dateCreation | date:'dd MMM yyyy' }}</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerDetail()">✕</button>
+      </div>
+
+      <div class="modal-corps modal-corps-details">
+        <!-- Grand visuel dans la modale -->
+        <div class="modal-image-grand">
+          <img *ngIf="projetSelectionne.imageUrl" [src]="projetSelectionne.imageUrl" [alt]="projetSelectionne.titre" />
+          <div *ngIf="!projetSelectionne.imageUrl" class="projet-fallback-techno-grand" [ngClass]="getTechClass(projetSelectionne.technologies)">
+            <img [src]="getTechIcon(projetSelectionne.technologies)" alt="icone techno" class="tech-icon-img-grand" />
+            <span class="fallback-text-grand">{{ projetSelectionne.technologies || 'Projet ODC' }}</span>
+          </div>
+        </div>
+
+        <div class="details-contenu-info">
+          <div class="groupe-detail">
+            <label class="lab-titre">Description complète</label>
+            <p class="texte-description">{{ projetSelectionne.description }}</p>
+          </div>
+
+          <div class="groupe-detail" *ngIf="projetSelectionne.technologies">
+            <label class="lab-titre">Technologies utilisées</label>
+            <div class="techno-tag">🛠️ {{ projetSelectionne.technologies }}</div>
+          </div>
+
+          <div class="groupe-detail" *ngIf="projetSelectionne.githubUrl || projetSelectionne.demoUrl">
+            <label class="lab-titre">Liens externes</label>
+            <div class="liens-flex">
+              <a *ngIf="projetSelectionne.githubUrl" [href]="projetSelectionne.githubUrl" target="_blank" class="btn-lien github">GitHub ↗</a>
+              <a *ngIf="projetSelectionne.demoUrl" [href]="projetSelectionne.demoUrl" target="_blank" class="btn-lien demo">Démo Live ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerDetail()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE AJOUT PROJET -->
+  <div class="fond-modal" *ngIf="modalOuverte">
+    <div class="boite-modal-large">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">Ajouter un nouveau projet</h2>
+          <p class="modal-sous-titre">Partagez vos réalisations pour alimenter votre portfolio.</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerModal()">✕</button>
+      </div>
+
+      <div class="modal-corps">
+        <div class="groupe-f">
+          <label class="lab">Titre du projet *</label>
+          <input type="text" class="inp" [(ngModel)]="nouveauProjet.titre" placeholder="Ex: Application mobile de gestion" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Description *</label>
+          <textarea class="inp" rows="4" [(ngModel)]="nouveauProjet.description" placeholder="Décrivez l'objectif du projet et votre rôle..."></textarea>
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Technologies utilisées</label>
+          <input type="text" class="inp" [(ngModel)]="nouveauProjet.technologies" placeholder="Ex: Angular, Spring Boot, React, Flutter" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Lien de l'image du projet (URL)</label>
+          <input type="text" class="inp" [(ngModel)]="nouveauProjet.imageUrl" placeholder="https://example.com/image.png (Optionnel)" />
+        </div>
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Lien GitHub</label>
+            <input type="text" class="inp" [(ngModel)]="nouveauProjet.githubUrl" placeholder="https://github.com/mon-projet" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Lien Démo (Optionnel)</label>
+            <input type="text" class="inp" [(ngModel)]="nouveauProjet.demoUrl" placeholder="https://mon-projet-demo.com" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerModal()">Annuler</button>
+        <button class="btn-publier" (click)="creerProjet()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
