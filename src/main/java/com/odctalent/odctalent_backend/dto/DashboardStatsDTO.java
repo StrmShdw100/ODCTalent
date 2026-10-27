@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Data
@@ -12,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashboardStatsDTO {
-
-    private long apprenants;
-    private long recruteurs;
-    private long projetsAModerer;
-    private long opportunitesActives;
-    private long nouvellesOpportunites;
+    private long totalApprenants;
+    private long totalRecruteurs;
+    private long totalOpportunites;
+    private long totalAdministrateurs;
+    private long comptesEnAttente;
+    private long totalCandidatures;
 
     private List<ActivityDTO> recentActivities;
 
@@ -28,6 +27,6 @@ public class DashboardStatsDTO {
     public static class ActivityDTO {
         private String title;
         private String time;
-        private String type; // 'project', 'opportunity', 'profile', 'job'
+        private String type;
     }
 }

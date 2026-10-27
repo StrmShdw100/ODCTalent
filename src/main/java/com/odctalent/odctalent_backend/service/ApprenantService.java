@@ -2,9 +2,11 @@ package com.odctalent.odctalent_backend.service;
 
 import com.odctalent.odctalent_backend.dto.CompleteProfileRequest;
 import com.odctalent.odctalent_backend.entity.Apprenant;
+import com.odctalent.odctalent_backend.entity.Notification;
 import com.odctalent.odctalent_backend.entity.Profil;
 import com.odctalent.odctalent_backend.entity.enums.Role;
 import com.odctalent.odctalent_backend.repository.ApprenantRepository;
+import com.odctalent.odctalent_backend.repository.NotificationRepository;
 import com.odctalent.odctalent_backend.repository.ProfilRepository;
 import com.odctalent.odctalent_backend.util.ExcelHelper;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ public class ApprenantService {
 
     private final ApprenantRepository apprenantRepository;
     private final ProfilRepository profilRepository; 
+    private final NotificationRepository notificationRepository; 
     private final PasswordEncoder passwordEncoder;
 
     private String genererMatriculeCourt() {
@@ -43,10 +47,23 @@ public class ApprenantService {
             }
         }
 
-        return apprenantRepository.saveAll(apprenants);
+        List<Apprenant> sauvegardes = apprenantRepository.saveAll(apprenants);
+
+        for (Apprenant a : sauvegardes) {
+            notificationRepository.save(Notification.builder()
+                .titre("Nouveau compte apprenant (Import)")
+                .message(a.getPrenom() + " " + a.getNom() + " a été importé via Excel et attend l'activation.")
+                .type("COMPTE_EN_ATTENTE")
+                .referenceId(a.getId())
+                .lue(false)
+                .dateCreation(LocalDateTime.now())
+                .build());
+        }
+
+        return sauvegardes;
     }
 
-    @Transactional
+   @Transactional
     public Apprenant creerApprenant(Apprenant apprenant) {
         if (apprenant.getMatricule() == null || apprenant.getMatricule().isBlank()) {
             apprenant.setMatricule(genererMatriculeCourt());
@@ -54,10 +71,24 @@ public class ApprenantService {
         if (apprenant.getRole() == null) {
             apprenant.setRole(Role.APPRENANT);
         }
-        if (apprenant.getMotDePasse() != null && !apprenant.getMotDePasse().startsWith("$2a$")) {
+        if (apprenant.getMotDePasse() == null || apprenant.getMotDePasse().isBlank()) {
+            apprenant.setMotDePasse(passwordEncoder.encode("ODC@2026"));
+        } else if (!apprenant.getMotDePasse().startsWith("$2a$")) {
             apprenant.setMotDePasse(passwordEncoder.encode(apprenant.getMotDePasse()));
         }
-        return apprenantRepository.save(apprenant);
+        
+        Apprenant nouveau = apprenantRepository.save(apprenant);
+
+        notificationRepository.save(Notification.builder()
+            .titre("Nouveau compte apprenant")
+            .message(nouveau.getPrenom() + " " + nouveau.getNom() + " a été créé et attend la validation.")
+            .type("COMPTE_EN_ATTENTE")
+            .referenceId(nouveau.getId())
+            .lue(false)
+            .dateCreation(LocalDateTime.now())
+            .build());
+
+        return nouveau;
     }
 
     @Transactional

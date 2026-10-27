@@ -90,6 +90,49 @@ public class MissionService {
         missionRepository.delete(mission);
     }
 
+
+    @Transactional
+    public MissionResponse createMissionAdmin(MissionRequest request, Long recruteurId) {
+        Recruteur recruteur;
+        if (recruteurId != null) {
+            recruteur = recruteurRepository.findById(recruteurId)
+                    .orElseThrow(() -> new RuntimeException("Recruteur introuvable avec l'ID : " + recruteurId));
+        } else {
+            recruteur = recruteurRepository.findAll().stream().findFirst()
+                    .orElseThrow(() -> new RuntimeException("Aucun recruteur disponible dans la base."));
+        }
+
+        Mission mission = Mission.builder()
+                .titre(request.getTitre())
+                .description(request.getDescription())
+                .budget(request.getBudget())
+                .competencesRequises(request.getCompetencesRequises())
+                .statut(request.getStatut() != null ? request.getStatut() : "DISPONIBLE")
+                .datePublication(LocalDate.now())
+                .recruteur(recruteur)
+                .build();
+
+        Mission saved = missionRepository.save(mission);
+        return mapToResponse(saved);
+    }
+
+    @Transactional
+    public MissionResponse updateMissionStatus(Long missionId, String nouveauStatut) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission introuvable avec l'ID : " + missionId));
+        
+        mission.setStatut(nouveauStatut);
+        Mission updated = missionRepository.save(mission);
+        return mapToResponse(updated);
+    }
+
+    @Transactional
+    public void deleteMissionAdmin(Long missionId) {
+        Mission mission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new RuntimeException("Mission introuvable avec l'ID : " + missionId));
+        missionRepository.delete(mission);
+    }
+
     private MissionResponse mapToResponse(Mission mission) {
         Recruteur r = mission.getRecruteur();
         return MissionResponse.builder()

@@ -10,4 +10,5 @@ public class OdctalentBackendApplication {
 		SpringApplication.run(OdctalentBackendApplication.class, args);
 	}
 
+
 }

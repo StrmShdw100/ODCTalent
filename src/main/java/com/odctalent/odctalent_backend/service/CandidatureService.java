@@ -5,10 +5,12 @@ import com.odctalent.odctalent_backend.dto.CandidatureResponse;
 import com.odctalent.odctalent_backend.entity.Apprenant;
 import com.odctalent.odctalent_backend.entity.Candidature;
 import com.odctalent.odctalent_backend.entity.Mission;
+import com.odctalent.odctalent_backend.entity.Recruteur; 
 import com.odctalent.odctalent_backend.entity.Utilisateur;
 import com.odctalent.odctalent_backend.repository.ApprenantRepository;
 import com.odctalent.odctalent_backend.repository.CandidatureRepository;
 import com.odctalent.odctalent_backend.repository.MissionRepository;
+import com.odctalent.odctalent_backend.repository.RecruteurRepository; 
 import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class CandidatureService {
     private final MissionRepository missionRepository;
     private final ApprenantRepository apprenantRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final RecruteurRepository recruteurRepository; 
     private final EmailService emailService;
 
     @Transactional
@@ -63,6 +66,19 @@ public class CandidatureService {
     }
 
     @Transactional(readOnly = true)
+    public List<CandidatureResponse> getCandidaturesForRecruteur(String emailRecruteur) {
+        Utilisateur user = utilisateurRepository.findByEmail(emailRecruteur)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+
+        Recruteur recruteur = recruteurRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("Recruteur introuvable."));
+
+        return candidatureRepository.findByMissionRecruteurId(recruteur.getId()).stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public List<CandidatureResponse> getMyCandidatures(String emailApprenant) {
         Utilisateur user = utilisateurRepository.findByEmail(emailApprenant)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
@@ -77,7 +93,6 @@ public class CandidatureService {
         Candidature candidature = candidatureRepository.findById(candidatureId)
                 .orElseThrow(() -> new RuntimeException("Candidature introuvable avec l'ID : " + candidatureId));
 
-        // Vérifier que le recruteur connecté est bien celui qui a publié la mission associée
         if (!candidature.getMission().getRecruteur().getEmail().equals(recruteurEmail)) {
             throw new RuntimeException("Vous n'êtes pas autorisé à modifier le statut de cette candidature.");
         }
@@ -85,7 +100,6 @@ public class CandidatureService {
         candidature.setStatut(nouveauStatut);
         Candidature updated = candidatureRepository.save(candidature);
 
-        // Envoi automatique de l'e-mail à l'apprenant
         if (updated.getApprenant() != null && updated.getMission() != null) {
             emailService.sendCandidatureStatusEmail(
                     updated.getApprenant().getEmail(),

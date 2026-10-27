@@ -2,9 +2,11 @@ package com.odctalent.odctalent_backend.service;
 
 import com.odctalent.odctalent_backend.dto.ProjetRequest;
 import com.odctalent.odctalent_backend.dto.ProjetResponse;
+import com.odctalent.odctalent_backend.entity.Apprenant;
 import com.odctalent.odctalent_backend.entity.Portfolio;
 import com.odctalent.odctalent_backend.entity.Projet;
 import com.odctalent.odctalent_backend.entity.Utilisateur;
+import com.odctalent.odctalent_backend.repository.ApprenantRepository;
 import com.odctalent.odctalent_backend.repository.PortfolioRepository;
 import com.odctalent.odctalent_backend.repository.ProjetRepository;
 import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
@@ -22,6 +24,7 @@ public class ProjetService {
     private final ProjetRepository projetRepository;
     private final PortfolioRepository portfolioRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final ApprenantRepository apprenantRepository;
 
     @Transactional(readOnly = true)
     public List<ProjetResponse> getProjetsByPortfolioId(Long portfolioId) {
@@ -35,8 +38,20 @@ public class ProjetService {
         Utilisateur user = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'email : " + email));
 
+        // 💡 Recherche le portfolio, ou le crée automatiquement s'il n'existe pas
         Portfolio portfolio = portfolioRepository.findByApprenantId(user.getId())
-                .orElseThrow(() -> new RuntimeException("Portfolio non trouvé. Veuillez d'abord initialiser votre portfolio."));
+                .orElseGet(() -> {
+                    Apprenant apprenant = apprenantRepository.findById(user.getId())
+                            .orElseThrow(() -> new RuntimeException("Profil Apprenant introuvable pour cet utilisateur."));
+                    
+                    Portfolio newPortfolio = Portfolio.builder()
+                            .apprenant(apprenant)
+                            .titreProfessionnel("Mon Portfolio")
+                            .visibilite("PUBLIC")
+                            .dateCreation(LocalDate.now().toString())
+                            .build();
+                    return portfolioRepository.save(newPortfolio);
+                });
 
         Projet projet = Projet.builder()
                 .titre(request.getTitre())
@@ -65,7 +80,6 @@ public class ProjetService {
         projetRepository.delete(projet);
     }
 
-
     @Transactional(readOnly = true)
     public ProjetResponse getProjetById(Long id) {
         Projet projet = projetRepository.findById(id)
@@ -91,6 +105,43 @@ public class ProjetService {
 
         Projet updated = projetRepository.save(projet);
         return mapToResponse(updated);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjetResponse> getProjetsByApprenantEmail(String email) {
+        Utilisateur user = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé."));
+        return projetRepository.findByPortfolioApprenantId(user.getId()).stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjetResponse> getAllProjets() {
+        return projetRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.Map<String, Object> getModerationStats() {
+        List<Projet> projets = projetRepository.findAll();
+        long total = projets.size();
+        
+        long aModerer = projets.stream()
+                .filter(p -> "EN_ATTENTE".equalsIgnoreCase(p.getStatut()) || p.getStatut() == null)
+                .count();
+                
+        long valides = projets.stream()
+                .filter(p -> "VALIDE".equalsIgnoreCase(p.getStatut()))
+                .count();
+
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("total", total);
+        stats.put("aModerer", aModerer);
+        stats.put("valides", valides);
+
+        return stats;
     }
 
     private ProjetResponse mapToResponse(Projet projet) {
