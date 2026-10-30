@@ -25,7 +25,7 @@ public class Apprenant extends Utilisateur {
 
     private String localisation;
 
-    private Boolean disponibilite;
+    private Boolean disponible;
 
     @OneToOne(mappedBy = "apprenant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Profil profil;

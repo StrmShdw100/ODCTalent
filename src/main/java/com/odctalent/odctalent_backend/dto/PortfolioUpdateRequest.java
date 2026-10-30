@@ -17,4 +17,5 @@ public class PortfolioUpdateRequest {
     private String websiteUrl;
     private String competences;
     private String photoProfil;
+    private Boolean disponible;
 }

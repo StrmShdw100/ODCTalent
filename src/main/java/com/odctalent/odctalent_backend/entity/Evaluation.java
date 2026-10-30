@@ -18,7 +18,7 @@ public class Evaluation {
     private Long id;
 
     @Column(nullable = false)
-    private Integer note; // Note sur 5 par exemple
+    private Integer note;
 
     @Column(columnDefinition = "TEXT")
     private String commentaire;

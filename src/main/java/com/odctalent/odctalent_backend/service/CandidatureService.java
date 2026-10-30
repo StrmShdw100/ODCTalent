@@ -29,7 +29,7 @@ public class CandidatureService {
     private final UtilisateurRepository utilisateurRepository;
     private final RecruteurRepository recruteurRepository; 
     private final EmailService emailService;
-
+    private final NotificationService notificationService; 
     @Transactional
     public CandidatureResponse postuler(String emailApprenant, CandidatureRequest request) {
         Utilisateur user = utilisateurRepository.findByEmail(emailApprenant)
@@ -55,6 +55,22 @@ public class CandidatureService {
                 .build();
 
         Candidature saved = candidatureRepository.save(candidature);
+
+        boolean isFreelance = mission.getBudget() != null && mission.getBudget() > 0;
+        String typeOffreLibelle = isFreelance ? "Freelance & Missions" : "Recrutement & Stages";
+
+        String titreNotif = "Candidature envoyée avec succès 🎯";
+        String messageNotif = String.format("Vous avez postulé à l'offre '%s' (Type : %s). Le recruteur examine votre dossier.", 
+                mission.getTitre(), typeOffreLibelle);
+
+        notificationService.envoyerNotification(
+                apprenant.getId(),
+                titreNotif,
+                messageNotif,
+                "CANDIDATURE",
+                saved.getId()
+        );
+
         return mapToResponse(saved);
     }
 
@@ -106,6 +122,16 @@ public class CandidatureService {
                     updated.getMission().getTitre(),
                     nouveauStatut,
                     updated.getApprenant().getPrenom()
+            );
+
+            // 🚀 Optionnel : Notifier aussi l'apprenant du changement de statut de sa candidature
+            String statutLibelle = "ACCEPTEE".equals(nouveauStatut) ? "Acceptée 🎉" : ("REFUSEE".equals(nouveauStatut) ? "Refusée ❌" : nouveauStatut);
+            notificationService.envoyerNotification(
+                    updated.getApprenant().getId(),
+                    "Mise à jour de candidature",
+                    String.format("Votre candidature pour l'offre '%s' est maintenant : %s", updated.getMission().getTitre(), statutLibelle),
+                    "STATUT_CANDIDATURE",
+                    updated.getId()
             );
         }
 

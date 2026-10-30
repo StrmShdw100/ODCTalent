@@ -47,12 +47,11 @@ public class PortfolioService {
         Utilisateur user = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'email : " + email));
 
+        Apprenant apprenant = apprenantRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("Apprenant non trouvé."));
+
         Portfolio portfolio = portfolioRepository.findByApprenantId(user.getId())
-                .orElseGet(() -> {
-                    Apprenant apprenant = apprenantRepository.findById(user.getId())
-                            .orElseThrow(() -> new RuntimeException("Apprenant non trouvé."));
-                    return Portfolio.builder().apprenant(apprenant).build();
-                });
+                .orElseGet(() -> Portfolio.builder().apprenant(apprenant).build());
 
         if (request.getBio() != null) portfolio.setBio(request.getBio());
         if (request.getTitreProfessionnel() != null) portfolio.setTitreProfessionnel(request.getTitreProfessionnel());
@@ -61,7 +60,11 @@ public class PortfolioService {
         if (request.getWebsiteUrl() != null) portfolio.setWebsiteUrl(request.getWebsiteUrl());
         if (request.getCompetences() != null) portfolio.setCompetences(request.getCompetences());
 
-        // Mise à jour de la photo de profil sur l'utilisateur
+        if (request.getDisponible() != null) {
+            apprenant.setDisponible(request.getDisponible());
+            apprenantRepository.save(apprenant);
+        }
+
         if (request.getPhotoProfil() != null) {
             user.setPhotoProfil(request.getPhotoProfil());
             utilisateurRepository.save(user);
@@ -94,6 +97,7 @@ public class PortfolioService {
                 .prenomApprenant(apprenant != null ? apprenant.getPrenom() : (user != null ? user.getPrenom() : null))
                 .emailApprenant(apprenant != null ? apprenant.getEmail() : (user != null ? user.getEmail() : null))
                 .photoProfil(user != null ? user.getPhotoProfil() : (apprenant != null ? apprenant.getPhotoProfil() : null))
+                .disponible(apprenant != null ? apprenant.getDisponible() : true)
                 .build();
     }
 }

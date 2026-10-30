@@ -97,7 +97,7 @@ public class ApprenantService {
                 .orElseThrow(() -> new RuntimeException("Apprenant introuvable avec l'email : " + email));
 
         if (request.getDisponibilite() != null) {
-            apprenant.setDisponibilite(request.getDisponibilite());
+            apprenant.setDisponible(request.getDisponibilite());
         }
 
         Profil profil = apprenant.getProfil();

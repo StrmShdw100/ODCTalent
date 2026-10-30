@@ -19,9 +19,7 @@ public class SuiviController {
 
     private final SuiviService suiviService;
 
-    // ==================== ESPACE APPRENANT / ALUMNI ====================
 
-    // 1. L'apprenant met à jour sa propre situation professionnelle
     @PostMapping("/me")
     public ResponseEntity<EvolutionResponse> ajouterMonEvolution(
             @RequestBody EvolutionRequest request,
@@ -30,13 +28,17 @@ public class SuiviController {
                 .body(suiviService.ajouterEvolutionPourApprenantConnecte(request, authentication.getName()));
     }
 
-    // 2. L'apprenant consulte son propre historique de carrière
     @GetMapping("/me")
     public ResponseEntity<List<EvolutionResponse>> getMonHistorique(Authentication authentication) {
         return ResponseEntity.ok(suiviService.getHistoriqueApprenantConnecte(authentication.getName()));
     }
 
-    // ==================== ESPACE ADMIN ODC ====================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> supprimerEvolution(@PathVariable Long id, Authentication authentication) {
+        suiviService.supprimerEvolution(id, authentication.getName());
+        return ResponseEntity.noContent().build();
+    }
+
 
     // 3. L'admin ajoute ou rectifie le parcours d'un apprenant (avec notes privées)
     @PostMapping("/admin")
@@ -45,7 +47,6 @@ public class SuiviController {
                 .body(suiviService.ajouterEvolution(request));
     }
 
-    // 4. L'admin consulte l'historique complet d'un apprenant donné
     @GetMapping("/admin/apprenant/{apprenantId}")
     public ResponseEntity<List<EvolutionResponse>> getHistoriqueParApprenant(@PathVariable Long apprenantId) {
         return ResponseEntity.ok(suiviService.getHistoriqueApprenant(apprenantId));

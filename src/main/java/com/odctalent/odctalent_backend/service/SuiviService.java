@@ -19,7 +19,6 @@ public class SuiviService {
     private final EvolutionProfessionnelleRepository evolutionRepository;
     private final ApprenantRepository apprenantRepository;
 
-    // ==================== ESPACE ADMIN ODC ====================
 
     @Transactional
     public EvolutionResponse ajouterEvolution(EvolutionRequest request) {
@@ -37,7 +36,6 @@ public class SuiviService {
                 .toList();
     }
 
-    // ==================== ESPACE APPRENANT CONNECTÉ (/me) ====================
 
     @Transactional
     public EvolutionResponse ajouterEvolutionPourApprenantConnecte(EvolutionRequest request, String email) {
@@ -45,7 +43,6 @@ public class SuiviService {
                 .orElseThrow(() -> new RuntimeException("Apprenant introuvable avec l'email : " + email));
 
         EvolutionProfessionnelle evolution = mapToEntity(request, apprenant);
-        // L'apprenant ne renseigne pas la remarque réservée à l'administration
         evolution.setRemarquesAdmin(null); 
 
         return mapToResponse(evolutionRepository.save(evolution));
@@ -61,7 +58,19 @@ public class SuiviService {
                 .toList();
     }
 
-    // ==================== METHODES DE MAPPING ====================
+
+    @Transactional
+    public void supprimerEvolution(Long evolutionId, String email) {
+        EvolutionProfessionnelle evolution = evolutionRepository.findById(evolutionId)
+                .orElseThrow(() -> new RuntimeException("Expérience introuvable avec l'ID : " + evolutionId));
+
+        if (!evolution.getApprenant().getEmail().equals(email)) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à supprimer cette entrée.");
+        }
+
+        evolutionRepository.delete(evolution);
+    }
+
 
     private EvolutionProfessionnelle mapToEntity(EvolutionRequest request, Apprenant apprenant) {
         return EvolutionProfessionnelle.builder()
@@ -88,6 +97,7 @@ public class SuiviService {
                 .remarquesAdmin(entity.getRemarquesAdmin())
                 .apprenantId(entity.getApprenant().getId())
                 .nomApprenant(entity.getApprenant().getNom() + " " + entity.getApprenant().getPrenom())
+                .emailApprenant(entity.getApprenant().getEmail())
                 .build();
     }
 }

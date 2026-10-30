@@ -22,4 +22,5 @@ public class PortfolioResponse {
     private String prenomApprenant;
     private String emailApprenant;
     private String photoProfil;
+    private Boolean disponible;
 }
