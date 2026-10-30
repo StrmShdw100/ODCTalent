@@ -1,0 +1,248 @@
+.conteneur-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.en-tete-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titre-principal {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.sous-titre-principal {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.bouton-creer {
+  background-color: #ff7900;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(255, 121, 0, 0.2);
+}
+
+.bouton-creer:hover {
+  background-color: #e06800;
+}
+
+/* SECTION TIMELINE */
+.section-timeline {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-timeline h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.timeline-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-left: 2rem; /* Espace réservé à gauche pour la ligne et les points */
+  margin-left: 0.5rem;
+}
+
+/* La ligne verticale continue gérée proprement par le conteneur */
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 7px; /* Aligné exactement au centre des points (14px de large / 2) */
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background-color: #e5e7eb;
+  z-index: 1;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-point {
+  position: absolute;
+  left: -2rem;
+  top: 0.4rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #ff7900;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px #fff7ed;
+  z-index: 2; 
+}
+
+.timeline-content-card {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.entete-carte-evo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.entete-carte-evo h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.2rem 0;
+}
+
+.entreprise-nom {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin: 0;
+  font-weight: 500;
+}
+
+.badge-statut {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+}
+
+.statut-cdi { background-color: #dcfce7; color: #16a34a; }
+.statut-cdd { background-color: #fef9c3; color: #ca8a04; }
+.statut-freelance { background-color: #e0e7ff; color: #4f46e5; }
+.statut-formation { background-color: #fff7ed; color: #ff7900; }
+.statut-defaut { background-color: #f3f4f6; color: #4b5563; }
+
+.periode {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.en-poste-tag {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.remarque-admin {
+  background-color: #eff6ff;
+  border: 1px solid #dbeafe;
+  color: #1e40af;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.aucun-projet {
+  color: #6b7280;
+  font-size: 0.85rem;
+  padding: 2.5rem;
+  text-align: center;
+  background-color: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  border-radius: 1rem;
+}
+
+/* MODALE */
+.fond-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 100;
+}
+
+.boite-modal-large {
+  background-color: #ffffff; border-radius: 1rem;
+  width: 100%; max-width: 42rem; padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+.modal-entete {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+
+.modal-titre {
+  font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0;
+}
+
+.modal-sous-titre {
+  font-size: 0.85rem; color: #6b7280; margin: 0;
+}
+
+.bouton-fermer {
+  background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #9ca3af;
+}
+
+.modal-corps {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+.ligne-form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+
+.groupe-f {
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+
+.lab {
+  font-size: 0.8rem; font-weight: 600; color: #374151;
+}
+
+.inp {
+  padding: 0.6rem 0.8rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.85rem; outline: none; background-color: #fff;
+}
+
+.inp:focus { border-color: #ff7900; }
+
+.modal-pied {
+  display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid #f3f4f6; padding-top: 1rem;
+}
+
+.btn-annul {
+  padding: 0.6rem 1.2rem; border: 1px solid #d1d5db; background-color: #ffffff; border-radius: 0.5rem; font-weight: 500; cursor: pointer;
+}
+
+.btn-publier {
+  padding: 0.6rem 1.5rem; background-color: #ff7900; color: #ffffff; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;
+}
+.carte-cliquable{
+    cursor: pointer;
+}
+.img{
+    width: 16px;
+}
+
+@media (max-width: 1024px) {
+  .ligne-form { grid-template-columns: 1fr; }
+}

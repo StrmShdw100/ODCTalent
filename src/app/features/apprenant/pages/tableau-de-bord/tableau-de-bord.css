@@ -4,12 +4,54 @@
   gap: 2rem;
   background-color: #fafafa;
 }
-
 .en-tete-salutation {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
+/* Bouton toggle de disponibilité */
+.btn-dispo-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-dispo-toggle.actif {
+  border-color: #10b981;
+  color: #065f46;
+  background-color: #ecfdf5;
+}
+
+.btn-dispo-toggle.inactif {
+  border-color: #ef4444;
+  color: #991b1b;
+  background-color: #fef2f2;
+}
+
+.btn-dispo-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.icone-dispo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 
 .titre-principal {
   font-size: 1.75rem;
@@ -166,9 +208,270 @@
   color: #ff7900;
   font-weight: 600;
 }
+/* Bouton toggle de disponibilité */
+.btn-dispo-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-dispo-toggle.actif {
+  border-color: #10b981;
+  color: #065f46;
+  background-color: #ecfdf5;
+}
+
+.btn-dispo-toggle.inactif {
+  border-color: #ef4444;
+  color: #991b1b;
+  background-color: #fef2f2;
+}
+
+.btn-dispo-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Cartes d'actions rapides */
+.carte-action-rapide {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.carte-action-rapide:hover {
+  border-color: #ff7900;
+  background-color: #fffaf5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.carte-action-rapide h4 {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.carte-action-rapide p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
 
 @media (max-width: 1024px) {
   .banniere-valorisation { flex-direction: column; gap: 1.5rem; text-align: center; }
   .banniere-texte { align-items: center; max-width: 100%; }
   .grille-actualites { grid-template-columns: 1fr; }
+}
+/* 🚀 Overlay du GIF de chargement initial (1.5s) */
+.overlay-chargement-gif {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.conteneur-gif-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.conteneur-gif-loader img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.conteneur-gif-loader p {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* 🚀 Styles pour l'avatar (Photo ou Initiales) */
+.avatar-dashboard-container {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ff7900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffedd5;
+}
+
+.avatar-img-dash {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initiales-dash {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ff7900;
+}
+/* 🚀 Style de l'illustration dans la bannière (remplacement du GIF) */
+.avatar-banniere-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatar-banniere-initiales {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.illustration-cercle {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; 
+}/* 🚀 Curseur et effet au survol sur les cartes d'actualités */
+.carte-actualite.cliquable {
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carte-actualite.cliquable:hover {
+  transform: translateY(-3px);
+  border-color: #ff7900;
+  box-shadow: 0 8px 16px -4px rgba(255, 121, 0, 0.15);
+}
+
+/* 🚀 Overlay sombre en arrière-plan */
+.overlay-modale-actu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* 🚀 Boîte modale des détails d'actualité */
+.carte-modale-actu {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  width: 90%;
+  max-width: 550px;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: scaleUp 0.2s ease-out;
+}
+
+.en-tete-modale-actu {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 1rem;
+}
+
+.titre-modale-actu {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0.25rem 0 0 0;
+}
+
+.btn-fermer-modale {
+  background: #f3f4f6;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.btn-fermer-modale:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.corps-modale-actu {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.texte-complet-actu {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}
+/* 🚀 Troncature du texte d'actualité sur les cartes */
+.actu-desc {
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limite à 2 lignes maximum */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Ajoute les "..." à la fin */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

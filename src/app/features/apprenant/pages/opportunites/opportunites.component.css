@@ -1,202 +1,263 @@
-.mobile-container {
-  max-width: 430px;
+.conteneur-opportunites {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
-  background-color: #FAFAFA;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-bottom: 90px;
-  position: relative;
 }
 
-.header {
+/* Bannière Hero */
+.hero-banniere-opportunites {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  border-radius: 1.25rem;
+  padding: 3rem 2.5rem;
+  color: #ffffff;
   display: flex;
-  align-items: center;
-  padding: 20px;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #EEEEEE;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-right: 15px;
+.hero-texte {
   display: flex;
-  align-items: center;
-  color: #333;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.header h1 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #111;
+.titre-hero {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.sous-titre-hero {
+  font-size: 1rem;
+  color: #9ca3af;
   margin: 0;
 }
 
-.tabs-container {
+/* Barre de recherche dans le Hero */
+.barre-recherche-hero {
+  position: relative;
   display: flex;
-  gap: 12px;
-  padding: 16px 20px;
-  background-color: #FFFFFF;
+  align-items: center;
+  max-width: 600px;
 }
 
-.tab-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 25px;
-  border: 1px solid #E0E0E0;
-  background-color: #F8F9FA;
-  font-size: 15px;
+.icone-recherche {
+  position: absolute;
+  left: 1rem;
+  color: #9ca3af;
+}
+
+.input-hero {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-hero::placeholder {
+  color: #9ca3af;
+}
+
+.input-hero:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ff7900;
+  box-shadow: 0 0 0 3px rgba(255, 121, 0, 0.2);
+}
+
+/* Barre d'onglets moderne */
+.barre-onglets-moderne {
+  display: flex;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  width: fit-content;
+}
+
+.btn-onglet-moderne {
+  background: none;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.75rem;
   font-weight: 600;
-  color: #666;
+  font-size: 0.9rem;
+  color: #4b5563;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.tab-btn.active {
-  background-color: #FF7900;
-  color: #FFFFFF;
-  border-color: #FF7900;
-  box-shadow: 0 4px 10px rgba(255, 121, 0, 0.2);
+.btn-onglet-moderne.actif {
+  background-color: #ff7900;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 121, 0, 0.25);
 }
 
-.search-container {
-  padding: 0 20px 16px 20px;
-  background-color: #FFFFFF;
-  position: relative;
-  border-bottom: 1px solid #EEEEEE;
+/* Grille des cartes */
+.grille-cartes-opp {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
 }
 
-.search-icon {
-  position: absolute;
-  left: 36px;
-  top: 14px;
-  color: #999;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 16px 12px 42px;
-  border-radius: 24px;
-  border: 1px solid #E5E7EB;
-  background-color: #F9FAFB;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.search-input:focus {
-  border-color: #FF7900;
-  background-color: #FFFFFF;
-}
-
-.opportunities-list {
-  padding: 16px 20px;
+.carte-opp-moderne {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.opportunity-card {
-  background-color: #FFFFFF;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  gap: 14px;
-  border: 1px solid #EFEFEF;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+.carte-opp-moderne:hover {
+  border-color: #ff7900;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -5px rgba(255, 121, 0, 0.1);
 }
 
-.icon-box {
-  width: 48px;
-  height: 48px;
-  background-color: #FFF3EB;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.card-content {
-  flex: 1;
-}
-
-.card-header-row {
+.opp-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 6px;
+  align-items: center;
 }
 
-.card-header-row h3 {
-  font-size: 16px;
+.opp-badge-type {
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #111;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  background-color: #fff7ed;
+  color: #ff7900;
+  border: 1px solid #ffedd5;
+  text-transform: uppercase;
+}
+
+.opp-badge-type.freelance {
+  background-color: #ecfdf5;
+  color: #10b981;
+  border-color: #d1fae5;
+}
+
+.opp-titre-mission {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.opp-entreprise {
+  font-size: 0.85rem;
+  color: #4b5563;
   margin: 0;
 }
 
-.badge {
-  font-size: 11px;
+.opp-description {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Tags de compétences */
+.opp-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.opp-tag {
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 12px;
-  background-color: #FFF3EB;
-  color: #FF7900;
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.35rem;
 }
 
-.card-content p {
-  font-size: 13px;
-  color: #555;
-  margin: 3px 0;
+/* Pied de carte */
+.opp-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
 }
 
-.company {
-  font-weight: 500;
-  color: #444 !important;
-}
-
-.no-results {
-  text-align: center;
-  color: #888;
-  padding: 40px;
-  font-size: 14px;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 430px;
-  margin: 0 auto;
-  height: 70px;
-  background-color: #FFFFFF;
-  border-top: 1px solid #EEEEEE;
+.opp-budget {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 1000;
+  flex-direction: column;
 }
 
-.nav-item {
+.label-budget {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.valeur-budget {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ff7900;
+}
+
+.btn-voir-offre {
   background: none;
   border: none;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.carte-opp-moderne:hover .btn-voir-offre {
+  color: #ff7900;
+}
+
+/* États vides / chargement */
+.etat-centre, .etat-erreur, .etat-vide-moderne {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6b7280;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  color: #8E8E93;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 6px 12px;
+  gap: 1rem;
 }
 
-.nav-item.active {
-  color: #FF7900;
+@media (max-width: 768px) {
+  .hero-banniere-opportunites {
+    padding: 2rem 1.5rem;
+  }
+  .titre-hero {
+    font-size: 1.5rem;
+  }
+  .barre-onglets-moderne {
+    width: 100%;
+    flex-direction: column;
+  }
 }

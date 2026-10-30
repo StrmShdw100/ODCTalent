@@ -1,151 +1,218 @@
-.mobile-container {
-  max-width: 430px;
+/* 🚀 Conteneur principal adapté pour PC et responsive */
+.conteneur-detail-mission {
+  max-width: 900px;
   margin: 0 auto;
-  min-height: 100vh;
-  background-color: #FAFAFA;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-bottom: 40px;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #EEEEEE;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-right: 15px;
-  display: flex;
-  align-items: center;
-  color: #333;
-}
-
-.header h1 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111;
-  margin: 0;
-}
-
-.detail-content {
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
 }
 
-.mission-header-card {
-  background: #FFFFFF;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-  border: 1px solid #EFEFEF;
+/* En-tête avec bouton retour et titre */
+.en-tete-detail {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.mission-header-card h2 {
-  font-size: 20px;
+.btn-retour {
+  background: #f3f4f6;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.btn-retour:hover {
+  background-color: #ff7900;
+  color: #ffffff;
+}
+
+.en-tete-detail h1 {
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #111;
-  margin: 10px 0 6px 0;
-}
-
-.company-name {
-  font-size: 13px;
-  color: #666;
+  color: #111827;
   margin: 0;
 }
 
-.badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 12px;
-  background-color: #FFF3EB;
-  color: #FF7900;
+/* Carte principale d'en-tête de la mission */
+.carte-mission-header {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.info-section {
-  background: #FFFFFF;
-  padding: 16px 20px;
-  border-radius: 16px;
-  border: 1px solid #EFEFEF;
-}
-
-.info-section h3 {
-  font-size: 14px;
+.badge-statut {
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #333;
-  margin: 0 0 8px 0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  background-color: #fff7ed;
+  color: #ff7900;
+  border: 1px solid #ffedd5;
+  width: fit-content;
+  text-transform: uppercase;
 }
 
-.description-text, .skills-tag {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.5;
+.carte-mission-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
   margin: 0;
 }
 
-.info-grid {
+.infos-publieur {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Sections de contenu */
+.section-info {
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.section-info h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+}
+
+.texte-description, .texte-competences {
+  font-size: 0.95rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Grille des informations (Budget / Dates) */
+.grille-infos {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
 }
 
-.info-item {
-  background: #FFFFFF;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #EFEFEF;
+.item-info {
+  background: #ffffff;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.3rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.info-item .label {
-  font-size: 11px;
-  color: #888;
-}
-
-.info-item .value {
-  font-size: 13px;
+.item-info .libelle {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
   font-weight: 600;
-  color: #111;
 }
 
-.deadline-date {
-  color: #d9534f !important;
+.item-info .valeur {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
 }
 
-.btn-apply {
-  background-color: #FF7900;
-  color: #FFFFFF;
+.valeur.date-limite {
+  color: #ef4444;
+}
+
+/* Bouton de postulation moderne */
+.btn-action-postuler {
+  background-color: #ff7900;
+  color: #ffffff;
   border: none;
-  border-radius: 25px;
-  padding: 15px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 121, 0, 0.3);
-  margin-top: 10px;
-  transition: background 0.2s;
+  box-shadow: 0 4px 12px rgba(255, 121, 0, 0.25);
+  transition: all 0.2s ease;
+  align-self: flex-start;
 }
 
-.btn-apply:hover {
+.btn-action-postuler:hover {
   background-color: #e56d00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 121, 0, 0.3);
 }
 
-.state-message {
+/* Messages d'état */
+.message-etat {
   text-align: center;
-  padding: 30px;
-  color: #666;
-  font-size: 14px;
+  padding: 3rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
 }
 
-.state-message.error { color: #d9534f; }
-.state-message.success { color: #28a745; font-weight: 600; }
+.message-etat.erreur { color: #ef4444; }
+.message-etat.succes { color: #10b981; font-weight: 700; }
+/* 🚀 Style de la carte de succès après postulation */
+.carte-succes-candidature {
+  background-color: #ecfdf5;
+  border: 1px solid #10b981;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeInSuccess 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+@keyframes fadeInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.icone-succes {
+  font-size: 2rem;
+}
+
+.texte-succes h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #065f46;
+  margin: 0 0 0.25rem 0;
+}
+
+.texte-succes p {
+  font-size: 0.9rem;
+  color: #047857;
+  margin: 0;
+  line-height: 1.4;
+}

@@ -12,7 +12,6 @@
     </div>
 
     <div class="profil-infos-principal">
-      <!-- Avatar avec gestion Photo / Fallback Initiales -->
       <div class="avatar-container">
         <img *ngIf="portfolio.photoProfil && portfolio.photoProfil.trim() !== ''" 
              [src]="portfolio.photoProfil" 
@@ -32,50 +31,65 @@
     </div>
 
     <div class="meta-informations">
-      <span class="meta-item"><img src="/icones/mail.png" alt="icones-email"> {{ portfolio.emailApprenant || 'Non renseigné' }}</span>
-      <span class="meta-item"><img src="icones/carte.png" alt="icones-carte"> Mali / Bamako</span>
-      <span class="meta-item vert">🟢 Disponible</span>
+      <span class="meta-item">
+        <img src="icones/mail.png" alt="email" class="icone-meta" />
+        <span>{{ portfolio.emailApprenant || 'Non renseigné' }}</span>
+      </span>
+      <span class="meta-item">
+        <img src="icones/carte.png" alt="localisation" class="icone-meta" />
+        <span>Mali / Bamako</span>
+      </span>
+      <span class="meta-item" [ngClass]="portfolio.disponible ? 'vert' : 'rouge'">
+        {{ portfolio.disponible ? '🟢 Disponible' : '🔴 En poste / Indisponible' }}
+      </span>
     </div>
   </div>
 
-  <!-- FORMULAIRE DE MODIFICATION (S'affiche si modeEdition = true) -->
   <div class="carte-blanche" *ngIf="modeEdition" style="background-color: #fdf8f6; border: 2px dashed #ff7900;">
     <h3 class="titre-section" style="color: #ff7900;">Modifier vos informations professionnelles</h3>
     
     <form (ngSubmit)="sauvegarderPortfolio()" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
       <div style="display: flex; flex-direction: column; gap: 0.3rem;">
         <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien de la photo de profil (URL)</label>
-        <input type="text" [(ngModel)]="portfolio.photoProfil" name="photoProfil" placeholder="https://exemple.com/ma-photo.jpg" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        <input type="text" [(ngModel)]="editablePortfolio.photoProfil" name="photoProfil" placeholder="https://exemple.com/ma-photo.jpg" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 0.3rem;">
         <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Titre Professionnel / Métier</label>
-        <input type="text" [(ngModel)]="portfolio.titreProfessionnel" name="titreProfessionnel" placeholder="Ex: Développeur Full-Stack Java/Angular" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        <input type="text" [(ngModel)]="editablePortfolio.titreProfessionnel" name="titreProfessionnel" placeholder="Ex: Développeur Full-Stack Java/Angular" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.3rem;">
+        <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Statut de disponibilité</label>
+        <select [(ngModel)]="editablePortfolio.disponible" name="disponible" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none; background: white;">
+          <option [ngValue]="true">🟢 Disponible (Recherche active)</option>
+          <option [ngValue]="false">🔴 En poste / Non disponible</option>
+        </select>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 0.3rem;">
         <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Biographie / À propos</label>
-        <textarea [(ngModel)]="portfolio.bio" name="bio" rows="3" placeholder="Parlez un peu de vous..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none; resize: vertical;"></textarea>
+        <textarea [(ngModel)]="editablePortfolio.bio" name="bio" rows="3" placeholder="Parlez un peu de vous..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none; resize: vertical;"></textarea>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
         <div style="display: flex; flex-direction: column; gap: 0.3rem;">
           <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien GitHub</label>
-          <input type="text" [(ngModel)]="portfolio.githubUrl" name="githubUrl" placeholder="https://github.com/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+          <input type="text" [(ngModel)]="editablePortfolio.githubUrl" name="githubUrl" placeholder="https://github.com/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.3rem;">
           <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Lien LinkedIn</label>
-          <input type="text" [(ngModel)]="portfolio.linkedinUrl" name="linkedinUrl" placeholder="https://linkedin.com/in/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+          <input type="text" [(ngModel)]="editablePortfolio.linkedinUrl" name="linkedinUrl" placeholder="https://linkedin.com/in/..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
         </div>
         <div style="display: flex; flex-direction: column; gap: 0.3rem;">
           <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Site Web / Portfolio</label>
-          <input type="text" [(ngModel)]="portfolio.websiteUrl" name="websiteUrl" placeholder="https://..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+          <input type="text" [(ngModel)]="editablePortfolio.websiteUrl" name="websiteUrl" placeholder="https://..." style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 0.3rem;">
         <label style="font-size: 0.85rem; font-weight: 600; color: #333;">Compétences (séparées par des virgules)</label>
-        <input type="text" [(ngModel)]="portfolio.competences" name="competences" placeholder="Java, Spring Boot, Angular, Flutter, MySQL" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
+        <input type="text" [(ngModel)]="editablePortfolio.competences" name="competences" placeholder="Java, Spring Boot, Angular, Flutter, MySQL" style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 0.5rem; outline: none;" />
       </div>
 
       <button type="submit" style="background-color: #27ae60; color: white; border: none; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; margin-top: 0.5rem;">
@@ -84,26 +98,34 @@
     </form>
   </div>
 
-  <!-- Sections détaillées (Affichage standard) -->
+  <!-- Sections détaillées -->
   <div class="grille-sections-portfolio">
-    <!-- À propos -->
     <div class="carte-blanche">
       <h3 class="titre-section">À propos</h3>
       <p class="texte-corps">{{ portfolio.bio || 'Aucune description renseignée.' }}</p>
     </div>
 
-    <!-- Liens Professionnels -->
     <div class="carte-blanche">
-      <h3 class="titre-section">Liens professionnels</h3>
-      <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-        <a *ngIf="portfolio.githubUrl" [href]="portfolio.githubUrl" target="_blank" style="color: #ff7900; text-decoration: none;">🐙 GitHub : {{ portfolio.githubUrl }}</a>
-        <a *ngIf="portfolio.linkedinUrl" [href]="portfolio.linkedinUrl" target="_blank" style="color: #0077b5; text-decoration: none;">💼 LinkedIn : {{ portfolio.linkedinUrl }}</a>
-        <a *ngIf="portfolio.websiteUrl" [href]="portfolio.websiteUrl" target="_blank" style="color: #27ae60; text-decoration: none;">🌐 Site Web : {{ portfolio.websiteUrl }}</a>
-        <span *ngIf="!portfolio.githubUrl && !portfolio.linkedinUrl && !portfolio.websiteUrl" style="color: #9ca3af; font-style: italic;">Aucun lien renseigné.</span>
-      </div>
-    </div>
+  <h3 class="titre-section">Liens professionnels</h3>
+  <div class="liste-liens-pro">
+    <a *ngIf="portfolio.githubUrl" [href]="portfolio.githubUrl" target="_blank" class="lien-pro-item github">
+      <img src="icones/github.png" alt="GitHub" class="icone-lien" />
+      <span>GitHub : {{ portfolio.githubUrl }}</span>
+    </a>
+    <a *ngIf="portfolio.linkedinUrl" [href]="portfolio.linkedinUrl" target="_blank" class="lien-pro-item linkedin">
+      <img src="icones/linkedin.png" alt="LinkedIn" class="icone-lien" />
+      <span>LinkedIn : {{ portfolio.linkedinUrl }}</span>
+    </a>
+    <a *ngIf="portfolio.websiteUrl" [href]="portfolio.websiteUrl" target="_blank" class="lien-pro-item website">
+      <img src="icones/globe.png" alt="Site Web" class="icone-lien" />
+      <span>Site Web : {{ portfolio.websiteUrl }}</span>
+    </a>
+    <span *ngIf="!portfolio.githubUrl && !portfolio.linkedinUrl && !portfolio.websiteUrl" style="color: #9ca3af; font-style: italic;">
+      Aucun lien renseigné.
+    </span>
+  </div>
+</div>
 
-    <!-- Compétences -->
     <div class="carte-blanche">
       <h3 class="titre-section">Compétences</h3>
       <div *ngIf="!portfolio.competences" class="texte-corps" style="color: #9ca3af; font-style: italic;">
@@ -116,11 +138,23 @@
       </div>
     </div>
 
-    <!-- Projets -->
     <div class="carte-blanche">
-      <h3 class="titre-section">Projets</h3>
-      <div class="texte-corps" style="color: #9ca3af; font-style: italic;">
-        Vos projets réalisés apparaîtront ici.
+      <h3 class="titre-section">Projets Réalisés</h3>
+      
+      <div *ngIf="projetsApprenant.length > 0" style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div *ngFor="let proj of projetsApprenant" (click)="allerVersProjet(proj.id)" class="projet-item-cliquable">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <h4 style="margin: 0 0 0.25rem 0; font-size: 0.95rem; color: #111;">{{ proj.titre || proj.nom }}</h4>
+            <span style="font-size: 0.75rem; background: #fff7ed; color: #ff7900; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-weight: 600;" *ngIf="proj.technologie">
+              {{ proj.technologie }}
+            </span>
+          </div>
+          <p style="margin: 0; font-size: 0.85rem; color: #4b5563;">{{ proj.description }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="projetsApprenant.length === 0" class="texte-corps" style="color: #9ca3af; font-style: italic;">
+        Aucun projet enregistré pour le moment.
       </div>
     </div>
   </div>

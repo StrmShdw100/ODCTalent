@@ -1,0 +1,103 @@
+<div class="conteneur-page">
+  <div class="en-tete-page">
+    <div>
+      <h1 class="titre-principal">Mon Évolution Professionnelle</h1>
+      <p class="sous-titre-principal">Gérez votre parcours de carrière et partagez vos réussites.</p>
+    </div>
+    <button class="bouton-creer" (click)="ouvrirModal()">+ Ajouter une expérience</button>
+  </div>
+
+  <div class="section-timeline">
+    <h2>Historique de Carrière</h2>
+    
+    <div class="timeline-container" *ngIf="historique.length > 0">
+      <div class="timeline-item" *ngFor="let evo of historique">
+        <div class="timeline-point"></div>
+        <div class="timeline-content-card carte-cliquable" (click)="allerVersDetail(evo.id)">
+          <div class="entete-carte-evo">
+            <div>
+              <h3>{{ evo.poste }}</h3>
+              <p class="entreprise-nom">
+                <img src="icones/building.png" alt="icones-entreprises" class="img"> {{ evo.entreprise }} 
+                <span *ngIf="evo.localisation">• <img src="icones/carte.png" alt="icones-carte" class="img"> {{ evo.localisation }}</span>
+              </p>
+            </div>
+            <span class="badge-statut" [ngClass]="getStatutClass(evo.statutEmploi)">{{ evo.statutEmploi }}</span>
+          </div>
+          
+          <p class="periode">
+            <img src="icones/calendar.png" alt="icones-calendrier" class="img"> Du {{ evo.dateDebut | date:'MM/yyyy' }} 
+            <span *ngIf="evo.dateFin">au {{ evo.dateFin | date:'MM/yyyy' }}</span>
+            <span *ngIf="!evo.dateFin" class="en-poste-tag"> (Poste actuel)</span>
+          </p>
+
+          <div class="remarque-admin" *ngIf="evo.remarquesAdmin">
+            💬 <strong>Note de l'administration ODC :</strong> {{ evo.remarquesAdmin }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="historique.length === 0" class="aucun-projet">
+      <p>Aucune expérience professionnelle enregistrée pour le moment. Cliquez sur "Ajouter une expérience" pour commencer !</p>
+    </div>
+  </div>
+
+  <div class="fond-modal" *ngIf="modalOuverte">
+    <div class="boite-modal-large">
+      <div class="modal-entete">
+        <div>
+          <h2 class="modal-titre">Ajouter une étape professionnelle</h2>
+          <p class="modal-sous-titre">Mettez à jour votre situation (emploi, stage, freelance, etc.).</p>
+        </div>
+        <button class="bouton-fermer" (click)="fermerModal()">✕</button>
+      </div>
+
+      <div class="modal-corps">
+        <div class="groupe-f">
+          <label class="lab">Intitulé du poste *</label>
+          <input type="text" class="inp" [(ngModel)]="nouvelleEvolution.poste" placeholder="Ex: Développeur Full-Stack, Stagiaire..." />
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Entreprise / Organisation *</label>
+            <input type="text" class="inp" [(ngModel)]="nouvelleEvolution.entreprise" placeholder="Ex: Orange Mali, Startup..." />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Statut de l'emploi *</label>
+            <select class="inp" [(ngModel)]="nouvelleEvolution.statutEmploi">
+              <option value="CDI">CDI</option>
+              <option value="CDD">CDD</option>
+              <option value="STAGE">Stage</option>
+              <option value="FREELANCE">Freelance</option>
+              <option value="ENTREPRENEUR">Entrepreneur</option>
+              <option value="FORMATION">Formation</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="groupe-f">
+          <label class="lab">Localisation</label>
+          <input type="text" class="inp" [(ngModel)]="nouvelleEvolution.localisation" placeholder="Ex: Bamako, Mali / Remote" />
+        </div>
+
+        <div class="ligne-form">
+          <div class="groupe-f">
+            <label class="lab">Date de début *</label>
+            <input type="date" class="inp" [(ngModel)]="nouvelleEvolution.dateDebut" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Date de fin (Laisser vide si poste actuel)</label>
+            <input type="date" class="inp" [(ngModel)]="nouvelleEvolution.dateFin" [min]="nouvelleEvolution.dateDebut" />
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-pied">
+        <button class="btn-annul" (click)="fermerModal()">Annuler</button>
+        <button class="btn-publier" (click)="ajouterEvolution()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

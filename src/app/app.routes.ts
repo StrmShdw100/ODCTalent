@@ -36,6 +36,11 @@ import { ApprenantLayout } from './layout/apprenant-layout/apprenant-layout';
 import { RecruteurNotifications } from './features/recruiter/pages/notifications/recruteur-notifications';
 import { ActualitesComponent as ActualitesApprenant } from './features/admin/pages/admin-actualites/actualites';
 import { ProjetsApprenant } from './features/apprenant/pages/projets/projets';
+import { DetailProjetApprenant } from './features/apprenant/pages/detail-projet/detail-projet';
+import { EvolutionProApprenant } from './features/apprenant/pages/evolution-pro/evolution-pro';
+import { DetailEvolutionApprenant } from './features/apprenant/pages/detail-evolution/detail-evolution';
+import { OpportunitesComponent as OpportunitesApprenantComponent } from './features/apprenant/pages/opportunites/opportunites.component';
+import { MissionDetailComponent } from './features/apprenant/pages/opportunites-detail/mission-detail.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -88,7 +93,12 @@ export const routes: Routes = [
     children: [
       { path: 'tableau-de-bord', component: TableauDeBordApprenant },
       { path: 'projets', component: ProjetsApprenant },
+      { path: 'projets/:id', component: DetailProjetApprenant },
+      { path: 'evolution-pro', component: EvolutionProApprenant },
+      { path: 'evolution-pro/:id', component: DetailEvolutionApprenant },
       { path: 'actualites', component: ActualitesApprenant }, 
+      { path: 'opportunites', component: OpportunitesApprenantComponent }, 
+      { path: 'opportunites/:id', component: MissionDetailComponent },
       { path: 'notifications', component: NotificationsApprenant },
       { path: 'portfolio', component: PortfolioApprenant },
       { path: '', redirectTo: 'tableau-de-bord', pathMatch: 'full' }

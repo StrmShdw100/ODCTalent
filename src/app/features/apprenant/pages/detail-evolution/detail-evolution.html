@@ -1,0 +1,63 @@
+<div class="conteneur-page">
+  <div class="en-tete-page">
+    <div>
+      <a routerLink="/apprenant/evolution-pro" class="lien-retour">← Retour au parcours pro</a>
+      <h1 class="titre-principal">Modifier l'expérience professionnelle</h1>
+      <p class="sous-titre-principal">Ajustez les détails de votre poste et vos dates d'activité.</p>
+    </div>
+    <button class="bouton-supprimer" (click)="supprimerEvolution()">Supprimer l'expérience</button>
+  </div>
+
+  <div class="formulaire-edition-carte">
+    <div class="corps-formulaire">
+      <div class="groupe-f">
+        <label class="lab">Intitulé du poste *</label>
+        <input type="text" class="inp" [(ngModel)]="evolution.poste" />
+      </div>
+
+      <div class="ligne-form">
+        <div class="groupe-f">
+          <label class="lab">Entreprise / Organisation *</label>
+          <input type="text" class="inp" [(ngModel)]="evolution.entreprise" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Statut de l'emploi *</label>
+          <select class="inp" [(ngModel)]="evolution.statutEmploi">
+            <option value="CDI">CDI</option>
+            <option value="CDD">CDD</option>
+            <option value="STAGE">Stage</option>
+            <option value="FREELANCE">Freelance</option>
+            <option value="ENTREPRENEUR">Entrepreneur</option>
+            <option value="FORMATION">Formation</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Localisation</label>
+        <input type="text" class="inp" [(ngModel)]="evolution.localisation" />
+      </div>
+
+      <div class="ligne-form">
+        <div class="groupe-f">
+          <label class="lab">Date de début *</label>
+          <input type="date" class="inp" [(ngModel)]="evolution.dateDebut" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Date de fin (Laisser vide si poste actuel)</label>
+          <input type="date" class="inp" [(ngModel)]="evolution.dateFin" [min]="evolution.dateDebut" />
+        </div>
+      </div>
+
+      <div class="remarque-admin-box" *ngIf="evolution.remarquesAdmin">
+        💬 <strong>Remarque de l'administration ODC :</strong>
+        <p>{{ evolution.remarquesAdmin }}</p>
+      </div>
+
+      <div class="actions-pied">
+        <button class="btn-annul" routerLink="/apprenant/evolution-pro">Annuler</button>
+        <button class="btn-publier" (click)="modifierEvolution()">Enregistrer les modifications</button>
+      </div>
+    </div>
+  </div>
+</div>

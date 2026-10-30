@@ -1,49 +1,93 @@
-<!-- Liste des opportunités -->
-  <div class="opportunities-list">
-    <!-- États de chargement et d'erreur -->
-    <div *ngIf="isLoading" class="no-results">Chargement des opportunités en cours...</div>
-    <div *ngIf="errorMessage && !isLoading" class="no-results" style="color: #d9534f;">{{ errorMessage }}</div>
-
-    <!-- Cartes dynamiques et cliquables -->
-    <ng-container *ngIf="!isLoading">
-      <div 
-        class="opportunity-card" 
-        *ngFor="let mission of filteredMissions" 
-        (click)="viewDetails(mission.id)" 
-        style="cursor: pointer;">
-        
-        <div class="card-left">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF7900" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-          </div>
-        </div>
-        
-        <div class="card-content">
-          <div class="card-header-row">
-            <h3>{{ mission.titre }}</h3>
-            <span class="badge">
-              {{ activeTab === 'recrutement' ? 'Recrutement' : 'Freelance' }}
-            </span>
-          </div>
-          <p class="company" *ngIf="mission.nomRecruteur">
-            Recruteur : {{ mission.prenomRecruteur }} {{ mission.nomRecruteur }}
-          </p>
-          <p class="details" *ngIf="mission.competencesRequises">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Compétences : {{ mission.competencesRequises }}
-          </p>
-          <p class="budget" *ngIf="mission.budget">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            Budget : {{ mission.budget | number }} FCFA
-          </p>
-          <p class="deadline" *ngIf="mission.dateLimite" style="font-size: 12px; color: #d9534f; margin-top: 4px; font-weight: 600;">
-            📅 Date limite : {{ mission.dateLimite | date:'dd/MM/yyyy' }}
-          </p>
-        </div>
-      </div>
-    </ng-container>
-
-    <div *ngIf="!isLoading && filteredMissions.length === 0" class="no-results">
-      Aucune opportunité trouvée.
+<div class="conteneur-opportunites">
+  <!-- Bannière Hero Moderne -->
+  <div class="hero-banniere-opportunites">
+    <div class="hero-texte">
+      <h1 class="titre-hero">Explorez les opportunités</h1>
+      <p class="sous-titre-hero">Découvrez les missions, stages et offres de freelance taillés pour vos compétences.</p>
+    </div>
+    
+    <!-- Barre de recherche intégrée dans la bannière -->
+    <div class="barre-recherche-hero">
+      <svg class="icone-recherche" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input 
+        type="text" 
+        class="input-hero" 
+        placeholder="Rechercher par titre, compétence (Java, Angular...), recruteur..." 
+        [(ngModel)]="searchQuery" />
     </div>
   </div>
+
+  <!-- Barre de filtres (Onglets) -->
+  <div class="barre-onglets-moderne">
+    <button class="btn-onglet-moderne" [class.actif]="activeTab === 'recrutement'" (click)="switchTab('recrutement')">
+      🎓 Recrutement & Stages
+    </button>
+    <button class="btn-onglet-moderne" [class.actif]="activeTab === 'freelance'" (click)="switchTab('freelance')">
+      💼 Freelance & Missions
+    </button>
+  </div>
+
+  <!-- États de chargement et d'erreur -->
+  <div *ngIf="isLoading" class="etat-centre">
+    <div class="spinner"></div>
+    <p>Chargement des opportunités...</p>
+  </div>
+
+  <div *ngIf="errorMessage && !isLoading" class="etat-erreur">
+    ⚠️ {{ errorMessage }}
+  </div>
+
+  <!-- Grille des opportunités -->
+  <div class="grille-cartes-opp" *ngIf="!isLoading && filteredMissions.length > 0">
+    <div class="carte-opp-moderne" *ngFor="let mission of filteredMissions" (click)="viewDetails(mission.id)">
+      
+      <!-- En-tête de la carte -->
+      <div class="opp-card-top">
+        <div class="opp-badge-type" [class.freelance]="mission.budget > 0">
+          {{ activeTab === 'recrutement' ? 'Recrutement' : 'Freelance' }}
+        </div>
+        <span class="opp-date" style="font-size: 0.75rem; color: #9ca3af;">
+          {{ mission.datePublication || 'Récemment' }}
+        </span>
+      </div>
+
+      <!-- Titre et Recruteur -->
+      <h3 class="opp-titre-mission">{{ mission.titre }}</h3>
+      <p class="opp-entreprise" *ngIf="mission.nomRecruteur">
+        🏢 Publié par <strong>{{ mission.prenomRecruteur }} {{ mission.nomRecruteur }}</strong>
+      </p>
+
+      <!-- Description courte -->
+      <p class="opp-description">{{ mission.description }}</p>
+
+      <!-- Compétences requises sous forme de tags -->
+      <div class="opp-tags-container" *ngIf="mission.competencesRequises">
+        <span class="opp-tag" *ngFor="let comp of mission.competencesRequises.split(',')">
+          {{ comp.trim() }}
+        </span>
+      </div>
+
+      <!-- Pied de carte (Budget & Action) -->
+      <div class="opp-card-footer">
+        <div class="opp-budget" *ngIf="mission.budget">
+          <span class="label-budget">Budget :</span>
+          <span class="valeur-budget">{{ mission.budget | number }} FCFA</span>
+        </div>
+        <div class="opp-budget" *ngIf="!mission.budget">
+          <span class="label-budget">Type :</span>
+          <span class="valeur-budget" style="color: #6b7280;">Offre standard</span>
+        </div>
+
+        <button class="btn-voir-offre">Voir l'offre ➔</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- État vide -->
+  <div *ngIf="!isLoading && filteredMissions.length === 0" class="etat-vide-moderne">
+    <span style="font-size: 3rem;">📭</span>
+    <h3>Aucune opportunité trouvée</h3>
+    <p>Essayez de modifier vos termes de recherche ou changez d'onglet.</p>
+  </div>
+</div>

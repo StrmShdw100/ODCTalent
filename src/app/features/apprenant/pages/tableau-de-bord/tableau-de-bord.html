@@ -1,57 +1,106 @@
 <div class="conteneur-dash-apprenant">
-  <!-- Salutation -->
+  <!-- Salutation & Statut rapide alignés en Space-Between (Sans l'avatar initial) -->
   <div class="en-tete-salutation">
-    <h1 class="titre-principal">Bonjour {{nom}}</h1>
-    <p class="sous-titre-principal">Bienvenue sur votre espace apprenant ODC</p>
+    <div>
+      <h1 class="titre-principal">Bonjour {{nom}}</h1>
+      <p class="sous-titre-principal">Bienvenue sur votre espace apprenant ODC</p>
+    </div>
+
+    <!-- Bouton interactif de disponibilité -->
+    <button (click)="basculerDisponibilite($event)" 
+            class="btn-dispo-toggle" 
+            [class.actif]="disponible" 
+            [class.inactif]="!disponible"
+            title="Cliquez pour changer votre statut de recherche">
+      <img *ngIf="disponible" src="icones/disponible.png" alt="Disponible" class="icone-dispo" />
+      <img *ngIf="!disponible" src="icones/indisponible.png" alt="Indisponible" class="icone-dispo" />
+      <span>{{ disponible ? 'Disponible (Recherche active)' : 'En poste / Indisponible' }}</span>
+    </button>
   </div>
 
+  <!-- Bannière de valorisation avec la logique GIF (1.5s) puis Photo ou Initiales -->
   <div class="banniere-valorisation">
     <div class="banniere-texte">
       <h2 class="banniere-titre">Valorisez vos compétences et trouvez de nouvelles opportunités !</h2>
       <a routerLink="/apprenant/portfolio" class="bouton-portfolio-noir">Voir mon portfolio</a>
     </div>
+
     <div class="banniere-illustration">
-      <div class="illustration-cercle"><img src="https://media.tenor.com/KeWQQ1QIUz0AAAAi/lag-throws-laptop.gif" width="100"></div>
+      <div class="illustration-cercle">
+        <img *ngIf="showGifBanner" src="https://media.tenor.com/KeWQQ1QIUz0AAAAi/lag-throws-laptop.gif" width="80" alt="illustration gif" />
+        <img *ngIf="!showGifBanner && photoProfil" [src]="photoProfil" alt="Photo profil" class="avatar-banniere-img" />
+        <span *ngIf="!showGifBanner && !photoProfil" class="avatar-banniere-initiales">{{ initiales }}</span>
+      </div>
     </div>
+  </div>
+
+  <!-- Grille d'Actions Rapides -->
+  <div class="section-actions-rapides" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+    <a routerLink="/apprenant/portfolio" class="carte-action-rapide">
+      <span style="font-size: 1.5rem;"><img src="icones/edition.png" alt="icones-modifications" style="width: 28px; height: 28px; object-fit: contain;"></span>
+      <div>
+        <h4>Modifier mon profil</h4>
+        <p>Mettez à jour vos liens et compétences</p>
+      </div>
+    </a>
+    <a routerLink="/apprenant/projets" class="carte-action-rapide">
+      <span style="font-size: 1.5rem;"><img src="icones/folder.png" alt="icone-fichiers" style="width: 28px; height: 28px; object-fit: contain;"></span>
+      <div>
+        <h4>Gérer mes projets</h4>
+        <p>Ajoutez ou éditez vos réalisations</p>
+      </div>
+    </a>
+    <a routerLink="/apprenant/evolution-pro" class="carte-action-rapide">
+      <span style="font-size: 1.5rem;"><img src="icones/etape.png" alt="icones-etapes" style="width: 28px; height: 28px; object-fit: contain;"></span>
+      <div>
+        <h4>Évolution Pro</h4>
+        <p>Suivez votre parcours professionnel</p>
+      </div>
+    </a>
   </div>
 
   <!-- Section Actualités -->
   <div class="section-actualites">
     <div class="en-tete-section">
       <h2 class="titre-section">Actualités</h2>
-      <a href="#" class="lien-voir-tout">Voir tout</a>
+      <a routerLink="/apprenant/actualites" class="lien-voir-tout">Voir tout</a>
     </div>
 
     <div class="grille-actualites">
-      <!-- Actu 1 -->
-      <div class="carte-actualite">
-        <div class="vignette-actu orange">🎓</div>
+      <!-- Cartes d'actualités cliquables -->
+      <div class="carte-actualite cliquable" *ngFor="let actu of actualitesRecentes" (click)="ouvrirDetailActu(actu, $event)">
+        <div class="vignette-actu orange">{{ actu.badge || '🎓' }}</div>
         <div class="actu-contenu">
-          <h3 class="actu-titre">Cérémonie de graduation</h3>
-          <p class="actu-desc">Félicitations à la nouvelle promotion des apprenants ODC.</p>
-          <span class="actu-date orange-texte">Aujourd'hui</span>
+          <h3 class="actu-titre">{{ actu.title }}</h3>
+          <!-- 🚀 Texte tronqué avec "..." grâce au CSS (.actu-desc) -->
+          <p class="actu-desc">{{ actu.description }}</p>
+          <span class="actu-date orange-texte">{{ actu.publicationDate || 'Récemment' }}</span>
         </div>
       </div>
 
-      <!-- Actu 2 -->
-      <div class="carte-actualite">
-        <div class="vignette-actu bleu">🚀</div>
-        <div class="actu-contenu">
-          <h3 class="actu-titre">Nouvelle Formation</h3>
-          <p class="actu-desc">DevOPS pratique avec Docker et CI/CD: De l'application au deploiement</p>
-          <span class="actu-date">Il y a 2 jours</span>
-        </div>
+      <div *ngIf="actualitesRecentes.length === 0" style="grid-column: 1 / -1; text-align: center; color: #888; padding: 2rem;">
+        <p>Aucune actualité récente pour le moment.</p>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Actu 3 -->
-      <div class="carte-actualite">
-        <div class="vignette-actu vert">🏛️</div>
-        <div class="actu-contenu">
-          <h3 class="actu-titre">Une visite de l'APEJ à ODC</h3>
-          <p class="actu-desc">Une visite riche en échanges autour des programmes d'ODC et des opportunités</p>
-          <span class="actu-date">Il y a 3 jours</span>
+<!-- 🚀 Modale Popup d'affichage des détails complets de l'actualité -->
+<div class="overlay-modale-actu" *ngIf="actuSelectionnee">
+  <div class="carte-modale-actu">
+    <div class="en-tete-modale-actu">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="vignette-actu orange">{{ actuSelectionnee.badge || '🎓' }}</div>
+        <div>
+          <span class="actu-date orange-texte">{{ actuSelectionnee.publicationDate || 'Récemment' }}</span>
+          <h2 class="titre-modale-actu">{{ actuSelectionnee.title }}</h2>
         </div>
       </div>
+      <button class="btn-fermer-modale" (click)="fermerModaleActu()">✕</button>
+    </div>
+
+    <div class="corps-modale-actu">
+      <p class="texte-complet-actu">{{ actuSelectionnee.description }}</p>
     </div>
   </div>
 </div>

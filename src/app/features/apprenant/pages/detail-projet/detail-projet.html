@@ -1,0 +1,60 @@
+<div class="conteneur-page">
+  <div class="en-tete-page">
+    <div>
+      <a routerLink="/apprenant/projets" class="lien-retour">← Retour à mes projets</a>
+      <h1 class="titre-principal">Modifier le projet</h1>
+      <p class="sous-titre-principal">Mettez à jour les informations et les liens de votre réalisation.</p>
+    </div>
+    <button class="bouton-supprimer" (click)="supprimerProjet()">Supprimer le projet</button>
+  </div>
+
+  <div class="formulaire-edition-carte">
+    <!-- Prévisualisation visuelle -->
+    <div class="apercu-container">
+      <img *ngIf="projet.imageUrl" [src]="projet.imageUrl" [alt]="projet.titre" class="apercu-img" />
+      <div *ngIf="!projet.imageUrl" class="apercu-fallback">
+        <img [src]="getTechIcon(projet.technologies)" alt="icone" class="tech-icon-img" />
+        <span>{{ projet.technologies || 'Aperçu du projet' }}</span>
+      </div>
+    </div>
+
+    <!-- Champs du formulaire de modification -->
+    <div class="corps-formulaire">
+      <div class="groupe-f">
+        <label class="lab">Titre du projet *</label>
+        <input type="text" class="inp" [(ngModel)]="projet.titre" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Description complète *</label>
+        <textarea class="inp" rows="5" [(ngModel)]="projet.description"></textarea>
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Technologies utilisées</label>
+        <input type="text" class="inp" [(ngModel)]="projet.technologies" />
+      </div>
+
+      <div class="groupe-f">
+        <label class="lab">Lien de l'image (URL)</label>
+        <input type="text" class="inp" [(ngModel)]="projet.imageUrl" />
+      </div>
+
+      <div class="ligne-form">
+        <div class="groupe-f">
+          <label class="lab">Lien GitHub</label>
+          <input type="text" class="inp" [(ngModel)]="projet.githubUrl" />
+        </div>
+        <div class="groupe-f">
+          <label class="lab">Lien Démo Live</label>
+          <input type="text" class="inp" [(ngModel)]="projet.demoUrl" />
+        </div>
+      </div>
+
+      <div class="actions-pied">
+        <button class="btn-annul" routerLink="/apprenant/projets">Annuler</button>
+        <button class="btn-publier" (click)="modifierProjet()">Enregistrer les modifications</button>
+      </div>
+    </div>
+  </div>
+</div>

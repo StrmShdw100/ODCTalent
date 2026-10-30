@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
@@ -14,6 +14,8 @@ export class ApprenantLayout implements OnInit {
   nom = localStorage.getItem('user_name') || 'Apprenant';
   role = localStorage.getItem('user_role') || 'Apprenant ODC';
   unreadCount: number = 0;
+  
+  showDropdown: boolean = false;
 
   constructor(
     private router: Router,
@@ -22,6 +24,19 @@ export class ApprenantLayout implements OnInit {
 
   ngOnInit(): void {
     this.chargerCompteurNotifications();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.profil-wrapper')) {
+      this.showDropdown = false;
+    }
+  }
+
+  toggleDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showDropdown = !this.showDropdown;
   }
 
   private getHeaders(): HttpHeaders {
@@ -33,7 +48,6 @@ export class ApprenantLayout implements OnInit {
     this.http.get<any[]>('http://localhost:8080/api/v1/apprenants/notifications', { headers: this.getHeaders() })
       .subscribe({
         next: (notifications) => {
-          // Compte uniquement les notifications non lues
           this.unreadCount = notifications.filter(n => !n.lu).length;
         },
         error: (err) => {

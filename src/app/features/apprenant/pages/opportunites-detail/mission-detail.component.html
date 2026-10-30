@@ -1,51 +1,63 @@
-<div class="mobile-container">
-  <header class="header">
-    <button class="back-btn" (click)="goBack()">
+<div class="conteneur-detail-mission">
+  <!-- En-tête avec bouton retour -->
+  <div class="en-tete-detail">
+    <button class="btn-retour" (click)="goBack()" title="Retour aux opportunités">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     </button>
     <h1>Détails de l'opportunité</h1>
-  </header>
+  </div>
 
-  <div *ngIf="isLoading" class="state-message">Chargement...</div>
-  <div *ngIf="errorMessage" class="state-message error">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="state-message success">{{ successMessage }}</div>
+  <!-- États de chargement et erreurs -->
+  <div *ngIf="isLoading" class="message-etat">Chargement des détails...</div>
+  <div *ngIf="errorMessage" class="message-etat erreur">⚠️ {{ errorMessage }}</div>
 
-  <div class="detail-content" *ngIf="mission && !isLoading">
-    <div class="mission-header-card">
-      <span class="badge">{{ mission.statut }}</span>
+  <!-- Contenu principal -->
+  <ng-container *ngIf="mission && !isLoading">
+    <div class="carte-mission-header">
+      <span class="badge-statut">{{ mission.statut || 'Ouvert' }}</span>
       <h2>{{ mission.titre }}</h2>
-      <p class="company-name" *ngIf="mission.nomRecruteur">
-        Publié par : {{ mission.prenomRecruteur }} {{ mission.nomRecruteur }} ({{ mission.emailRecruteur }})
+      <p class="infos-publieur" *ngIf="mission.nomRecruteur">
+        Publié par : <strong>{{ mission.prenomRecruteur }} {{ mission.nomRecruteur }}</strong> ({{ mission.emailRecruteur }})
       </p>
     </div>
 
-    <div class="info-section">
+    <div class="section-info">
       <h3>Description de la mission</h3>
-      <p class="description-text">{{ mission.description }}</p>
+      <p class="texte-description">{{ mission.description }}</p>
     </div>
 
-    <div class="info-section">
+    <div class="section-info">
       <h3>Compétences requises</h3>
-      <p class="skills-tag">{{ mission.competencesRequises }}</p>
+      <p class="texte-competences">{{ mission.competencesRequises }}</p>
     </div>
 
-    <div class="info-grid">
-      <div class="info-item" *ngIf="mission.budget">
-        <span class="label">Budget</span>
-        <span class="value">{{ mission.budget | number }} FCFA</span>
+    <div class="grille-infos">
+      <div class="item-info" *ngIf="mission.budget">
+        <span class="libelle">Budget</span>
+        <span class="valeur" style="color: #ff7900;">{{ mission.budget | number }} FCFA</span>
       </div>
-      <div class="info-item" *ngIf="mission.datePublication">
-        <span class="label">Date de publication</span>
-        <span class="value">{{ mission.datePublication | date:'dd/MM/yyyy' }}</span>
+      <div class="item-info" *ngIf="mission.datePublication">
+        <span class="libelle">Date de publication</span>
+        <span class="valeur">{{ mission.datePublication | date:'dd/MM/yyyy' }}</span>
       </div>
-      <div class="info-item" *ngIf="mission.dateLimite">
-        <span class="label">Date limite</span>
-        <span class="value deadline-date">{{ mission.dateLimite | date:'dd/MM/yyyy' }}</span>
+      <div class="item-info" *ngIf="mission.dateLimite">
+        <span class="libelle">Date limite de candidature</span>
+        <span class="valeur date-limite">{{ mission.dateLimite | date:'dd/MM/yyyy' }}</span>
       </div>
     </div>
 
-    <button class="btn-apply" (click)="applyToMission()">
-      Postuler à cette opportunité
+    <!-- 🚀 Bloc de succès interactif -->
+    <div *ngIf="isApplied" class="carte-succes-candidature">
+      <span class="icone-succes">✅</span>
+      <div class="texte-succes">
+        <h4>Candidature envoyée !</h4>
+        <p>{{ successMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Bouton de postulation (masqué ou désactivé si déjà postulé) -->
+    <button *ngIf="!isApplied" class="btn-action-postuler" (click)="applyToMission()">
+      Postuler à cette opportunité ➔
     </button>
-  </div>
+  </ng-container>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
@@ -21,7 +21,10 @@ export class NotificationsApprenant implements OnInit {
   notifications: Notification[] = [];
   chargement: boolean = true;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef 
+  ) {}
 
   ngOnInit(): void {
     this.chargerNotifications();
@@ -33,15 +36,33 @@ export class NotificationsApprenant implements OnInit {
   }
 
   chargerNotifications(): void {
+    this.chargement = true;
     this.http.get<Notification[]>('http://localhost:8080/api/v1/apprenants/notifications', { headers: this.getHeaders() })
       .subscribe({
         next: (data) => {
-          this.notifications = data;
+          this.notifications = data || [];
           this.chargement = false;
+          this.cdr.detectChanges(); 
         },
         error: (err) => {
           console.error("Erreur lors du chargement des notifications :", err);
           this.chargement = false;
+          this.cdr.detectChanges(); 
+        }
+      });
+  }
+
+  marquerCommeLue(id: number): void {
+    this.http.patch(`http://localhost:8080/api/v1/notifications/${id}/lire`, {}, { headers: this.getHeaders() })
+      .subscribe({
+        next: () => {
+          const notif = this.notifications.find(n => n.id === id);
+          if (notif) {
+            notif.lu = true;
+            this.cdr.detectChanges();          }
+        },
+        error: (err) => {
+          console.error("Erreur marquage notification lue :", err);
         }
       });
   }

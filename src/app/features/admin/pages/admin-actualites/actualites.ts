@@ -19,6 +19,8 @@ export class ActualitesComponent implements OnInit {
   successMessage: string | null = null;
   selectedFile: File | null = null;
 
+  isAdmin: boolean = false;
+
   availablePromotions: string[] = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P9', 'P10', 'P11', 'P12'];
 
   formModel = {
@@ -40,6 +42,7 @@ export class ActualitesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = localStorage.getItem('user_role') === 'ADMIN';
     this.chargerActualites();
   }
 
@@ -57,6 +60,7 @@ export class ActualitesComponent implements OnInit {
   }
 
   openAddModal(): void {
+    if (!this.isAdmin) return;
     this.isModalOpen = true;
     this.formModel = { 
       title: '', 
@@ -72,7 +76,6 @@ export class ActualitesComponent implements OnInit {
     this.cdr.detectChanges(); 
   }
 
-  // Gérer la sélection multiple des promotions
   onPromotionCheckboxChange(promo: string, event: any): void {
     if (event.target.checked) {
       this.formModel.promotionsCibles.push(promo);
@@ -82,6 +85,8 @@ export class ActualitesComponent implements OnInit {
   }
 
   submitActualite(): void {
+    if (!this.isAdmin) return;
+
     if (this.selectedFile) {
       this.actualiteService.uploadImage(this.selectedFile).subscribe({
         next: (response) => {
@@ -144,7 +149,7 @@ export class ActualitesComponent implements OnInit {
   }
 
   supprimerActualite(id?: number) {
-    if (!id) return;
+    if (!this.isAdmin || !id) return;
     if (confirm("Voulez-vous vraiment supprimer cette actualité ?")) {
       this.actualiteService.deleteActualite(id).subscribe({
         next: () => {
@@ -159,6 +164,7 @@ export class ActualitesComponent implements OnInit {
   }
 
   toggleMenu(item: Actualite, event: Event): void {
+    if (!this.isAdmin) return;
     event.stopPropagation();
     this.actualites.forEach(a => { if (a !== item) a.showMenu = false; });
     item.showMenu = !item.showMenu;

@@ -1,5 +1,4 @@
 <div class="conteneur-layout">
-  <!-- Barre latérale (Aside) -->
   <aside class="barre-laterale">
     <div class="logo-conteneur">
       <div class="logo-cercle">
@@ -14,6 +13,11 @@
       <a routerLink="/apprenant/projets" routerLinkActive="lien-actif" class="lien-menu">
         <span class="icone-menu"><img src="/icones/briefcase.png" alt="icone-projets"></span> Mes Projets
       </a>
+
+      <a routerLink="/apprenant/evolution-pro" routerLinkActive="lien-actif" class="lien-menu">
+        <span class="icone-menu"><img src="/icones/diagram.png" alt="icone-evolution-pro"></span> Évolution Pro
+      </a>
+
       <a routerLink="/apprenant/opportunites" routerLinkActive="lien-actif" class="lien-menu">
         <span class="icone-menu"><img src="/icones/opportinuty.png" alt="icone-opportunites"></span> Opportunités
       </a>
@@ -31,12 +35,6 @@
         <span class="icone-menu"><img src="/icones/portfolio.png" alt="icone-portfolio"></span> Mon Portfolio
       </a>
     </nav>
-
-    <div class="pied-menu">
-      <a routerLink="/login" (click)="deconnecter()" class="lien-deconnexion">
-        <span class="icone-menu"><img src="/icones/power-off.png" alt="icone-deconnexion"></span> Déconnexion
-      </a>
-    </div>
   </aside>
 
   <!-- Zone Principale -->
@@ -50,19 +48,35 @@
           <input type="text" class="champ-recherche" placeholder="Rechercher..." />
         </div>
 
-        <!-- Cloche de notification dans le header avec badge numéroté -->
+        <!-- Cloche de notification -->
         <a routerLink="/apprenant/notifications" class="notification-badge">
           <span class="badge-chiffre" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
           <img src="/icones/love-bell.png" alt="icone-notification">
         </a>
 
-        <div class="profil-utilisateur">
-          <div class="avatar-cercle">{{ nom.charAt(0).toUpperCase() }}</div>
-          <div class="infos-utilisateur">
-            <span class="nom-utilisateur">{{ nom }}</span>
-            <span class="role-utilisateur">{{ role }}</span>
+        <!-- 🚀 Profil Utilisateur cliquable avec Menu Déroulant -->
+        <div class="profil-wrapper" (click)="toggleDropdown($event)">
+          <div class="profil-utilisateur">
+            <div class="avatar-cercle">{{ nom.charAt(0).toUpperCase() }}</div>
+            <div class="infos-utilisateur">
+              <span class="nom-utilisateur">{{ nom }}</span>
+              <span class="role-utilisateur">{{ role }}</span>
+            </div>
+            <span class="fleche-dropdown">▼</span>
+          </div>
+
+          <!-- Menu déroulant -->
+          <div class="menu-deroulant" *ngIf="showDropdown">
+            <a routerLink="/apprenant/portfolio" class="item-dropdown">
+              <span>⚙️</span> Paramètres / Profil
+            </a>
+            <div class="separateur-dropdown"></div>
+            <button (click)="deconnecter()" class="item-dropdown deconnexion">
+              <span><img src="/icones/power-off.png" alt="deconnexion" width="16"></span> Déconnexion
+            </button>
           </div>
         </div>
+
       </div>
     </header>
 

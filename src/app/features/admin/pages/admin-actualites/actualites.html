@@ -1,5 +1,4 @@
 <div class="actualites-container">
-  <!-- Notification de succès -->
   <div class="success-banner" *ngIf="successMessage">
     <div class="success-content">
       <span class="success-icon">✓</span>
@@ -11,13 +10,12 @@
     <button class="close-banner" (click)="successMessage = null">✕</button>
   </div>
 
-  <!-- En-tête de la page -->
   <div class="page-header-row">
     <div>
       <h2>Actualités</h2>
-      <p>Gérez les actualités et annonces publiées sur ODCTalent.</p>
+      <p>Consultez les actualités et annonces publiées sur ODCTalent.</p>
     </div>
-    <button class="btn-primary" (click)="openAddModal()">+ Ajouter une actualité</button>
+    <button class="btn-primary" *ngIf="isAdmin" (click)="openAddModal()">+ Ajouter une actualité</button>
   </div>
 
   <!-- Barre de filtres et recherche -->
@@ -55,7 +53,7 @@
           <th>DATE</th>
           <th>STATUT</th>
           <th>AUTEUR</th>
-          <th>ACTIONS</th>
+          <th *ngIf="isAdmin">ACTIONS</th>
         </tr>
       </thead>
       <tbody>
@@ -77,7 +75,7 @@
             </span>
           </td>
           <td>{{ item.author }}</td>
-          <td class="actions-cell">
+          <td class="actions-cell" *ngIf="isAdmin">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             
             <div class="context-menu" *ngIf="item.showMenu">
@@ -88,15 +86,14 @@
           </td>
         </tr>
         <tr *ngIf="filteredActualites.length === 0">
-          <td colspan="6" style="text-align: center; color: #888; padding: 2rem;">Aucune actualité ne correspond à votre recherche.</td>
+          <td [attr.colspan]="isAdmin ? 6 : 5" style="text-align: center; color: #888; padding: 2rem;">Aucune actualité ne correspond à votre recherche.</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- MODALE D'AJOUT D'ACTUALITÉ -->
-<div class="modal-backdrop" *ngIf="isModalOpen">
+<div class="modal-backdrop" *ngIf="isModalOpen && isAdmin">
   <div class="modal-card">
     <div class="modal-header">
       <div>
@@ -141,7 +138,6 @@
           </label>
         </div>
 
-        <!-- Si "toutes les promotions" est décoché, afficher la grille de sélection multiple -->
         <div *ngIf="!formModel.toutesPromotions" style="margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 10px;">
           <span style="font-size: 0.8rem; color: #666; display: block; margin-bottom: 8px;">Sélectionnez une ou plusieurs promotions cibles :</span>
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">

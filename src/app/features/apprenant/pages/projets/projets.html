@@ -8,8 +8,7 @@
   </div>
 
   <div class="grille-projets">
-    <!-- CLIC SUR LA CARTE POUR OUVRIR LES DETAILS -->
-    <div class="carte-projet" *ngFor="let p of projets" (click)="ouvrirDetail(p)">
+    <div class="carte-projet" *ngFor="let p of projets" (click)="allerVersDetail(p.id)">
       <div class="carte-image-container">
         <img *ngIf="p.imageUrl" [src]="p.imageUrl" [alt]="p.titre" class="projet-img" />
         <div *ngIf="!p.imageUrl" class="projet-fallback-techno" [ngClass]="getTechClass(p.technologies)">
@@ -21,7 +20,7 @@
       <div class="carte-contenu">
         <h3>{{ p.titre }}</h3>
         <p>{{ p.description }}</p>
-        <div class="techno-tag" *ngIf="p.technologies">🛠️ {{ p.technologies }}</div>
+        <div class="techno-tag" *ngIf="p.technologies"><img src="icones/outils-framework.png" alt="icones-outils"> {{ p.technologies }}</div>
         <div class="liens-projet-groupe">
           <a *ngIf="p.githubUrl" [href]="p.githubUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">GitHub ↗</a>
           <a *ngIf="p.demoUrl" [href]="p.demoUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">Démo Live ↗</a>
@@ -34,55 +33,6 @@
     </div>
   </div>
 
-  <!-- MODALE DETAILS DU PROJET -->
-  <div class="fond-modal" *ngIf="modalDetailOuverte && projetSelectionne">
-    <div class="boite-modal-large boite-modal-details">
-      <div class="modal-entete">
-        <div>
-          <h2 class="modal-titre">{{ projetSelectionne.titre }}</h2>
-          <p class="modal-sous-titre" *ngIf="projetSelectionne.dateCreation">Créé le {{ projetSelectionne.dateCreation | date:'dd MMM yyyy' }}</p>
-        </div>
-        <button class="bouton-fermer" (click)="fermerDetail()">✕</button>
-      </div>
-
-      <div class="modal-corps modal-corps-details">
-        <!-- Grand visuel dans la modale -->
-        <div class="modal-image-grand">
-          <img *ngIf="projetSelectionne.imageUrl" [src]="projetSelectionne.imageUrl" [alt]="projetSelectionne.titre" />
-          <div *ngIf="!projetSelectionne.imageUrl" class="projet-fallback-techno-grand" [ngClass]="getTechClass(projetSelectionne.technologies)">
-            <img [src]="getTechIcon(projetSelectionne.technologies)" alt="icone techno" class="tech-icon-img-grand" />
-            <span class="fallback-text-grand">{{ projetSelectionne.technologies || 'Projet ODC' }}</span>
-          </div>
-        </div>
-
-        <div class="details-contenu-info">
-          <div class="groupe-detail">
-            <label class="lab-titre">Description complète</label>
-            <p class="texte-description">{{ projetSelectionne.description }}</p>
-          </div>
-
-          <div class="groupe-detail" *ngIf="projetSelectionne.technologies">
-            <label class="lab-titre">Technologies utilisées</label>
-            <div class="techno-tag">🛠️ {{ projetSelectionne.technologies }}</div>
-          </div>
-
-          <div class="groupe-detail" *ngIf="projetSelectionne.githubUrl || projetSelectionne.demoUrl">
-            <label class="lab-titre">Liens externes</label>
-            <div class="liens-flex">
-              <a *ngIf="projetSelectionne.githubUrl" [href]="projetSelectionne.githubUrl" target="_blank" class="btn-lien github">GitHub ↗</a>
-              <a *ngIf="projetSelectionne.demoUrl" [href]="projetSelectionne.demoUrl" target="_blank" class="btn-lien demo">Démo Live ↗</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-pied">
-        <button class="btn-annul" (click)="fermerDetail()">Fermer</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODALE AJOUT PROJET -->
   <div class="fond-modal" *ngIf="modalOuverte">
     <div class="boite-modal-large">
       <div class="modal-entete">
