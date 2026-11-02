@@ -55,4 +55,9 @@ public class MissionController {
         missionService.deleteMission(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/stats/opportunites")
+    public ResponseEntity<java.util.Map<String, Long>> getOpportunitesStats() {
+        return ResponseEntity.ok(missionService.getOpportunitesStats());
+    }
 }

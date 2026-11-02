@@ -19,4 +19,5 @@ public class MissionResponse {
     private String nomRecruteur;
     private String prenomRecruteur;
     private String emailRecruteur;
+    private String nomEntreprise;
 }

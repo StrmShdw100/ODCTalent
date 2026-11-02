@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,36 @@ public class AdminApprenantController {
     public ResponseEntity<List<Apprenant>> getAllApprenants() {
         List<Apprenant> apprenants = apprenantRepository.findAll();
         return ResponseEntity.ok(apprenants);
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity getStats() {
+        List<Apprenant> apprenants = apprenantRepository.findAll();
+        long total = apprenants.size();
+
+        long enRechercheCount = apprenants.stream()
+                .filter(a -> a.getDisponible() != null && a.getDisponible())
+                .count();
+
+        long enEmploiCount = total - enRechercheCount;
+
+        String tauxEmploi = "0%";
+        String tauxRecherche = "0%";
+
+        if (total > 0) {
+            long pctEmploi = (enEmploiCount * 100) / total;
+            long pctRecherche = 100 - pctEmploi;
+            tauxEmploi = pctEmploi + "%";
+            tauxRecherche = pctRecherche + "%";
+        }
+
+        Map<String, String> stats = new HashMap<>();
+        stats.put("inscrits", String.valueOf(total));
+        stats.put("suivis", String.valueOf(total));
+        stats.put("enEmploi", tauxEmploi);
+        stats.put("enRecherche", tauxRecherche);
+
+        return ResponseEntity.ok(stats);
     }
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

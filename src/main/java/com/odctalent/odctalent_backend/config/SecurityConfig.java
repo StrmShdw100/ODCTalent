@@ -39,7 +39,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 1. Inscription, Connexion & Documentation Swagger
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**").permitAll()// 2. Téléchargement et consultation de fichiers (CV, images)
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**").permitAll()
+                        
+                        // 2. Téléchargement et consultation de fichiers (CV, images)
                         .requestMatchers(HttpMethod.GET, "/api/v1/files/download/**").permitAll()
 
                         // 3. Consultation publique (Missions, Projets, Portfolios, Avis)
@@ -89,8 +91,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200"
+        // Utilisation de patterns pour autoriser Angular (port 4200) et tous les ports locaux de Flutter/Emulateur
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:*",
+                "http://10.0.2.2:*"
         ));
 
         configuration.setAllowedMethods(List.of(

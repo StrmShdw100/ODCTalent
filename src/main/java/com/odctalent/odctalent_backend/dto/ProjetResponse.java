@@ -17,4 +17,10 @@ public class ProjetResponse {
     private String technologies;
     private LocalDate dateCreation;
     private Long portfolioId;
+    private Boolean estCollaboratif;
+    private Integer nombrePersonnesRecherches;
+    private String competencesRequises;
+    private String nomCreateur;
+    private String prenomCreateur;
+    private String statut;
 }

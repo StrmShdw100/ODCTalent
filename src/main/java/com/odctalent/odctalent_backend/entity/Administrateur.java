@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "administrateurs")
 @PrimaryKeyJoinColumn(name = "utilisateur_id")
+@DiscriminatorValue("ADMINISTRATEUR")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

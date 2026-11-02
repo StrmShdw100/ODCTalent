@@ -35,4 +35,8 @@ public class Projet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private Portfolio portfolio;
+
+    private Boolean estCollaboratif = false; 
+    private Integer nombrePersonnesRecherches;
+    private String competencesRequises;
 }

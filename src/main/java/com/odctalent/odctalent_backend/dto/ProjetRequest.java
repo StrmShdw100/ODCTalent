@@ -13,4 +13,7 @@ public class ProjetRequest {
     private String githubUrl;
     private String demoUrl;
     private String technologies;
+    private Boolean estCollaboratif;
+    private Integer nombrePersonnesRecherches;
+    private String competencesRequises;
 }

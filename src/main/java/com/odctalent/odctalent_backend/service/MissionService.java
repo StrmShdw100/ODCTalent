@@ -5,6 +5,7 @@ import com.odctalent.odctalent_backend.dto.MissionResponse;
 import com.odctalent.odctalent_backend.entity.Mission;
 import com.odctalent.odctalent_backend.entity.Recruteur;
 import com.odctalent.odctalent_backend.entity.Utilisateur;
+import com.odctalent.odctalent_backend.repository.CandidatureRepository; 
 import com.odctalent.odctalent_backend.repository.MissionRepository;
 import com.odctalent.odctalent_backend.repository.RecruteurRepository;
 import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final RecruteurRepository recruteurRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final CandidatureRepository candidatureRepository; // 🚀 Injection ici
 
     @Transactional(readOnly = true)
     public List<MissionResponse> getAllMissions() {
@@ -50,7 +55,7 @@ public class MissionService {
                 .description(request.getDescription())
                 .budget(request.getBudget())
                 .competencesRequises(request.getCompetencesRequises())
-                .statut("DISPONIBLE")
+                .statut(request.getStatut() != null ? request.getStatut() : "DISPONIBLE")
                 .datePublication(LocalDate.now())
                 .recruteur(recruteur)
                 .build();
@@ -90,17 +95,14 @@ public class MissionService {
         missionRepository.delete(mission);
     }
 
-
     @Transactional
     public MissionResponse createMissionAdmin(MissionRequest request, Long recruteurId) {
-        Recruteur recruteur;
-        if (recruteurId != null) {
-            recruteur = recruteurRepository.findById(recruteurId)
-                    .orElseThrow(() -> new RuntimeException("Recruteur introuvable avec l'ID : " + recruteurId));
-        } else {
-            recruteur = recruteurRepository.findAll().stream().findFirst()
-                    .orElseThrow(() -> new RuntimeException("Aucun recruteur disponible dans la base."));
+        if (recruteurId == null) {
+            throw new RuntimeException("Veuillez sélectionner un recruteur valide pour cette mission.");
         }
+
+        Recruteur recruteur = recruteurRepository.findById(recruteurId)
+                .orElseThrow(() -> new RuntimeException("Recruteur introuvable avec l'ID : " + recruteurId));
 
         Mission mission = Mission.builder()
                 .titre(request.getTitre())
@@ -133,6 +135,24 @@ public class MissionService {
         missionRepository.delete(mission);
     }
 
+    @Transactional(readOnly = true)
+    public Map<String, Long> getOpportunitesStats() {
+        List<Mission> missions = missionRepository.findAll();
+
+        long recruteursActifs = missions.stream()
+                .map(Mission::getRecruteur)
+                .filter(Objects::nonNull)
+                .distinct()
+                .count();
+        long candidatures = candidatureRepository.count(); 
+
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("recruteursActifs", recruteursActifs);
+        stats.put("candidatures", candidatures);
+        
+        return stats;
+    }
+
     private MissionResponse mapToResponse(Mission mission) {
         Recruteur r = mission.getRecruteur();
         return MissionResponse.builder()
@@ -147,6 +167,7 @@ public class MissionService {
                 .nomRecruteur(r != null ? r.getNom() : null)
                 .prenomRecruteur(r != null ? r.getPrenom() : null)
                 .emailRecruteur(r != null ? r.getEmail() : null)
+                .nomEntreprise(r != null ? r.getNomEntreprise() : null)
                 .build();
     }
 }

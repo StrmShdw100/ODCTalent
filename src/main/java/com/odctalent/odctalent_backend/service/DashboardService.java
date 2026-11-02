@@ -2,6 +2,7 @@ package com.odctalent.odctalent_backend.service;
 
 import com.odctalent.odctalent_backend.dto.DashboardStatsDTO;
 import com.odctalent.odctalent_backend.entity.enums.Role;
+import com.odctalent.odctalent_backend.repository.CandidatureRepository;
 import com.odctalent.odctalent_backend.repository.MissionRepository;
 import com.odctalent.odctalent_backend.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 public class DashboardService {
 
     private final UtilisateurRepository utilisateurRepository;
-    private final MissionRepository missionRepository; // <-- Injection du repository des missions
+    private final MissionRepository missionRepository;
+    private final CandidatureRepository candidatureRepository; 
 
     public DashboardStatsDTO getDashboardStats() {
         long totalApprenants = utilisateurRepository.countByRole(Role.APPRENANT);
@@ -23,7 +25,7 @@ public class DashboardService {
         long comptesEnAttente = utilisateurRepository.findByActifFalse().size();
         
         long totalOpportunites = missionRepository.count(); 
-        long totalCandidatures = 0; // Gardé à 0 en attendant le module candidatures
+        long totalCandidatures = candidatureRepository.count();
 
         return DashboardStatsDTO.builder()
                 .totalApprenants(totalApprenants)

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Entity
 @Table(name = "actualites")
@@ -29,4 +30,11 @@ public class Actualite {
     private String status; 
     private String author;
     private String imageUrl;
+
+    private Boolean toutesPromotions;
+
+    @ElementCollection
+    @CollectionTable(name = "actualite_promotions", joinColumns = @JoinColumn(name = "actualite_id"))
+    @Column(name = "promotion")
+    private List<String> promotionsCibles;
 }
