@@ -9,7 +9,6 @@
   </div>
 
   <div class="formulaire-edition-carte">
-    <!-- Prévisualisation visuelle -->
     <div class="apercu-container">
       <img *ngIf="projet.imageUrl" [src]="projet.imageUrl" [alt]="projet.titre" class="apercu-img" />
       <div *ngIf="!projet.imageUrl" class="apercu-fallback">
@@ -18,7 +17,6 @@
       </div>
     </div>
 
-    <!-- Champs du formulaire de modification -->
     <div class="corps-formulaire">
       <div class="groupe-f">
         <label class="lab">Titre du projet *</label>
@@ -33,6 +31,24 @@
       <div class="groupe-f">
         <label class="lab">Technologies utilisées</label>
         <input type="text" class="inp" [(ngModel)]="projet.technologies" />
+      </div>
+
+      <div style="background-color: #fafafa; border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600; color: #111827; font-size: 0.85rem;">
+          <input type="checkbox" [(ngModel)]="projet.estCollaboratif" style="width: 1.1rem; height: 1.1rem; accent-color: #ff7900;" />
+          Ce projet est collaboratif / Recherche des coéquipiers 👥
+        </label>
+
+        <div *ngIf="projet.estCollaboratif" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.25rem; padding-top: 0.75rem; border-top: 1px dashed #d1d5db;">
+          <div class="groupe-f">
+            <label class="lab">Nombre de personnes recherchées</label>
+            <input type="number" class="inp" [(ngModel)]="projet.nombrePersonnesRecherches" min="1" />
+          </div>
+          <div class="groupe-f">
+            <label class="lab">Compétences recherchées (séparées par des virgules)</label>
+            <input type="text" class="inp" [(ngModel)]="projet.competencesRequises" placeholder="Ex: Java, Angular, Flutter" />
+          </div>
+        </div>
       </div>
 
       <div class="groupe-f">

@@ -13,7 +13,7 @@
         <span class="valeur-stat">{{ stats.missionsPubliees }}</span>
         <span class="tendance-stat">Missions en ligne</span>
       </div>
-      <div class="icone-stat"><img src="icones/folder.png" alt=""></div>
+      <div class="icone-stat"><img src="icones/folder.png" alt="Missions"></div>
     </div>
 
     <div class="carte-stat">
@@ -22,7 +22,7 @@
         <span class="valeur-stat">{{ stats.candidaturesRecues }}</span>
         <span class="tendance-stat">Total des profils reçus</span>
       </div>
-      <div class="icone-stat"><img src="icones/apprenants-fill.png" alt="icones-candidatures-recues"></div>
+      <div class="icone-stat"><img src="icones/apprenants-fill.png" alt="Candidatures"></div>
     </div>
 
     <div class="carte-stat">
@@ -31,7 +31,7 @@
         <span class="valeur-stat">{{ stats.candidaturesEnCours }}</span>
         <span class="tendance-stat">À traiter par vos équipes</span>
       </div>
-      <div class="icone-stat"><img src="icones/clock.png" alt="icones-temps"></div>
+      <div class="icone-stat"><img src="icones/clock.png" alt="En cours"></div>
     </div>
 
     <div class="carte-stat">
@@ -40,14 +40,14 @@
         <span class="valeur-stat">{{ stats.contratsActifs }}</span>
         <span class="tendance-stat">Engagements en cours</span>
       </div>
-      <div class="icone-stat"><img src="icones/contract.png" alt="icones-contrats"></div>
+      <div class="icone-stat"><img src="icones/contract.png" alt="Contrats"></div>
     </div>
   </div>
 
   <!-- Grille principale de contenu divisée en 2 colonnes -->
   <div class="grille-contenu-principal">
     
-    <!-- Colonne de gauche : Candidatures récentes -->
+    <!-- Colonne de gauche : Candidatures récentes DYNAMIQUES -->
     <div class="bloc-section candidature-section">
       <div class="en-tete-section">
         <h2 class="titre-section">Candidatures récentes</h2>
@@ -55,52 +55,23 @@
       </div>
 
       <div class="liste-elements">
-        <!-- Ligne 1 -->
-        <div class="element-ligne">
+        <!-- Boucle dynamique sur les candidatures -->
+        <div class="element-ligne" *ngFor="let c of candidaturesRecentes">
           <div class="profil-info-ligne">
-            <div class="avatar-initiales orange-clair">NS</div>
+            <div class="avatar-initiales orange-clair">{{ getInitiales(c.prenomApprenant, c.nomApprenant) }}</div>
             <div>
-              <span class="nom-personne">Ndeye Sarr</span>
-              <span class="details-personne">Développeuse React • Il y a 35 min</span>
+              <span class="nom-personne">{{ c.prenomApprenant }} {{ c.nomApprenant }}</span>
+              <span class="details-personne">{{ c.titreMission }} • {{ c.dateCandidature || 'Récemment' }}</span>
             </div>
           </div>
-          <span class="badge statut-cours">En cours</span>
+          <span class="badge" [ngClass]="getClasseStatut(c.statut)">
+            {{ getLibelleStatut(c.statut) }}
+          </span>
         </div>
 
-        <!-- Ligne 2 -->
-        <div class="element-ligne">
-          <div class="profil-info-ligne">
-            <div class="avatar-initiales orange-clair">MK</div>
-            <div>
-              <span class="nom-personne">Modou Kane</span>
-              <span class="details-personne">Data Analyst • Il y a 1 h</span>
-            </div>
-          </div>
-          <span class="badge statut-nouvelle">Nouvelle</span>
-        </div>
-
-        <!-- Ligne 3 -->
-        <div class="element-ligne">
-          <div class="profil-info-ligne">
-            <div class="avatar-initiales orange-clair">AB</div>
-            <div>
-              <span class="nom-personne">Aïssatou Barry</span>
-              <span class="details-personne">UX/UI Designer • Hier</span>
-            </div>
-          </div>
-          <span class="badge statut-entretien">Entretien</span>
-        </div>
-
-        <!-- Ligne 4 -->
-        <div class="element-ligne">
-          <div class="profil-info-ligne">
-            <div class="avatar-initiales orange-clair">IF</div>
-            <div>
-              <span class="nom-personne">Ibrahima Fall</span>
-              <span class="details-personne">Développeur Flutter • Hier</span>
-            </div>
-          </div>
-          <span class="badge statut-nouvelle">Nouvelle</span>
+        <!-- État vide si aucune candidature -->
+        <div *ngIf="!chargement && candidaturesRecentes.length === 0" style="text-align: center; color: #888; padding: 2rem;">
+          <p>Aucune candidature récente pour le moment.</p>
         </div>
       </div>
     </div>

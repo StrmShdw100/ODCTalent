@@ -44,6 +44,9 @@ export class ActualiteService {
     formData.append('file', file);
     return this.http.post<any>(this.fileUploadUrl, formData, { headers: this.getHeaders() });
   }
+  updateActualite(id: number, actualite: Actualite): Observable<Actualite> {
+    return this.http.put<Actualite>(`${this.apiUrl}/${id}`, actualite, { headers: this.getHeaders() });
+  }
 
   deleteActualite(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });

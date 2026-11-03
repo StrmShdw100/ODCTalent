@@ -14,12 +14,15 @@ export class ActualitesComponent implements OnInit {
   searchTerm: string = '';
   selectedCategory: string = 'Toutes les catégories';
   selectedStatus: string = 'Tous les statuts';
-
+  
+  editingId: number | null = null;
   isModalOpen: boolean = false;
   successMessage: string | null = null;
   selectedFile: File | null = null;
 
   isAdmin: boolean = false;
+
+  todayDate: string = new Date().toISOString().split('T')[0];
 
   availablePromotions: string[] = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P9', 'P10', 'P11', 'P12'];
 
@@ -61,11 +64,12 @@ export class ActualitesComponent implements OnInit {
 
   openAddModal(): void {
     if (!this.isAdmin) return;
+    this.editingId = null;
     this.isModalOpen = true;
     this.formModel = { 
       title: '', 
       category: '', 
-      publicationDate: '', 
+      publicationDate: this.todayDate, 
       description: '', 
       status: 'Publié', 
       imageUrl: '', 
@@ -76,9 +80,30 @@ export class ActualitesComponent implements OnInit {
     this.cdr.detectChanges(); 
   }
 
+  openEditModal(item: Actualite): void {
+    if (!this.isAdmin) return;
+    if (item.showMenu) item.showMenu = false;
+    this.editingId = item.id || null;
+    this.isModalOpen = true;
+    this.formModel = {
+      title: item.title,
+      category: item.category,
+      publicationDate: item.publicationDate || this.todayDate,
+      description: item.description,
+      status: item.status,
+      imageUrl: item.imageUrl || '',
+      toutesPromotions: item.toutesPromotions ?? true,
+      promotionsCibles: item.promotionsCibles ? [...item.promotionsCibles] : []
+    };
+    this.selectedFile = null;
+    this.cdr.detectChanges();
+  }
+
   onPromotionCheckboxChange(promo: string, event: any): void {
     if (event.target.checked) {
-      this.formModel.promotionsCibles.push(promo);
+      if (!this.formModel.promotionsCibles.includes(promo)) {
+        this.formModel.promotionsCibles.push(promo);
+      }
     } else {
       this.formModel.promotionsCibles = this.formModel.promotionsCibles.filter(p => p !== promo);
     }
@@ -91,7 +116,7 @@ export class ActualitesComponent implements OnInit {
       this.actualiteService.uploadImage(this.selectedFile).subscribe({
         next: (response) => {
           this.formModel.imageUrl = response.fileUrl; 
-          this.sauvegarderEnBase();
+          this.executerSauvegarde();
         },
         error: (err) => {
           console.error("Erreur upload image :", err);
@@ -99,17 +124,17 @@ export class ActualitesComponent implements OnInit {
         }
       });
     } else {
-      this.sauvegarderEnBase();
+      this.executerSauvegarde();
     }
   }
 
-  private sauvegarderEnBase(): void {
-    const nouvelleActualite: Actualite = {
+  private executerSauvegarde(): void {
+    const payload: Actualite = {
       badge: 'ODC',
       title: this.formModel.title,
       description: this.formModel.description,
       category: this.formModel.category || 'Annonce',
-      publicationDate: this.formModel.publicationDate || 'Aujourd\'hui',
+      publicationDate: this.formModel.publicationDate || this.todayDate,
       status: this.formModel.status,
       author: 'Admin ODC',
       imageUrl: this.formModel.imageUrl,
@@ -117,27 +142,55 @@ export class ActualitesComponent implements OnInit {
       promotionsCibles: this.formModel.toutesPromotions ? [] : this.formModel.promotionsCibles
     };
 
-    this.actualiteService.createActualite(nouvelleActualite).subscribe({
-      next: (created) => {
-        this.actualites.unshift(created);
-        this.isModalOpen = false;
-        this.successMessage = "Actualité publiée et notifications envoyées aux apprenants concernés !";
-        this.cdr.detectChanges();
+    if (this.editingId) {
+      this.actualiteService.updateActualite(this.editingId, payload).subscribe({
+        next: (updated) => {
+          const index = this.actualites.findIndex(a => a.id === this.editingId);
+          if (index !== -1) {
+            this.actualites[index] = updated;
+          }
+          this.fermerEtReinitialiser();
+          this.successMessage = "Actualité modifiée avec succès !";
+          this.declencherNotificationSucces();
+        },
+        error: (err) => {
+          console.error("Erreur lors de la modification :", err);
+          alert("Erreur lors de la mise à jour de l'actualité.");
+        }
+      });
+    } else {
+      this.actualiteService.createActualite(payload).subscribe({
+        next: (created) => {
+          this.actualites.unshift(created);
+          this.fermerEtReinitialiser();
+          this.successMessage = "Actualité publiée et notifications envoyées aux apprenants concernés !";
+          this.declencherNotificationSucces();
+        },
+        error: (err) => {
+          console.error("Erreur lors de l'enregistrement :", err);
+          alert("Erreur lors de la création de l'actualité.");
+        }
+      });
+    }
+  }
 
-        setTimeout(() => { 
-          this.successMessage = null; 
-          this.cdr.detectChanges();
-        }, 4000);
-      },
-      error: (err) => {
-        console.error("Erreur lors de l'enregistrement :", err);
-        alert("Erreur lors de la création de l'actualité.");
-      }
-    });
+  private fermerEtReinitialiser(): void {
+    this.isModalOpen = false;
+    this.editingId = null;
+    this.cdr.detectChanges();
+  }
+
+  private declencherNotificationSucces(): void {
+    this.cdr.detectChanges();
+    setTimeout(() => { 
+      this.successMessage = null; 
+      this.cdr.detectChanges();
+    }, 4000);
   }
 
   closeModal(): void {
     this.isModalOpen = false;
+    this.editingId = null;
     this.cdr.detectChanges();
   }
 

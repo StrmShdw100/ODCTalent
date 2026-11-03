@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; // 🚀 1. Import du Router
 import { AdminDashboardService, DashboardStats } from './dashboard.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: AdminDashboardService,
+    private router: Router, // 🚀 2. Injection du Router
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -42,5 +44,18 @@ export class AdminDashboardComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // 🚀 3. Méthodes de redirection (adapte les chemins selon tes routes exactes)
+  goToApprenants(): void {
+    this.router.navigate(['/admin/apprenants']);
+  }
+
+  goToOpportunites(): void {
+    this.router.navigate(['/admin/opportunites']);
+  }
+
+  goToRecruteurs(): void {
+    this.router.navigate(['/admin/recruteurs']);
   }
 }

@@ -119,14 +119,16 @@ export class OpportunitesComponent implements OnInit {
           else if (m.statut === 'MASQUE') mappedStatus = 'Masqué';
           else if (m.statut === 'DISPONIBLE' || m.statut === 'Publié') mappedStatus = 'Publié';
 
+          const nomRecruteurComplet = m.nomRecruteur && m.prenomRecruteur 
+            ? `${m.prenomRecruteur} ${m.nomRecruteur}` 
+            : 'Partenaire ODC';
+
           return {
             id: m.id,
             badge: m.titre?.toLowerCase().includes('stage') ? 'STG' : 'JOB',
             title: m.titre,
             location: 'Dakar • Hybride',
-            recruiter: m.nomRecruteur && m.prenomRecruteur 
-              ? `${m.prenomRecruteur} ${m.nomRecruteur}` 
-              : 'Partenaire ODC',
+            recruiter: m.nomEntreprise ? `${m.nomEntreprise} (${nomRecruteurComplet})` : nomRecruteurComplet,
             type: 'Recrutement',
             date: m.datePublication ? new Date(m.datePublication).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Récemment',
             status: mappedStatus,
@@ -252,7 +254,7 @@ export class OpportunitesComponent implements OnInit {
         item.status === this.selectedStatus;
 
       const matchesRecruiter = this.selectedRecruiter === 'Recruteur' || 
-        item.recruiter === this.selectedRecruiter;
+        item.recruiter.includes(this.selectedRecruiter);
 
       return matchesSearch && matchesType && matchesStatus && matchesRecruiter;
     });

@@ -19,7 +19,10 @@ export class DetailProjetApprenant implements OnInit {
     technologies: '',
     imageUrl: '',
     githubUrl: '',
-    demoUrl: ''
+    demoUrl: '',
+    estCollaboratif: false,
+    nombrePersonnesRecherches: 1,
+    competencesRequises: ''           
   };
 
   private apiUrl = 'http://localhost:8080/api/v1/projets';
@@ -60,7 +63,6 @@ export class DetailProjetApprenant implements OnInit {
     });
   }
 
-  // 💾 Enregistrer les modifications (PUT)
   modifierProjet(): void {
     this.http.put<any>(`${this.apiUrl}/${this.projetId}`, this.projet, { headers: this.getHeaders() }).subscribe({
       next: () => {
@@ -73,7 +75,6 @@ export class DetailProjetApprenant implements OnInit {
     });
   }
 
-  // 🗑️ Supprimer le projet (DELETE)
   supprimerProjet(): void {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
       this.http.delete(`${this.apiUrl}/${this.projetId}`, { headers: this.getHeaders() }).subscribe({

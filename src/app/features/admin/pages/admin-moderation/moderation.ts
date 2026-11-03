@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModerationService, ProjetModeration } from './moderation.service';
+import { Router } from '@angular/router';
+import { ModerationService, ProjetModeration, ModerationStats } from './moderation.service';
 
 @Component({
   selector: 'app-moderation',
@@ -18,7 +19,8 @@ export class ModerationComponent implements OnInit {
 
   projets: ProjetModeration[] = [];
 
-  stats = {
+  stats: ModerationStats = {
+    total: 0,
     aExaminer: 0,
     validesMois: 0,
     refusesMois: 0,
@@ -27,12 +29,27 @@ export class ModerationComponent implements OnInit {
 
   constructor(
     private moderationService: ModerationService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.chargerProjets();
     this.chargerStats();
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    let changed = false;
+    this.projets.forEach(p => {
+      if (p.showMenu) {
+        p.showMenu = false;
+        changed = true;
+      }
+    });
+    if (changed) {
+      this.cdr.detectChanges();
+    }
   }
 
   chargerProjets(): void {
@@ -76,10 +93,32 @@ export class ModerationComponent implements OnInit {
     });
   }
 
+  toutValider(): void {
+    if (confirm("Voulez-vous vraiment valider tous les projets en attente d'un seul coup ?")) {
+      this.moderationService.validerTousLesProjets().subscribe({
+        next: () => {
+          this.chargerProjets();
+          this.chargerStats();
+          this.cdr.detectChanges();
+          alert("Tous les projets ont été validés avec succès !");
+        },
+        error: (err) => {
+          console.error("Erreur lors de la validation globale :", err);
+          alert("Impossible de valider tous les projets.");
+        }
+      });
+    }
+  }
+
   toggleMenu(projet: ProjetModeration, event: Event): void {
-    event.stopPropagation();
+    event.stopPropagation(); // Empêche l'événement de remonter au document
     this.projets.forEach(p => { if (p !== projet) p.showMenu = false; });
     projet.showMenu = !projet.showMenu;
+    this.cdr.detectChanges(); // 🚀 Force le rendu immédiat
+  }
+
+  ouvrirDetail(id: number): void {
+    this.router.navigate(['/admin/projets', id]);
   }
 
   get filteredProjets(): ProjetModeration[] {

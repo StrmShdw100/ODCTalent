@@ -167,3 +167,42 @@
   font-size: 0.9rem;
   color: #444;
 }
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.btn-action {
+  background: #f8f9fa;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.btn-action span {
+  font-size: 0.9rem;
+  color: #111;
+}
+
+.btn-action small {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: normal;
+}
+
+.btn-action:hover {
+  background: #fff;
+  border-color: #FF7900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}

@@ -18,9 +18,19 @@
       </div>
 
       <div class="carte-contenu">
+        <div *ngIf="p.estCollaboratif" style="margin-bottom: -0.25rem;">
+          <span style="background-color: #fff7ed; color: #ff7900; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 1rem; border: 1px solid #ffedd5;">
+            👥 Projet d'équipe ({{ p.nombrePersonnesRecherches }} recherchés)
+          </span>
+        </div>
+
         <h3>{{ p.titre }}</h3>
         <p>{{ p.description }}</p>
-        <div class="techno-tag" *ngIf="p.technologies"><img src="icones/outils-framework.png" alt="icones-outils"> {{ p.technologies }}</div>
+        
+        <div class="techno-tag" *ngIf="p.technologies">
+          <img src="icones/outils-framework.png" alt="icones-outils"> {{ p.technologies }}
+        </div>
+
         <div class="liens-projet-groupe">
           <a *ngIf="p.githubUrl" [href]="p.githubUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">GitHub ↗</a>
           <a *ngIf="p.demoUrl" [href]="p.demoUrl" target="_blank" class="lien-projet" (click)="$event.stopPropagation()">Démo Live ↗</a>
@@ -48,18 +58,40 @@
           <label class="lab">Titre du projet *</label>
           <input type="text" class="inp" [(ngModel)]="nouveauProjet.titre" placeholder="Ex: Application mobile de gestion" />
         </div>
+        
         <div class="groupe-f">
           <label class="lab">Description *</label>
           <textarea class="inp" rows="4" [(ngModel)]="nouveauProjet.description" placeholder="Décrivez l'objectif du projet et votre rôle..."></textarea>
         </div>
+
         <div class="groupe-f">
           <label class="lab">Technologies utilisées</label>
           <input type="text" class="inp" [(ngModel)]="nouveauProjet.technologies" placeholder="Ex: Angular, Spring Boot, React, Flutter" />
         </div>
+
+        <div style="background-color: #fafafa; border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 600; color: #111827; font-size: 0.85rem;">
+            <input type="checkbox" [(ngModel)]="nouveauProjet.estCollaboratif" style="width: 1.1rem; height: 1.1rem; accent-color: #ff7900;" />
+            C'est un projet collaboratif (Je recherche des coéquipiers 👥)
+          </label>
+
+          <div *ngIf="nouveauProjet.estCollaboratif" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.25rem; padding-top: 0.75rem; border-top: 1px dashed #d1d5db;">
+            <div class="groupe-f">
+              <label class="lab">Nombre de personnes recherchées</label>
+              <input type="number" class="inp" [(ngModel)]="nouveauProjet.nombrePersonnesRecherches" min="1" />
+            </div>
+            <div class="groupe-f">
+              <label class="lab">Compétences recherchées (séparées par des virgules)</label>
+              <input type="text" class="inp" [(ngModel)]="nouveauProjet.competencesRequises" placeholder="Ex: Java, Spring Security, Angular" />
+            </div>
+          </div>
+        </div>
+
         <div class="groupe-f">
           <label class="lab">Lien de l'image du projet (URL)</label>
           <input type="text" class="inp" [(ngModel)]="nouveauProjet.imageUrl" placeholder="https://example.com/image.png (Optionnel)" />
         </div>
+
         <div class="ligne-form">
           <div class="groupe-f">
             <label class="lab">Lien GitHub</label>

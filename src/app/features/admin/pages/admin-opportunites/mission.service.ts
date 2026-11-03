@@ -24,6 +24,7 @@ export interface MissionResponse {
   nomRecruteur?: string;
   prenomRecruteur?: string;
   emailRecruteur?: string;
+  nomEntreprise?: string;
 }
 
 @Injectable({

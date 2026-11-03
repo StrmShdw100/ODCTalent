@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Router, RouterModule } from '@angular/router'; // <-- Importer Router
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-projets-apprenant',
@@ -18,17 +18,20 @@ export class ProjetsApprenant implements OnInit {
   nouveauProjet = {
     titre: '',
     description: '',
-    technologies: '',
     imageUrl: '',
     githubUrl: '',
-    demoUrl: ''
+    demoUrl: '',
+    technologies: '',
+    estCollaboratif: false,           
+    nombrePersonnesRecherches: 1,     
+    competencesRequises: ''
   };
 
   private apiUrl = 'http://localhost:8080/api/v1/projets';
 
   constructor(
     private http: HttpClient,
-    private router: Router, // <-- Injecter le Router
+    private router: Router, 
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -54,10 +57,12 @@ export class ProjetsApprenant implements OnInit {
   ouvrirModal(): void { this.modalOuverte = true; }
   fermerModal(): void { 
     this.modalOuverte = false; 
-    this.nouveauProjet = { titre: '', description: '', technologies: '', imageUrl: '', githubUrl: '', demoUrl: '' }; 
+    this.nouveauProjet = { 
+      titre: '', description: '', technologies: '', imageUrl: '', githubUrl: '', demoUrl: '',
+      estCollaboratif: false, nombrePersonnesRecherches: 1, competencesRequises: '' 
+    }; 
   }
 
-  // 🚀 Redirige vers la page de détail/modification du projet
   allerVersDetail(id: number): void {
     this.router.navigate(['/apprenant/projets', id]);
   }
@@ -94,7 +99,6 @@ export class ProjetsApprenant implements OnInit {
     if (t.includes('flutter') || t.includes('dart')) return '/icones/flutter.png';
     if (t.includes('java') || t.includes('spring')) return '/icones/java.png';
     if (t.includes('vue') || t.includes('vuejs')) return '/icones/vue.png';
-
     return '/icones/code.png';
   }
 }

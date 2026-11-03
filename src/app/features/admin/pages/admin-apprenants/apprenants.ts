@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core'; // 🚀 1. Ajout de HostListener ici
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
@@ -36,7 +36,10 @@ export class ApprenantsComponent implements OnInit {
     email: '',
     telephone: '',
     promotion: 'P6',
-    formation: 'Dev Mobile et web'
+    formation: 'Dev Mobile et web',
+    localisation: 'Bamako, Mali',
+    motDePasse: 'ODC@2026',
+    role: 'APPRENANT'
   };
 
   selectedFile: File | null = null;
@@ -71,9 +74,26 @@ export class ApprenantsComponent implements OnInit {
     this.chargerStats(); 
   }
 
+  // 🚀 2. Écouteur global pour fermer les menus si on clique en dehors
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.apprenants.forEach(a => a.showMenu = false);
+    this.cdr.detectChanges();
+  }
+
   ouvrirModalAjout() {
     this.isAddModalOpen = true;
-    this.nouveauApprenant = { nom: '', prenom: '', email: '', telephone: '', promotion: 'P6', formation: 'Dev Mobile et web' };
+    this.nouveauApprenant = {
+      nom: '',
+      prenom: '',
+      email: '',
+      telephone: '',
+      promotion: 'P6',
+      formation: 'Dev Mobile et web',
+      localisation: 'Bamako, Mali',
+      motDePasse: 'ODC@2026',
+      role: 'APPRENANT'
+    };
     this.selectedFile = null;
     this.activeTab = 'unique';
     this.cdr.detectChanges();
@@ -91,7 +111,7 @@ export class ApprenantsComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/v1/admin/apprenants', this.nouveauApprenant, { headers: this.getHeaders() }).subscribe({
+    this.http.post<any>('http://localhost:8080/api/v1/admin/apprenants', this.nouveauApprenant, { headers: this.getHeaders() }).subscribe({
       next: () => {
         alert("Apprenant ajouté avec succès !");
         this.fermerModalAjout();
@@ -100,7 +120,8 @@ export class ApprenantsComponent implements OnInit {
       },
       error: (err) => {
         console.error("Erreur lors de l'ajout :", err);
-        alert("Erreur lors de la création de l'apprenant.");
+        const errMsg = err.error?.error || err.error?.message || 'Vérifiez les données saisies';
+        alert("Erreur lors de la création de l'apprenant : " + errMsg);
       }
     });
   }
@@ -156,19 +177,22 @@ export class ApprenantsComponent implements OnInit {
   chargerApprenants() {
     this.http.get<any[]>('http://localhost:8080/api/v1/admin/apprenants/tous', { headers: this.getHeaders() }).subscribe({
       next: (data) => {
-        this.apprenants = data.map(u => ({
-          id: u.id,
-          initials: ((u.prenom?.charAt(0) || '') + (u.nom?.charAt(0) || '')).toUpperCase(),
-          name: `${u.prenom} ${u.nom}`,
-          location: u.localisation || u.telephone || 'Mali / Dakar',
-          email: u.email,
-          formation: u.formation || 'Dev Mobile et web',
-          promotion: u.promotion || 'P6',
-          projectsCount: u.portfolio?.projets ? u.portfolio.projets.length : 0,
-          status: u.actif ? 'Actif' : 'En attente',
-          inscriptionDate: u.dateInscription ? new Date(u.dateInscription).toLocaleDateString() : 'Récemment',
-          disponibilite: u.disponibilite ?? true 
-        }));
+        this.apprenants = data.map(u => {
+          const projetsList = u.portfolio?.projets || u.portfolio?.projects || [];
+          return {
+            id: u.id,
+            initials: ((u.prenom?.charAt(0) || '') + (u.nom?.charAt(0) || '')).toUpperCase(),
+            name: `${u.prenom} ${u.nom}`,
+            location: u.localisation || 'Bamako, Mali',
+            email: u.email,
+            formation: u.formation || 'Dev Mobile et web',
+            promotion: u.promotion || 'P6',
+            projectsCount: Array.isArray(projetsList) ? projetsList.length : 0,
+            status: u.actif ? 'Actif' : 'En attente',
+            inscriptionDate: u.dateInscription ? new Date(u.dateInscription).toLocaleDateString() : 'Récemment',
+            disponibilite: u.disponibilite ?? true 
+          };
+        });
 
         this.chargerStats();
         this.cdr.detectChanges();
@@ -180,7 +204,7 @@ export class ApprenantsComponent implements OnInit {
   }
 
   private getHeaders() {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -202,17 +226,10 @@ export class ApprenantsComponent implements OnInit {
       headers: this.getHeaders(), 
       responseType: 'text' 
     }).subscribe({
-      next: () => {
-        alert("Compte apprenant autorisé avec succès !");
-        this.chargerApprenants(); 
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error("Erreur lors de l'autorisation :", err);
-        alert("Impossible d'autoriser ce compte.");
-      }
+      next: `Compte apprenant autorisé avec succès !`,
     });
   }
+  // (garde le reste de tes méthodes existantes en bas : autoriserCompte, togglePromotionDropdown, etc.)
 
   togglePromotionDropdown(): void {
     this.isPromotionOpen = !this.isPromotionOpen;
@@ -239,9 +256,10 @@ export class ApprenantsComponent implements OnInit {
   }
 
   toggleMenu(item: Apprenant, event: Event): void {
-    event.stopPropagation();
-    this.apprenants.forEach(a => { if (a !== item) a.showMenu = false; });
-    item.showMenu = !item.showMenu;
+    event.stopPropagation(); 
+    const etatActuel = item.showMenu;
+    this.apprenants.forEach(a => a.showMenu = false);
+    item.showMenu = !etatActuel;
     this.cdr.detectChanges();
   }
 }

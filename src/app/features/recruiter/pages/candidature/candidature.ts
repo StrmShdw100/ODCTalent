@@ -22,15 +22,16 @@ export interface CandidatureResponse {
   standalone: true,
   imports: [CommonModule, RouterModule, HttpClientModule],
   templateUrl: './candidature.html',
-  styleUrl: './candidature.css'
+  styleUrls: ['./candidature.css']
 })
 export class Candidatures implements OnInit {
   candidatures: CandidatureResponse[] = [];
+  isLoading: boolean = true;
   private apiUrl = 'http://localhost:8080/api/v1/candidatures/recruteur';
 
   constructor(
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef // 🚀 Injection de ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -43,14 +44,18 @@ export class Candidatures implements OnInit {
   }
 
   chargerCandidatures(): void {
+    this.isLoading = true;
     this.http.get<CandidatureResponse[]>(this.apiUrl, { headers: this.getHeaders() })
       .subscribe({
         next: (data) => {
           this.candidatures = data || [];
-          this.cdr.detectChanges();
+          this.isLoading = false;
+          this.cdr.detectChanges(); // 🚀 Force le rafraîchissement immédiat de la liste
         },
         error: (err) => {
           console.error('Erreur lors du chargement des candidatures :', err);
+          this.isLoading = false;
+          this.cdr.detectChanges();
         }
       });
   }

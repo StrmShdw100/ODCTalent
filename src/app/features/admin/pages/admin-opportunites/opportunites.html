@@ -4,7 +4,7 @@
     <div class="success-content">
       <span class="success-icon">✓</span>
       <div>
-        <strong>Opportunités publiée avec succès</strong>
+        <strong>Opportunité publiée avec succès</strong>
         <p>{{ successMessage }}</p>
       </div>
     </div>
@@ -58,22 +58,22 @@
       <input type="text" [(ngModel)]="searchTerm" placeholder="Rechercher une offre..." />
     </div>
     <select [(ngModel)]="selectedType" class="filter-select">
-      <option>Type d'opportunité</option>
-      <option>Recrutement</option>
-      <option>Stage</option>
-      <option>Mission freelance</option>
+      <option value="">Type d'opportunité</option>
+      <option value="Recrutement">Recrutement</option>
+      <option value="Stage">Stage</option>
+      <option value="Mission freelance">Mission freelance</option>
     </select>
     <select [(ngModel)]="selectedStatus" class="filter-select">
-      <option>Statut</option>
-      <option>Publié</option>
-      <option>Masqué</option>
-      <option>À valider</option>
+      <option value="">Statut</option>
+      <option value="Publié">Publié</option>
+      <option value="Masqué">Masqué</option>
+      <option value="À valider">À valider</option>
     </select>
     <select [(ngModel)]="selectedRecruiter" class="filter-select">
-      <option>Recruteur</option>
-      <option>Sonatel Digital</option>
-      <option>Wave Mobile Money</option>
-      <option>Baobab+</option>
+      <option value="">Recruteur</option>
+      <option *ngFor="let rec of recruteursDisponibles" [value]="rec.nomEntreprise || rec.nom">
+        {{ rec.nomEntreprise || rec.nom }}
+      </option>
     </select>
   </div>
 
@@ -105,7 +105,10 @@
               </div>
             </div>
           </td>
-          <td>{{ item.recruiter }}</td>
+          <!-- Affichage dynamique du vrai nom de l'entreprise ou du recruteur -->
+          <td>
+            <strong>{{ item.recruiter }}</strong>
+          </td>
           <td>
             <span class="type-pill">{{ item.type }}</span>
           </td>
@@ -126,6 +129,11 @@
               <button (click)="changerStatut(item, 'MASQUE', 'Masqué')">🙈 Masquer</button>
               <button class="delete-option" (click)="supprimerOpportunite(item.id)">🗑️ Supprimer</button>
             </div>
+          </td>
+        </tr>
+        <tr *ngIf="filteredOpportunites.length === 0">
+          <td colspan="6" style="text-align: center; color: #888; padding: 2rem;">
+            Aucune opportunité ne correspond à vos critères.
           </td>
         </tr>
       </tbody>
@@ -156,26 +164,27 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label>Recruteur *</label>
+          <label>Recruteur / Entreprise *</label>
           <select [(ngModel)]="formModel.recruiterId">
             <option [ngValue]="null" disabled selected>Sélectionner un recruteur</option>
             <option *ngFor="let rec of recruteursDisponibles" [value]="rec.id">
-              {{ rec.nomEntreprise ? rec.nomEntreprise + ' (' + rec.nom + ')' : rec.prenom + ' ' + rec.nom }}
+              {{ rec.nomEntreprise ? rec.nomEntreprise + ' (' + rec.prenom + ' ' + rec.nom + ')' : rec.prenom + ' ' + rec.nom }}
             </option>
           </select>
         </div>
         <div class="form-group">
           <label>Type d'opportunité *</label>
           <select [(ngModel)]="formModel.type">
-            <option>Recrutement</option>
-            <option>Stage</option>
-            <option>Mission freelance</option>
+            <option value="Recrutement">Recrutement</option>
+            <option value="Stage">Stage</option>
+            <option value="Mission freelance">Mission freelance</option>
           </select>
         </div>
       </div>
+
       <div class="form-row">
         <div class="form-group">
-          <label>Lieu</label>
+          <label>Lieu / Compétences clés</label>
           <input type="text" [(ngModel)]="formModel.location" placeholder="Dakar / Hybride" />
         </div>
         <div class="form-group">
@@ -187,7 +196,6 @@
       <div class="form-group">
         <label>Description *</label>
         <textarea [(ngModel)]="formModel.description" rows="3" placeholder="Décrivez la mission, les responsabilités et les objectifs..."></textarea>
-        <span class="char-counter">{{ formModel.description.length }} / 1000 caractères</span>
       </div>
 
       <div class="form-group">

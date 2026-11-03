@@ -17,13 +17,18 @@ export class CandidatureDetail implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
 
-  // États des modales et champs de saisie
   modalValidationOuverte = false;
   modalRefusOuverte = false;
+  
+  modalPortfolioOuvert = false;
+  portfolioCandidat: any = null;
+  chargementPortfolio = false;
+
   commentaireInterne: string = 'Profil validé après entretien. Compétences adaptées au poste.';
   motifRefus: string = '';
 
   private baseUrl = 'http://localhost:8080/api/v1/candidatures';
+  private portfolioBaseUrl = 'http://localhost:8080/api/v1/portfolios';
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +38,17 @@ export class CandidatureDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.candidatureId = Number(idParam);
-      this.chargerDetailCandidature();
-    }
+    this.route.queryParamMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.candidatureId = Number(idParam);
+        this.chargerDetailCandidature();
+      } else {
+        this.errorMessage = "ID de candidature introuvable dans l'URL.";
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   private getHeaders(): HttpHeaders {
@@ -47,15 +58,13 @@ export class CandidatureDetail implements OnInit {
 
   chargerDetailCandidature(): void {
     this.isLoading = true;
-    // On récupère toutes les candidatures du recruteur ou un endpoint dédié par ID si existant. 
-    // Ici on utilise getCandidaturesForRecruteur pour filtrer par ID de candidature.
     this.http.get<any[]>(`${this.baseUrl}/recruteur`, { headers: this.getHeaders() }).subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.candidature = (data || []).find(c => c.id === this.candidatureId);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Erreur chargement détail candidature :", err);
         this.errorMessage = "Impossible de récupérer les informations de cette candidature.";
         this.isLoading = false;
@@ -64,18 +73,56 @@ export class CandidatureDetail implements OnInit {
     });
   }
 
-  ouvrirValidation() { this.modalValidationOuverte = true; }
-  fermerValidation() { this.modalValidationOuverte = false; }
+  ouvrirValidation(): void { 
+    this.modalValidationOuverte = true; 
+    this.cdr.detectChanges();
+  }
+  fermerValidation(): void { 
+    this.modalValidationOuverte = false; 
+    this.cdr.detectChanges();
+  }
 
-  ouvrirRefus() { this.modalRefusOuverte = true; }
-  fermerRefus() { this.modalRefusOuverte = false; }
+  ouvrirRefus(): void { 
+    this.modalRefusOuverte = true; 
+    this.cdr.detectChanges();
+  }
+  fermerRefus(): void { 
+    this.modalRefusOuverte = false; 
+    this.cdr.detectChanges();
+  }
 
-  // Action pour valider la candidature (statut ACCEPTEE)
+  ouvrirPortfolioCandidat(): void {
+    if (!this.candidature || !this.candidature.apprenantId) return;
+
+    this.modalPortfolioOuvert = true;
+    this.chargementPortfolio = true;
+    this.cdr.detectChanges();
+
+    this.http.get<any>(`${this.portfolioBaseUrl}/apprenant/${this.candidature.apprenantId}`, { headers: this.getHeaders() }).subscribe({
+      next: (data: any) => {
+        this.portfolioCandidat = data;
+        this.chargementPortfolio = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error("Erreur chargement portfolio :", err);
+        this.portfolioCandidat = null;
+        this.chargementPortfolio = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  fermerPortfolioCandidat(): void {
+    this.modalPortfolioOuvert = false;
+    this.portfolioCandidat = null;
+    this.cdr.detectChanges();
+  }
+
   validerCandidature(): void {
     this.changerStatut('ACCEPTEE');
   }
 
-  // Action pour refuser la candidature (statut REFUSEE)
   refuserCandidature(): void {
     this.changerStatut('REFUSEE');
   }
@@ -83,13 +130,15 @@ export class CandidatureDetail implements OnInit {
   private changerStatut(nouveauStatut: string): void {
     this.http.patch(`${this.baseUrl}/${this.candidatureId}/statut?statut=${nouveauStatut}`, {}, { headers: this.getHeaders() }).subscribe({
       next: (updated: any) => {
-        this.candidature.statut = updated.statut;
+        if (this.candidature) {
+          this.candidature.statut = updated.statut || nouveauStatut;
+        }
         this.fermerValidation();
         this.fermerRefus();
         this.cdr.detectChanges();
         alert(`La candidature a été mise à jour avec succès : ${nouveauStatut}`);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error("Erreur modification statut :", err);
         alert("Une erreur est survenue lors de la mise à jour du statut.");
       }
@@ -98,6 +147,6 @@ export class CandidatureDetail implements OnInit {
 
   get initiales(): string {
     if (!this.candidature || !this.candidature.prenomApprenant) return 'CN';
-    return (this.candidature.prenomApprenant.charAt(0) + this.candidature.nomApprenant.charAt(0)).toUpperCase();
+    return (this.candidature.prenomApprenant.charAt(0) + (this.candidature.nomApprenant ? this.candidature.nomApprenant.charAt(0) : '')).toUpperCase();
   }
 }

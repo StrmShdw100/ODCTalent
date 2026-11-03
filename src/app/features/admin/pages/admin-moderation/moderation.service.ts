@@ -16,11 +16,19 @@ export interface ProjetModeration {
   showMenu?: boolean;
 }
 
+export interface ModerationStats {
+  total: number;
+  aExaminer: number;
+  validesMois: number;
+  refusesMois: number;
+  tempsTraitement: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ModerationService {
-private apiUrl = 'http://localhost:8080/api/v1/projets';
+  private apiUrl = 'http://localhost:8080/api/v1/projets';
 
   constructor(
     private http: HttpClient,
@@ -37,9 +45,10 @@ private apiUrl = 'http://localhost:8080/api/v1/projets';
         badge: p.badge || 'WEB',
         title: p.titre,
         description: p.description,
-        apprenant: p.apprenantNom,
+        // 🚀 Correction ici : on combine prenomCreateur et nomCreateur renvoyés par le backend
+        apprenant: `${p.prenomCreateur || ''} ${p.nomCreateur || ''}`.trim() || 'Apprenant inconnu',
         date: p.dateCreation ? new Date(p.dateCreation).toLocaleDateString() : 'Récemment',
-        status: p.statut,
+        status: p.statut || 'En attente',
         type: p.type || 'Web'
       })))
     );
@@ -51,9 +60,27 @@ private apiUrl = 'http://localhost:8080/api/v1/projets';
     return this.http.patch(`${this.apiUrl}/${id}/statut`, { statut: nouveauStatut }, { headers });
   }
 
-  getModerationStats(): Observable<any> {
+  validerTousLesProjets(): Observable<any> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/stats/moderation`, { headers });
+    return this.http.patch(`${this.apiUrl}/valider-tous`, {}, { headers });
+  }
+
+  getModerationStats(): Observable<ModerationStats> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get<ModerationStats>(`${this.apiUrl}/stats/moderation`, { headers }).pipe(
+      map(response => {
+        console.log("DONNÉES BRUTES REÇUES DU BACKEND STATS :", response);
+        return response;
+      })
+    );
+  }
+
+  getProjetById(id: number): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }
 }

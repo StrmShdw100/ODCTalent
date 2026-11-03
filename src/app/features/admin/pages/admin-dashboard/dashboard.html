@@ -47,7 +47,9 @@
     </div>
   </div>
 
+  <!-- Sections et Widgets du Dashboard -->
   <div class="dashboard-sections-grid">
+    <!-- Validation des comptes -->
     <div class="card-box">
       <h3>Validation des comptes</h3>
       <p>Comptes utilisateurs en attente de modération et d'activation.</p>
@@ -65,6 +67,23 @@
       </ng-template>
     </div>
 
+    <!-- Actions rapides (Raccourcis de navigation) -->
+    <div class="card-box">
+      <h3>Actions rapides</h3>
+      <p>Raccourcis vers les modules de gestion principaux.</p>
+      <div class="quick-actions-grid">
+        <button class="btn-action" (click)="goToApprenants()">
+          👥 <span>Gérer les apprenants</span>
+          <small>{{ stats.comptesEnAttente }} à valider</small>
+        </button>
+        <button class="btn-action" (click)="goToOpportunites()">
+          💼 <span>Gérer les offres</span>
+          <small>{{ stats.totalOpportunites }} publiées</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sécurité & Système -->
     <div class="card-box">
       <h3>Sécurité & Système</h3>
       <p>Informations sur l'équipe d'administration active.</p>

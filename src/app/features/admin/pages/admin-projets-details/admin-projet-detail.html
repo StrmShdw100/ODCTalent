@@ -1,0 +1,55 @@
+<div class="projet-detail-container" *ngIf="!loading && projet">
+  <div class="detail-header">
+    <button class="btn-back" (click)="retour()">← Retour à la modération</button>
+    <div class="action-buttons">
+      <button class="btn-validate" (click)="changerStatut('Validé')">✓ Valider le projet</button>
+      <button class="btn-reject" (click)="changerStatut('À corriger')">✕ Demander correction</button>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <div class="badge-row">
+      <span class="status-badge" [ngClass]="{
+        'pending': projet.statut === 'En attente',
+        'validated': projet.statut === 'Validé',
+        'correction': projet.statut === 'À corriger'
+      }">{{ projet.statut || 'En attente' }}</span>
+      <span class="date-tag">Soumis le : {{ projet.dateCreation || 'Récemment' }}</span>
+    </div>
+
+    <h1>{{ projet.titre }}</h1>
+    
+    <div class="author-info">
+      <p><strong>Auteur :</strong> {{ projet.prenomCreateur }} {{ projet.nomCreateur }}</p>
+    </div>
+
+    <div class="image-preview" *ngIf="projet.imageUrl">
+      <img [src]="projet.imageUrl" alt="Aperçu du projet" />
+    </div>
+
+    <div class="section-block">
+      <h3>Description complète</h3>
+      <p class="description-text">{{ projet.description }}</p>
+    </div>
+
+    <div class="section-block" *ngIf="projet.technologies">
+      <h3>Technologies utilisées</h3>
+      <div class="tech-tags">
+        <span class="tech-tag" *ngFor="let tech of projet.technologies.split(',')">{{ tech.trim() }}</span>
+      </div>
+    </div>
+
+    <div class="links-section">
+      <a *ngIf="projet.githubUrl" [href]="projet.githubUrl" target="_blank" class="btn-link github">
+        📁 Voir le dépôt GitHub
+      </a>
+      <a *ngIf="projet.demoUrl" [href]="projet.demoUrl" target="_blank" class="btn-link demo">
+        🚀 Voir la démo en direct
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="loading">
+  <p>Chargement des détails du projet...</p>
+</div>

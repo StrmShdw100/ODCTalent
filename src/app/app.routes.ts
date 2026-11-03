@@ -12,6 +12,7 @@ import { OpportunitesComponent } from './features/admin/pages/admin-opportunites
 import { AdminParametresComponent } from './features/admin/pages/admin-parametres/admin-parametres';
 import { AdminRecruteursComponent } from './features/admin/pages/admin-recruteurs/admin-recruteurs';
 import { AdminNotificationsComponent } from './features/admin/pages/admin-notifications/admin-notifications';
+import { DetailProjetApprenant } from './features/apprenant/pages/detail-projet/detail-projet'; // 🚀 Import du composant détail
 
 import { RecruiterLayout } from './layout/recruiter-layout/recruiter-layout';
 import { Bienvenue as BienvenueRecruteur } from './features/recruiter/pages/bienvenue/bienvenue';
@@ -34,13 +35,12 @@ import { PortfolioSuccesApprenant } from './features/apprenant/pages/portfolio-s
 import { PortfolioApprenant } from './features/apprenant/pages/portfolio/portfolio';
 import { ApprenantLayout } from './layout/apprenant-layout/apprenant-layout';
 import { RecruteurNotifications } from './features/recruiter/pages/notifications/recruteur-notifications';
-import { ActualitesComponent as ActualitesApprenant } from './features/admin/pages/admin-actualites/actualites';
 import { ProjetsApprenant } from './features/apprenant/pages/projets/projets';
-import { DetailProjetApprenant } from './features/apprenant/pages/detail-projet/detail-projet';
 import { EvolutionProApprenant } from './features/apprenant/pages/evolution-pro/evolution-pro';
 import { DetailEvolutionApprenant } from './features/apprenant/pages/detail-evolution/detail-evolution';
 import { OpportunitesComponent as OpportunitesApprenantComponent } from './features/apprenant/pages/opportunites/opportunites.component';
 import { MissionDetailComponent } from './features/apprenant/pages/opportunites-detail/mission-detail.component';
+import { AdminProjetDetailComponent } from './features/admin/pages/admin-projets-details/admin-projet-detail.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -52,6 +52,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'actualites', component: ActualitesComponent },
       { path: 'moderation', component: ModerationComponent },
+      { path: 'projets/:id', component: AdminProjetDetailComponent }, 
       { path: 'opportunites', component: OpportunitesComponent },
       { path: 'apprenants', component: ApprenantsComponent },
       { path: 'apprenants/evolution', component: ApprenantEvolutionComponent },
@@ -96,7 +97,7 @@ export const routes: Routes = [
       { path: 'projets/:id', component: DetailProjetApprenant },
       { path: 'evolution-pro', component: EvolutionProApprenant },
       { path: 'evolution-pro/:id', component: DetailEvolutionApprenant },
-      { path: 'actualites', component: ActualitesApprenant }, 
+      { path: 'actualites', component: ActualitesComponent }, 
       { path: 'opportunites', component: OpportunitesApprenantComponent }, 
       { path: 'opportunites/:id', component: MissionDetailComponent },
       { path: 'notifications', component: NotificationsApprenant },

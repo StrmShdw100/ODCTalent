@@ -9,11 +9,21 @@ export interface RecruiterStats {
   contratsActifs: number;
 }
 
+export interface CandidatureRecente {
+  id: number;
+  nomApprenant: string;
+  prenomApprenant: string;
+  titreMission: string;
+  dateCandidature: string;
+  statut: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class RecruiterDashboardService {
-  private apiUrl = 'http://localhost:8080/api/v1/recruteur/dashboard/stats';
+  private statsUrl = 'http://localhost:8080/api/v1/recruteur/dashboard/stats';
+  private candidaturesUrl = 'http://localhost:8080/api/v1/candidatures/recruteur';
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +33,10 @@ export class RecruiterDashboardService {
   }
 
   getRecruiterStats(): Observable<RecruiterStats> {
-    return this.http.get<RecruiterStats>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<RecruiterStats>(this.statsUrl, { headers: this.getHeaders() });
+  }
+
+  getCandidaturesRecentes(): Observable<CandidatureRecente[]> {
+    return this.http.get<CandidatureRecente[]>(this.candidaturesUrl, { headers: this.getHeaders() });
   }
 }

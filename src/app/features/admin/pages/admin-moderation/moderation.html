@@ -5,6 +5,10 @@
       <h2>Modération des projets</h2>
       <p>Vérifiez, validez ou refusez les projets soumis par les apprenants.</p>
     </div>
+    <!-- 🚀 Bouton pour accepter tous les projets d'un coup -->
+    <button class="btn-primary" (click)="toutValider()">
+      ✓ Tout valider
+    </button>
   </div>
 
   <!-- Cartes Statistiques (KPIs dynamiques) -->
@@ -12,29 +16,29 @@
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">À examiner</span>
-        <h3 class="stat-value">{{ stats.aExaminer }}</h3>
-        <span class="badge-urgent" *ngIf="stats.aExaminer > 0">Urgent</span>
+        <h3 class="stat-value">{{ stats?.aExaminer ?? 0 }}</h3>
+        <span class="badge-urgent" *ngIf="(stats?.aExaminer ?? 0) > 0">Urgent</span>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">Validés</span>
-        <h3 class="stat-value">{{ stats.validesMois }}</h3>
+        <h3 class="stat-value">{{ stats?.validesMois ?? 0 }}</h3>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">À corriger</span>
-        <h3 class="stat-value">{{ stats.refusesMois }}</h3>
+        <h3 class="stat-value">{{ stats?.refusesMois ?? 0 }}</h3>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">Temps moyen de traitement</span>
-        <h3 class="stat-value-time">{{ stats.tempsTraitement }}</h3>
+        <h3 class="stat-value-time">{{ stats?.tempsTraitement ?? '0h' }}</h3>
       </div>
     </div>
   </div>
@@ -79,7 +83,9 @@
       <tbody>
         <!-- Utilisation de filteredProjets -->
         <tr *ngFor="let item of filteredProjets">
-          <td>
+          
+          <!-- Colonne PROJET (Cliquable pour ouvrir le détail) -->
+          <td (click)="ouvrirDetail(item.id)" style="cursor: pointer;">
             <div class="project-title-cell">
               <span class="badge-tag" [ngClass]="(item.badge || 'web').toLowerCase()">{{ item.badge }}</span>
               <div>
@@ -88,8 +94,18 @@
               </div>
             </div>
           </td>
-          <td>{{ item.apprenant }}</td>
-          <td>{{ item.date }}</td>
+
+          <!-- Colonne APPRENANT (Cliquable pour ouvrir le détail) -->
+          <td (click)="ouvrirDetail(item.id)" style="cursor: pointer;">
+            {{ item.apprenant }}
+          </td>
+
+          <!-- Colonne DATE (Cliquable pour ouvrir le détail) -->
+          <td (click)="ouvrirDetail(item.id)" style="cursor: pointer;">
+            {{ item.date }}
+          </td>
+
+          <!-- Colonne STATUT -->
           <td>
             <span class="status-badge" [ngClass]="{
               'pending': item.status === 'En attente',
@@ -99,12 +115,22 @@
               {{ item.status }}
             </span>
           </td>
+
+          <!-- Colonne TYPE -->
           <td>{{ item.type }}</td>
+
+          <!-- Colonne ACTION (Menu contextuel) -->
           <td class="actions-cell">
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             <div class="context-menu" *ngIf="item.showMenu">
-              <button (click)="changerStatut(item, 'Validé')">✓ Valider</button>
-              <button class="delete-option" (click)="changerStatut(item, 'À corriger')">✕ Demander correction</button>
+              <button class="menu-item-btn" (click)="changerStatut(item, 'Validé')">
+                <img src="icones/in.png" alt="icones-valider" class="menu-icon">
+                <span>Valider</span>
+              </button>
+              <button class="menu-item-btn delete-option" (click)="changerStatut(item, 'À corriger')">
+                <img src="icones/danger.png" alt="icones-danger" class="menu-icon">
+                <span>Demander correction</span>
+              </button>
             </div>
           </td>
         </tr>

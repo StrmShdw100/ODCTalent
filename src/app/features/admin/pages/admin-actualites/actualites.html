@@ -3,7 +3,7 @@
     <div class="success-content">
       <span class="success-icon">✓</span>
       <div>
-        <strong>Actualité publiée avec succès</strong>
+        <strong>Opération réussie</strong>
         <p>{{ successMessage }}</p>
       </div>
     </div>
@@ -42,7 +42,7 @@
   <div class="table-card">
     <div class="table-card-header">
       <h3>Liste des actualités</h3>
-      <span class="total-count">{{ filteredActualites.length }} actualités</span>
+      <span class="total-count">{{ filteredActualites.length }} actualité(s)</span>
     </div>
 
     <table class="custom-table">
@@ -79,7 +79,7 @@
             <button class="menu-dots-btn" (click)="toggleMenu(item, $event)">•••</button>
             
             <div class="context-menu" *ngIf="item.showMenu">
-              <button>✏️ Modifier</button>
+              <button (click)="openEditModal(item)">✏️ Modifier</button>
               <button>👁️ Masquer</button>
               <button class="delete-option" (click)="supprimerActualite(item.id)">🗑️ Supprimer</button>
             </div>
@@ -93,12 +93,13 @@
   </div>
 </div>
 
+<!-- MODALE D'AJOUT / MODIFICATION -->
 <div class="modal-backdrop" *ngIf="isModalOpen && isAdmin">
   <div class="modal-card">
     <div class="modal-header">
       <div>
-        <h3>Ajouter une nouvelle actualité</h3>
-        <p>Créez une actualité qui sera publiée sur la plateforme ODCTalent.</p>
+        <h3>{{ editingId ? 'Modifier l\'actualité' : 'Ajouter une nouvelle actualité' }}</h3>
+        <p>{{ editingId ? 'Mettez à jour les informations de l\'actualité.' : 'Créez une actualité qui sera publiée sur la plateforme ODCTalent.' }}</p>
       </div>
       <button class="modal-close-btn" (click)="closeModal()">✕</button>
     </div>
@@ -123,7 +124,11 @@
         </div>
         <div class="form-group">
           <label>Date de publication *</label>
-          <input type="text" [(ngModel)]="formModel.publicationDate" placeholder="JJ/MM/AAAA" />
+          <input 
+            type="date" 
+            [(ngModel)]="formModel.publicationDate" 
+            [min]="todayDate" 
+            required />
         </div>
       </div>
 
@@ -154,7 +159,7 @@
         <div class="upload-box" (click)="fileInput.click()" style="cursor: pointer;">
           <div class="upload-icon-placeholder">📁</div>
           <div class="upload-text">
-            <strong>{{ selectedFile ? selectedFile.name : 'Ajouter une image' }}</strong>
+            <strong>{{ selectedFile ? selectedFile.name : (formModel.imageUrl ? 'Image actuelle enregistrée' : 'Ajouter une image') }}</strong>
             <span>PNG, JPG ou WEBP — 5 Mo maximum</span>
           </div>
           <button type="button" class="btn-browse">Parcourir</button>
@@ -179,7 +184,9 @@
 
     <div class="modal-footer">
       <button class="btn-secondary" (click)="closeModal()">Annuler</button>
-      <button class="btn-primary" (click)="submitActualite()">Publier l'actualité</button>
+      <button class="btn-primary" (click)="submitActualite()">
+        {{ editingId ? 'Enregistrer les modifications' : 'Publier l\'actualité' }}
+      </button>
     </div>
   </div>
 </div>
