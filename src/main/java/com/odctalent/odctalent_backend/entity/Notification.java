@@ -1,6 +1,7 @@
 package com.odctalent.odctalent_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,7 +41,8 @@ public class Notification {
     private LocalDateTime dateLecture;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "destinataire_id", nullable = false)
+    @JoinColumn(name = "destinataire_id", nullable = true)
+    @JsonIgnore
     private Utilisateur destinataire;
 
     @PrePersist

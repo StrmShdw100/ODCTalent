@@ -2,6 +2,9 @@ package com.odctalent.odctalent_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "portfolios")
@@ -29,9 +32,13 @@ public class Portfolio {
 
     private String dateCreation;
 
-    private String visibilite; // PUBLIC, PRIVE
+    private String visibilite;
 
     @OneToOne
     @JoinColumn(name = "apprenant_id", nullable = false, unique = true)
+    @JsonIgnore
     private Apprenant apprenant;
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Projet> projets=new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.odctalent.odctalent_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -29,8 +30,10 @@ public class Apprenant extends Utilisateur {
     private Boolean disponible;
 
     @OneToOne(mappedBy = "apprenant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore 
     private Profil profil;
 
     @OneToOne(mappedBy = "apprenant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore 
     private Portfolio portfolio;
 }

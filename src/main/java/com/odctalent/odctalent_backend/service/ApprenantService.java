@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.odctalent.odctalent_backend.repository.ProjetRepository;
+import com.odctalent.odctalent_backend.entity.Portfolio;
+import com.odctalent.odctalent_backend.repository.PortfolioRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,13 +23,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+
 @Service
 @RequiredArgsConstructor
 public class ApprenantService {
 
     private final ApprenantRepository apprenantRepository;
     private final ProfilRepository profilRepository; 
+    private final ProjetRepository projetRepository;
     private final NotificationRepository notificationRepository; 
+    private final PortfolioRepository portfolioRepository;
     private final PasswordEncoder passwordEncoder;
 
     private String genererMatriculeCourt() {
@@ -50,11 +56,22 @@ public class ApprenantService {
         List<Apprenant> sauvegardes = apprenantRepository.saveAll(apprenants);
 
         for (Apprenant a : sauvegardes) {
+            // 🚀 1. Création automatique d'un portfolio vide pour l'apprenant importé
+            Portfolio portfolio = Portfolio.builder()
+                    .apprenant(a)
+                    .titreProfessionnel("Mon Portfolio")
+                    .visibilite("PUBLIC")
+                    .dateCreation(java.time.LocalDate.now().toString())
+                    .build();
+            portfolioRepository.save(portfolio);
+
+            // 2. Enregistrement de la notification
             notificationRepository.save(Notification.builder()
                 .titre("Nouveau compte apprenant (Import)")
                 .message(a.getPrenom() + " " + a.getNom() + " a été importé via Excel et attend l'activation.")
                 .type("COMPTE_EN_ATTENTE")
                 .referenceId(a.getId())
+                .destinataire(null)
                 .lue(false)
                 .dateCreation(LocalDateTime.now())
                 .build());
@@ -63,7 +80,7 @@ public class ApprenantService {
         return sauvegardes;
     }
 
-   @Transactional
+    @Transactional
     public Apprenant creerApprenant(Apprenant apprenant) {
         if (apprenant.getMatricule() == null || apprenant.getMatricule().isBlank()) {
             apprenant.setMatricule(genererMatriculeCourt());
@@ -76,20 +93,37 @@ public class ApprenantService {
         } else if (!apprenant.getMotDePasse().startsWith("$2a$")) {
             apprenant.setMotDePasse(passwordEncoder.encode(apprenant.getMotDePasse()));
         }
-        
+
+        if (apprenant.getStatut() == null) {
+            apprenant.setStatut("EN_ATTENTE");
+        }
+
         Apprenant nouveau = apprenantRepository.save(apprenant);
 
+        // 🚀 1. Création automatique d'un portfolio vide pour l'apprenant unique
+        Portfolio portfolio = Portfolio.builder()
+                .apprenant(nouveau)
+                .titreProfessionnel("Mon Portfolio")
+                .visibilite("PUBLIC")
+                .dateCreation(java.time.LocalDate.now().toString())
+                .build();
+        portfolioRepository.save(portfolio);
+
+        // 2. Enregistrement de la notification
         notificationRepository.save(Notification.builder()
             .titre("Nouveau compte apprenant")
             .message(nouveau.getPrenom() + " " + nouveau.getNom() + " a été créé et attend la validation.")
             .type("COMPTE_EN_ATTENTE")
             .referenceId(nouveau.getId())
+            .destinataire(null)
             .lue(false)
             .dateCreation(LocalDateTime.now())
             .build());
 
         return nouveau;
     }
+
+   
 
     @Transactional
     public void completeProfile(String email, CompleteProfileRequest request) {
@@ -119,4 +153,10 @@ public class ApprenantService {
         profilRepository.save(profil);
         apprenantRepository.save(apprenant);
     }
+
+    @Transactional(readOnly = true)
+    public List<Apprenant> getAllApprenants() {
+        return apprenantRepository.findAllWithPortfolioAndProjets();
+    }
+
 }

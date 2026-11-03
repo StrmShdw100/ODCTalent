@@ -25,10 +25,10 @@ public class AdminApprenantController {
     private final ApprenantRepository apprenantRepository; 
 
     @GetMapping("/tous")
-    public ResponseEntity<List<Apprenant>> getAllApprenants() {
-        List<Apprenant> apprenants = apprenantRepository.findAll();
-        return ResponseEntity.ok(apprenants);
-    }
+public ResponseEntity<List<Apprenant>> getAllApprenants() {
+    List<Apprenant> apprenants = apprenantService.getAllApprenants();
+    return ResponseEntity.ok(apprenants);
+}
 
     @GetMapping("/stats")
     public ResponseEntity getStats() {
@@ -85,9 +85,24 @@ public class AdminApprenantController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Apprenant> creerApprenant(@RequestBody Apprenant apprenant) {
-        Apprenant nouveau = apprenantService.creerApprenant(apprenant);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nouveau);
+   @PostMapping
+    public ResponseEntity<?> creerApprenant(@RequestBody Apprenant apprenant) {
+        try {
+            // S'assure que les valeurs par défaut obligatoires sont présentes
+            if (apprenant.getNom() == null || apprenant.getPrenom() == null || apprenant.getEmail() == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Nom, Prénom et Email sont obligatoires."));
+            }
+            if (apprenant.getMotDePasse() == null || apprenant.getMotDePasse().isBlank()) {
+                apprenant.setMotDePasse("ODC@2026");
+            }
+            if (apprenant.getRole() == null) {
+                apprenant.setRole(com.odctalent.odctalent_backend.entity.enums.Role.APPRENANT);
+            }
+
+            Apprenant nouveau = apprenantService.creerApprenant(apprenant);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nouveau);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
     }
 }
