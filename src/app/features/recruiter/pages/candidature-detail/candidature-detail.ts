@@ -192,7 +192,9 @@ export class CandidatureDetail implements OnInit {
   }
 
   private changerStatut(nouveauStatut: string): void {
-    this.http.patch(`${this.apiUrl}/candidatures/${this.candidatureId}/statut?statut=${nouveauStatut}`, {}, { headers: this.getHeaders() }).subscribe({
+    const url = `${this.apiUrl}/candidatures/${this.candidatureId}/statut?statut=${encodeURIComponent(nouveauStatut)}`;
+
+    this.http.patch(url, {}, { headers: this.getHeaders() }).subscribe({
       next: (updated: any) => {
         if (this.candidature) {
           this.candidature.statut = updated?.statut || nouveauStatut;
@@ -204,7 +206,7 @@ export class CandidatureDetail implements OnInit {
       },
       error: (err: any) => {
         console.error('Erreur modification statut :', err);
-        alert('Une erreur est survenue lors de la mise à jour du statut.');
+        alert('Une erreur est survenue lors de la mise à jour du statut. Vérifiez que vous êtes bien le recruteur de cette mission.');
       }
     });
   }
