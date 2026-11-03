@@ -24,7 +24,6 @@ export interface CandidatureRecente {
 })
 export class RecruiterDashboardService {
   private readonly apiUrl = environment.apiUrl;
-  private readonly statsUrl = `${this.apiUrl}/dashboard/stats`;
 
   constructor(private http: HttpClient) {}
 
@@ -34,7 +33,38 @@ export class RecruiterDashboardService {
   }
 
   getRecruiterStats(): Observable<RecruiterStats> {
-    return this.http.get<RecruiterStats>(this.statsUrl, { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${this.apiUrl}/missions`, { headers: this.getHeaders() }).pipe(
+      switchMap((missions) => {
+        const missionsList = Array.isArray(missions) ? missions : [];
+
+        if (!missionsList.length) {
+          return of({
+            missionsPubliees: 0,
+            candidaturesRecues: 0,
+            candidaturesEnCours: 0,
+            contratsActifs: 0
+          } as RecruiterStats);
+        }
+
+        return forkJoin(
+          missionsList.map((mission) =>
+            this.http.get<any[]>(`${this.apiUrl}/candidatures/mission/${mission.id}`, {
+              headers: this.getHeaders()
+            })
+          )
+        ).pipe(
+          map((pages) => {
+            const candidatures = pages.flatMap((page) => page || []);
+            return {
+              missionsPubliees: missionsList.length,
+              candidaturesRecues: candidatures.length,
+              candidaturesEnCours: candidatures.filter((c) => c.statut === 'EN_ATTENTE' || c.statut === 'EN_COURS').length,
+              contratsActifs: 0
+            } as RecruiterStats;
+          })
+        );
+      })
+    );
   }
 
   getCandidaturesRecentes(): Observable<CandidatureRecente[]> {
@@ -64,6 +94,7 @@ export class RecruiterDashboardService {
                 dateCandidature: c.dateCandidature || '',
                 statut: c.statut || 'EN_ATTENTE'
               }))
+              .slice(0, 4)
           )
         );
       })

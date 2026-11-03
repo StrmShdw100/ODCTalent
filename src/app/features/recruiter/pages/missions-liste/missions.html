@@ -83,8 +83,16 @@
           <td>{{ mission.competencesRequises }}</td>
           <td>{{ mission.budget ? mission.budget + ' FCFA' : 'N/A' }}</td>
           <td>{{ mission.datePublication || 'Récemment' }}</td>
-          <td><span class="badge" [ngClass]="mission.statut ? mission.statut.toLowerCase() : 'publiee'">{{ mission.statut }}</span></td>
-          <td class="colonne-action"><span class="points-actions">•••</span></td>
+          <td><span class="badge" [ngClass]="getClasseStatut(mission.statut)">{{ getLibelleStatut(mission.statut) }}</span></td>
+          <td class="colonne-action">
+            <div class="actions-boutons">
+              <button class="action-btn primary" (click)="changerStatutMission(mission)">
+                {{ mission.statut === 'DISPONIBLE' ? 'Brouillon' : 'Publier' }}
+              </button>
+              <button class="action-btn secondary" (click)="ouvrirModal(mission)">Modifier</button>
+              <button class="action-btn danger" (click)="supprimerMission(mission.id)">Supprimer</button>
+            </div>
+          </td>
         </tr>
         <tr *ngIf="missions.length === 0">
           <td colspan="6" style="text-align: center; padding: 20px; color: #777;">Aucune mission enregistrée pour le moment.</td>

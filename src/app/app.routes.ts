@@ -76,6 +76,7 @@ export const routes: Routes = [
     children: [
       { path: 'tableau-de-bord', component: TableauDeBordRecruteur },
       { path: 'missions', component: Missions },
+      { path: 'missions/create', component: Missions },
       { path: 'candidatures', component: Candidatures },
       { path: 'candidatures/detail', component: CandidatureDetail },
       { path: 'candidatures/:id', component: CandidatureDetail },
