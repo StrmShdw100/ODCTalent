@@ -20,10 +20,10 @@
         </div>
       </div>
       <div class="actions-entete">
-        <span class="badge-entretien" [class.acceptee]="candidature.statut === 'ACCEPTEE'" [class.refusee]="candidature.statut === 'REFUSEE'">
-          {{ candidature.statut || 'EN_ATTENTE' }}
+        <span class="badge-entretien" [class.acceptee]="estCandidatureValidee(candidature.statut)" [class.refusee]="estCandidatureRefusee(candidature.statut)">
+          {{ getLibelleStatut(candidature.statut) }}
         </span>
-        <button class="btn-valider-haut" (click)="ouvrirValidation()" *ngIf="candidature.statut !== 'ACCEPTEE'">Valider</button>
+        <button class="btn-valider-haut" (click)="ouvrirValidation()" *ngIf="!estCandidatureValidee(candidature.statut)">Valider</button>
       </div>
     </div>
 
@@ -64,7 +64,7 @@
           </div>
           <div class="timeline-etape en-cours">
             <div class="cercle-point actif"></div>
-            <span class="texte-etape gras">Statut actuel : {{ candidature.statut }}</span>
+            <span class="texte-etape gras">Statut actuel : {{ getLibelleStatut(candidature.statut) }}</span>
           </div>
         </div>
 

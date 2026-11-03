@@ -155,6 +155,42 @@ export class CandidatureDetail implements OnInit {
     this.changerStatut('REFUSEE');
   }
 
+  normalizeStatut(statut: string | null | undefined): string {
+    return (statut || '').toString().trim().toUpperCase();
+  }
+
+  getLibelleStatut(statut: string | null | undefined): string {
+    const s = this.normalizeStatut(statut);
+    switch (s) {
+      case 'EN_ATTENTE':
+        return 'En attente';
+      case 'EN_COURS':
+        return 'En cours';
+      case 'ENTRETIEN':
+        return 'Entretien';
+      case 'ACCEPTEE':
+      case 'VALIDEE':
+      case 'VALIDEE':
+        return 'Validée';
+      case 'REFUSEE':
+      case 'REJETEE':
+      case 'REJETE':
+        return 'Refusée';
+      default:
+        return statut || 'En attente';
+    }
+  }
+
+  estCandidatureValidee(statut: string | null | undefined): boolean {
+    const s = this.normalizeStatut(statut);
+    return s === 'ACCEPTEE' || s === 'VALIDEE' || s === 'VALIDEE';
+  }
+
+  estCandidatureRefusee(statut: string | null | undefined): boolean {
+    const s = this.normalizeStatut(statut);
+    return s === 'REFUSEE' || s === 'REJETEE' || s === 'REJETE';
+  }
+
   private changerStatut(nouveauStatut: string): void {
     this.http.patch(`${this.apiUrl}/candidatures/${this.candidatureId}/statut?statut=${nouveauStatut}`, {}, { headers: this.getHeaders() }).subscribe({
       next: (updated: any) => {
@@ -164,7 +200,7 @@ export class CandidatureDetail implements OnInit {
         this.fermerValidation();
         this.fermerRefus();
         this.cdr.detectChanges();
-        alert(`La candidature a été mise à jour avec succès : ${nouveauStatut}`);
+        alert(`La candidature a été mise à jour avec succès : ${this.getLibelleStatut(nouveauStatut)}`);
       },
       error: (err: any) => {
         console.error('Erreur modification statut :', err);
