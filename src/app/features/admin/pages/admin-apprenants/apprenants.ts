@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core'; // 🚀 1. Ajout de HostListener ici
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 export interface Apprenant {
   id: number;
@@ -26,6 +27,8 @@ export interface Apprenant {
   styleUrls: ['./apprenants.css']
 })
 export class ApprenantsComponent implements OnInit {
+
+  private readonly apiUrl = environment.apiUrl;
 
   isAddModalOpen: boolean = false;
   activeTab: 'unique' | 'import' = 'unique';
@@ -158,13 +161,17 @@ export class ApprenantsComponent implements OnInit {
   }
 
   chargerStats() {
-    this.http.get<any>('http://localhost:8080/api/v1/admin/apprenants/stats', { headers: this.getHeaders() }).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/admin/utilisateurs`, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
+        const apprenants = (data || []).filter(u => u.role === 'APPRENANT');
+        const actifs = apprenants.filter(u => u.actif).length;
+        const enAttente = apprenants.filter(u => !u.actif).length;
+
         this.stats = {
-          inscrits: data.inscrits,
-          suivis: data.suivis,
-          enEmploi: data.enEmploi,
-          enRecherche: data.enRecherche
+          inscrits: String(apprenants.length),
+          suivis: String(actifs),
+          enEmploi: `${Math.min(100, Math.round((actifs / Math.max(apprenants.length, 1)) * 100))}%`,
+          enRecherche: `${Math.min(100, Math.round((enAttente / Math.max(apprenants.length, 1)) * 100))}%`
         };
         this.cdr.detectChanges();
       },
@@ -175,9 +182,11 @@ export class ApprenantsComponent implements OnInit {
   }
 
   chargerApprenants() {
-    this.http.get<any[]>('http://localhost:8080/api/v1/admin/apprenants/tous', { headers: this.getHeaders() }).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/admin/utilisateurs`, { headers: this.getHeaders() }).subscribe({
       next: (data) => {
-        this.apprenants = data.map(u => {
+        const apprenantsData = (data || []).filter(u => u.role === 'APPRENANT');
+
+        this.apprenants = apprenantsData.map(u => {
           const projetsList = u.portfolio?.projets || u.portfolio?.projects || [];
           return {
             id: u.id,
@@ -190,7 +199,7 @@ export class ApprenantsComponent implements OnInit {
             projectsCount: Array.isArray(projetsList) ? projetsList.length : 0,
             status: u.actif ? 'Actif' : 'En attente',
             inscriptionDate: u.dateInscription ? new Date(u.dateInscription).toLocaleDateString() : 'Récemment',
-            disponibilite: u.disponibilite ?? true 
+            disponibilite: u.disponibilite ?? true
           };
         });
 
@@ -222,11 +231,18 @@ export class ApprenantsComponent implements OnInit {
   }
 
   autoriserCompte(id: number) {
-    this.http.put(`http://localhost:8080/api/v1/admin/utilisateurs/${id}/autoriser`, {}, { 
-      headers: this.getHeaders(), 
-      responseType: 'text' 
+    this.http.put(`${this.apiUrl}/admin/utilisateurs/${id}/autoriser`, {}, {
+      headers: this.getHeaders(),
+      responseType: 'text'
     }).subscribe({
-      next: `Compte apprenant autorisé avec succès !`,
+      next: () => {
+        alert('Compte apprenant autorisé avec succès !');
+        this.chargerApprenants();
+      },
+      error: (err) => {
+        console.error('Erreur lors de l’autorisation du compte :', err);
+        alert('Erreur lors de l’autorisation du compte.');
+      }
     });
   }
   // (garde le reste de tes méthodes existantes en bas : autoriserCompte, togglePromotionDropdown, etc.)

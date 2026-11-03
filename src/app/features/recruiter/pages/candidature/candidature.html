@@ -89,7 +89,7 @@
           <td>{{ c.dateCandidature || 'Récemment' }}</td>
           <td><span class="badge">{{ c.statut }}</span></td>
           <td class="colonne-action">
-            <a [routerLink]="['/recruteur/candidatures/detail']" [queryParams]="{id: c.id}" class="bouton-voir-profil">Voir le profil</a>
+            <a [routerLink]="['/recruteur/candidatures', c.id]" class="bouton-voir-profil">Voir le profil</a>
           </td>
         </tr>
         <tr *ngIf="candidatures.length === 0">

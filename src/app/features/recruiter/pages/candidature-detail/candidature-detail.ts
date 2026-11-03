@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-candidature-detail',
@@ -19,7 +21,7 @@ export class CandidatureDetail implements OnInit {
 
   modalValidationOuverte = false;
   modalRefusOuverte = false;
-  
+
   modalPortfolioOuvert = false;
   portfolioCandidat: any = null;
   chargementPortfolio = false;
@@ -27,8 +29,8 @@ export class CandidatureDetail implements OnInit {
   commentaireInterne: string = 'Profil validé après entretien. Compétences adaptées au poste.';
   motifRefus: string = '';
 
-  private baseUrl = 'http://localhost:8080/api/v1/candidatures';
-  private portfolioBaseUrl = 'http://localhost:8080/api/v1/portfolios';
+  private readonly apiUrl = environment.apiUrl;
+  private readonly portfolioBaseUrl = `${this.apiUrl}/portfolios`;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,8 +40,8 @@ export class CandidatureDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
-      const idParam = params.get('id');
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id') ?? this.route.snapshot.queryParamMap.get('id');
       if (idParam) {
         this.candidatureId = Number(idParam);
         this.chargerDetailCandidature();
@@ -58,36 +60,62 @@ export class CandidatureDetail implements OnInit {
 
   chargerDetailCandidature(): void {
     this.isLoading = true;
-    this.http.get<any[]>(`${this.baseUrl}/recruteur`, { headers: this.getHeaders() }).subscribe({
-      next: (data: any[]) => {
-        this.candidature = (data || []).find(c => c.id === this.candidatureId);
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error("Erreur chargement détail candidature :", err);
-        this.errorMessage = "Impossible de récupérer les informations de cette candidature.";
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
+    this.errorMessage = '';
+
+    this.http.get<any[]>(`${this.apiUrl}/missions`, { headers: this.getHeaders() })
+      .pipe(
+        switchMap((missions) => {
+          const missionsList = Array.isArray(missions) ? missions : [];
+
+          if (!missionsList.length) {
+            return of([] as any[]);
+          }
+
+          return forkJoin(
+            missionsList.map((mission) =>
+              this.http.get<any[]>(`${this.apiUrl}/candidatures/mission/${mission.id}`, {
+                headers: this.getHeaders()
+              })
+            )
+          ).pipe(
+            map((pages) => pages.flatMap((page) => page || []))
+          );
+        }),
+        map((candidatures) => (candidatures || []).find((c) => c.id === this.candidatureId) || null),
+        catchError((err) => {
+          console.error('Erreur chargement détail candidature :', err);
+          this.errorMessage = 'Impossible de récupérer les informations de cette candidature.';
+          return of(null);
+        })
+      )
+      .subscribe({
+        next: (candidature) => {
+          this.candidature = candidature;
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
-  ouvrirValidation(): void { 
-    this.modalValidationOuverte = true; 
+  ouvrirValidation(): void {
+    this.modalValidationOuverte = true;
     this.cdr.detectChanges();
   }
-  fermerValidation(): void { 
-    this.modalValidationOuverte = false; 
+  fermerValidation(): void {
+    this.modalValidationOuverte = false;
     this.cdr.detectChanges();
   }
 
-  ouvrirRefus(): void { 
-    this.modalRefusOuverte = true; 
+  ouvrirRefus(): void {
+    this.modalRefusOuverte = true;
     this.cdr.detectChanges();
   }
-  fermerRefus(): void { 
-    this.modalRefusOuverte = false; 
+  fermerRefus(): void {
+    this.modalRefusOuverte = false;
     this.cdr.detectChanges();
   }
 
@@ -105,7 +133,7 @@ export class CandidatureDetail implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error("Erreur chargement portfolio :", err);
+        console.error('Erreur chargement portfolio :', err);
         this.portfolioCandidat = null;
         this.chargementPortfolio = false;
         this.cdr.detectChanges();
@@ -128,10 +156,10 @@ export class CandidatureDetail implements OnInit {
   }
 
   private changerStatut(nouveauStatut: string): void {
-    this.http.patch(`${this.baseUrl}/${this.candidatureId}/statut?statut=${nouveauStatut}`, {}, { headers: this.getHeaders() }).subscribe({
+    this.http.patch(`${this.apiUrl}/candidatures/${this.candidatureId}/statut?statut=${nouveauStatut}`, {}, { headers: this.getHeaders() }).subscribe({
       next: (updated: any) => {
         if (this.candidature) {
-          this.candidature.statut = updated.statut || nouveauStatut;
+          this.candidature.statut = updated?.statut || nouveauStatut;
         }
         this.fermerValidation();
         this.fermerRefus();
@@ -139,8 +167,8 @@ export class CandidatureDetail implements OnInit {
         alert(`La candidature a été mise à jour avec succès : ${nouveauStatut}`);
       },
       error: (err: any) => {
-        console.error("Erreur modification statut :", err);
-        alert("Une erreur est survenue lors de la mise à jour du statut.");
+        console.error('Erreur modification statut :', err);
+        alert('Une erreur est survenue lors de la mise à jour du statut.');
       }
     });
   }

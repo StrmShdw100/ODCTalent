@@ -78,6 +78,7 @@ export const routes: Routes = [
       { path: 'missions', component: Missions },
       { path: 'candidatures', component: Candidatures },
       { path: 'candidatures/detail', component: CandidatureDetail },
+      { path: 'candidatures/:id', component: CandidatureDetail },
       { path: 'contrats', component: Contrats },
       { path: 'parametres', component: ParametresRecruteur },
       { path: 'notifications', component: RecruteurNotifications }, 

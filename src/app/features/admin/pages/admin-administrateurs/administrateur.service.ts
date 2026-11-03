@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface AdministrateurBackend {
   id: number;
@@ -18,7 +19,7 @@ export interface AdministrateurBackend {
   providedIn: 'root'
 })
 export class AdminDashboardService {
-  private apiUrl = 'http://localhost:8080/api/v1/admin/administrateurs';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +29,9 @@ export class AdminDashboardService {
   }
 
   getAllAdministrateurs(): Observable<AdministrateurBackend[]> {
-    return this.http.get<AdministrateurBackend[]>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${this.apiUrl}/admin/utilisateurs`, { headers: this.getHeaders() }).pipe(
+      map((data) => (Array.isArray(data) ? data.filter(u => u.role === 'ADMIN') : []))
+    );
   }
 
   creerAdministrateur(formData: any): Observable<AdministrateurBackend> {
@@ -37,21 +40,22 @@ export class AdminDashboardService {
       nom: formData.nom,
       telephone: formData.telephone,
       email: formData.email,
-      role: formData.role,       // On envoie 'role' pour le DTO
-      roleAdmin: formData.role,  // On envoie aussi 'roleAdmin' pour plus de sécurité
-      motDePasse: formData.tempPassword 
+      role: 'ADMIN',
+      motDePasse: formData.tempPassword
     };
-    return this.http.post<AdministrateurBackend>(this.apiUrl, payload, { headers: this.getHeaders() });
+    return this.http.post<AdministrateurBackend>(`${this.apiUrl}/auth/register`, payload, { headers: this.getHeaders() });
   }
 
   toggleStatut(id: number): Observable<any> {
-    return this.http.put(`http://localhost:8080/api/v1/admin/utilisateurs/${id}/autoriser`, {}, { 
+    return this.http.put(`${this.apiUrl}/admin/utilisateurs/${id}/autoriser`, {}, {
       headers: this.getHeaders(),
-      responseType: 'text' 
+      responseType: 'text'
     });
   }
 
   getUtilisateursEnAttente(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/v1/admin/utilisateurs/en-attente', { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${this.apiUrl}/admin/utilisateurs`, { headers: this.getHeaders() }).pipe(
+      map((data) => (Array.isArray(data) ? data.filter(u => !u.actif) : []))
+    );
   }
 }

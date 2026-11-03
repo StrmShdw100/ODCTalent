@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 export interface AdminRecruteur {
   id: number;
@@ -27,6 +28,8 @@ export interface AdminRecruteur {
   styleUrls: ['./admin-recruteurs.css']
 })
 export class AdminRecruteursComponent implements OnInit {
+  private readonly apiUrl = environment.apiUrl;
+
   recruteurs: AdminRecruteur[] = [];
   chargement: boolean = true;
   searchTerm: string = '';
@@ -70,10 +73,24 @@ export class AdminRecruteursComponent implements OnInit {
   }
 
   chargerRecruteurs(): void {
-    this.http.get<AdminRecruteur[]>('http://localhost:8080/api/v1/admin/recruteurs', { headers: this.getHeaders() })
+    this.http.get<any[]>(`${this.apiUrl}/admin/utilisateurs`, { headers: this.getHeaders() })
       .subscribe({
         next: (data) => {
-          this.recruteurs = data;
+          this.recruteurs = (data || []).filter(u => u.role === 'RECRUTEUR').map(u => ({
+            id: u.id,
+            nom: u.nom,
+            prenom: u.prenom,
+            email: u.email,
+            telephone: u.telephone,
+            nomEntreprise: u.nomEntreprise || u.entreprise || '',
+            descriptionEntreprise: u.descriptionEntreprise || '',
+            secteurActivite: u.secteurActivite || '',
+            adresse: u.adresse || '',
+            siteWeb: u.siteWeb || '',
+            actif: !!u.actif,
+            statut: u.statut,
+            photoProfil: u.photoProfil
+          }));
           this.calculerStats();
           this.chargement = false;
           this.cdr.detectChanges();
@@ -129,10 +146,20 @@ export class AdminRecruteursComponent implements OnInit {
       return;
     }
 
-    this.http.post('http://localhost:8080/api/v1/admin/recruteurs', this.nouveauRecruteur, { headers: this.getHeaders() })
+    const payload = {
+      nom: this.nouveauRecruteur.nom,
+      prenom: this.nouveauRecruteur.prenom,
+      email: this.nouveauRecruteur.email,
+      telephone: this.nouveauRecruteur.telephone,
+      motDePasse: 'ODC@2026',
+      role: 'RECRUTEUR',
+      photoProfil: ''
+    };
+
+    this.http.post(`${this.apiUrl}/auth/register`, payload, { headers: this.getHeaders() })
       .subscribe({
         next: () => {
-          alert("Recruteur et entreprise ajoutés avec succès !");
+          alert("Recruteur ajouté avec succès !");
           this.fermerModal();
           this.chargerRecruteurs();
         },
@@ -144,9 +171,9 @@ export class AdminRecruteursComponent implements OnInit {
   }
 
   autoriserRecruteur(id: number): void {
-    this.http.put(`http://localhost:8080/api/v1/admin/recruteurs/${id}/autoriser`, {}, { 
-      headers: this.getHeaders(), 
-      responseType: 'text' 
+    this.http.put(`${this.apiUrl}/admin/utilisateurs/${id}/autoriser`, {}, {
+      headers: this.getHeaders(),
+      responseType: 'text'
     }).subscribe({
       next: () => {
         alert("Compte recruteur autorisé avec succès !");
